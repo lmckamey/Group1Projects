@@ -12,17 +12,32 @@
                 <RowDefinition Height="6*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <StackPanel Margin="0" Grid.Row="1" Orientation="Horizontal">
-                <StackPanel.Background>
+            <Grid Margin="0" Grid.Row="1" Panel.ZIndex="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF7A7A7A" Offset="0.008"/>
                         <GradientStop Color="#FF323232" Offset="1"/>
                     </LinearGradientBrush>
-                </StackPanel.Background>
-                <Ellipse x:Name="elpCurrentColor" Fill="#FFF4F4F5" Height="30" Stroke="White" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                <local:ColorPickerControl Height="40" Margin="0,2,0,1" Width="104"></local:ColorPickerControl>
-            </StackPanel>
-            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White"/>
+                </Grid.Background>
+                <local:ColorPickerControl x:Name="uscColorPicker" Height="Auto" Margin="5,2,0,2" Width="Auto"/>
+                <local:BrushSizeControl x:Name="uscBrushSize" Grid.Column="1" Height="Auto"/>
+                <Button x:Name="btnClear" Content="Clear" Grid.Column="2" Margin="0,10" FontFamily="Maiandra GD" FontSize="8" FontWeight="Bold" BorderBrush="Black" Foreground="White" Click="btnClear_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF404040" Offset="0"/>
+                            <GradientStop Color="#FF2C2C2C" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </Grid>
+            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown"/>
         </Grid>
 
     </Grid>
