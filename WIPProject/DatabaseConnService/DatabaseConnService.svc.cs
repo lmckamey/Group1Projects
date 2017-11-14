@@ -15,6 +15,10 @@ namespace DatabaseConnectionService {
     public class DatabaseConnService : IDatabaseConn {
 
         public string AddNewUser(string userName, string password) {
+            if(userName == null || password == null) {
+                return "Invalid Arguments";
+            }
+
             string errorString = "";
             try {
                 using (SqlConnection conn = new SqlConnection("Server=tcp:wipserver.database.windows.net,1433;" +
@@ -29,30 +33,30 @@ namespace DatabaseConnectionService {
 
                     conn.Open();
 
-                    SqlCommand findUser = new SqlCommand("SELECT username from Users" +
-                        "WHERE username = @name " +
-                        "AND password = @password COLLATE SQL_Latin1_General_CP1_CS_AS;", conn);
-                    findUser.Parameters.AddWithValue("@name", userName);
-                    findUser.Parameters.AddWithValue("@password", password);
+                    bool hasFound = false;
+                    using (SqlCommand findUser = new SqlCommand("SELECT username from Users " +
+                        "WHERE username = @name;", conn)) {
+                        findUser.Parameters.AddWithValue("@name", userName);
 
-                    bool isNotFound = false;
-                    using (SqlDataReader reader = findUser.ExecuteReader()) {
-                        isNotFound = reader.HasRows;
-
+                        
+                        using (SqlDataReader reader = findUser.ExecuteReader()) {
+                            hasFound = reader.HasRows;
+                        }
                     }
-                    if (isNotFound) { 
-                        SqlCommand addUser = new SqlCommand("INSERT into Users (username, password) " +
-                            "Values (@name, @password);");
-                        addUser.Parameters.AddWithValue("@name", userName);
-                        addUser.Parameters.AddWithValue("@password", password);
-                        using (SqlDataReader reader = addUser.ExecuteReader()) {
-                            if (!reader.HasRows) {
-                                errorString = "Could not add User!";
+
+                    if (!hasFound) {
+                        using (SqlCommand addUser = new SqlCommand("INSERT into Users (username, password) " +
+                            "Values (@name, @password);", conn)) {
+                            addUser.Parameters.AddWithValue("@name", userName);
+                            addUser.Parameters.AddWithValue("@password", password);
+                            using (SqlDataReader reader = addUser.ExecuteReader()) {
+                                
                             }
                         }
                     } else {
                         errorString = "User already exists";
                     }
+
 
                     conn.Close();
                 }
@@ -63,6 +67,10 @@ namespace DatabaseConnectionService {
         }
 
         public string CheckLogin(string userName, string password) {
+            if (userName == null || password == null) {
+                return "Invalid Arguments";
+            }
+
             string errorString = "";
             try {
                 using (SqlConnection conn = new SqlConnection("Server=tcp:wipserver.database.windows.net,1433;" +
@@ -77,14 +85,15 @@ namespace DatabaseConnectionService {
 
                     conn.Open();
 
-                    SqlCommand findUser = new SqlCommand("SELECT username from Users " +
+                    using (SqlCommand findUser = new SqlCommand("SELECT username from Users " +
                         "WHERE username = @name " +
-                        "AND password = @password COLLATE SQL_Latin1_General_CP1_CS_AS;", conn);
-                    findUser.Parameters.AddWithValue("@name", userName);
-                    findUser.Parameters.AddWithValue("@password", password);
-                    using (SqlDataReader reader = findUser.ExecuteReader()) {
-                        if (!reader.HasRows) {
-                            errorString = "No valid user Found";
+                        "AND password = @password COLLATE SQL_Latin1_General_CP1_CS_AS;", conn)) {
+                        findUser.Parameters.AddWithValue("@name", userName);
+                        findUser.Parameters.AddWithValue("@password", password);
+                        using (SqlDataReader reader = findUser.ExecuteReader()) {
+                            if (!reader.HasRows) {
+                                errorString = "No valid user Found";
+                            }
                         }
                     }
 
