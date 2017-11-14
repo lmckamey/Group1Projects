@@ -5,7 +5,9 @@ namespace DatabaseTest {
         static void Main(string[] args) {
             //DatabaseConnection.CheckLogin("Flameo326", "");
 
-            CalculatorClient client = new CalculatorClient();
+
+            //CalculatorClient client = new CalculatorClient();
+            DatabaseConnClient client = new DatabaseConnClient();
 
             string errCode = client.GetConnenctionToDB();
             if(errCode != null && errCode.Length > 0) {

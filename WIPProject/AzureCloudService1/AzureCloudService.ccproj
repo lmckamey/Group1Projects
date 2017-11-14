@@ -11,7 +11,7 @@
     <RootNamespace>AzureCloudService1</RootNamespace>
     <AssemblyName>AzureCloudService1</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
-    <Name>AzureCloudService1</Name>
+    <Name>AzureCloudService</Name>
     <PackageEnableRemoteDebugger>False</PackageEnableRemoteDebugger>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,20 +38,19 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WCFServiceWebRole1\WCFServiceWebRole1.csproj">
-      <Name>WCFServiceWebRole1</Name>
+    <Folder Include="DatabaseConnectionServiceContent" />
+  </ItemGroup>
+  <ItemGroup>
+    <DiagnosticsConfiguration Include="DatabaseConnectionServiceContent\diagnostics.wadcfgx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WCFServiceWebRole1\DatabaseConnectionService.csproj">
+      <Name>DatabaseConnectionService</Name>
       <Project>{7cabfd52-c198-4d23-8a04-6987ba21b4f6}</Project>
       <Private>True</Private>
       <RoleType>Web</RoleType>
-      <RoleName>WCFServiceWebRole1</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+      <RoleName>DatabaseConnectionService</RoleName>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WCFServiceWebRole1Content\" />
-  </ItemGroup>
-  <ItemGroup>
-    <DiagnosticsConfiguration Include="WCFServiceWebRole1Content\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

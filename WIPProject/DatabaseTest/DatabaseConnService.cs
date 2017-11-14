@@ -11,59 +11,59 @@
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-[System.ServiceModel.ServiceContractAttribute(ConfigurationName="ICalculator")]
-public interface ICalculator
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName="IDatabaseConn")]
+public interface IDatabaseConn
 {
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculator/GetConnenctionToDB", ReplyAction="http://tempuri.org/ICalculator/GetConnenctionToDBResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/GetConnenctionToDB", ReplyAction="http://tempuri.org/IDatabaseConn/GetConnenctionToDBResponse")]
     string GetConnenctionToDB();
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculator/GetConnenctionToDB", ReplyAction="http://tempuri.org/ICalculator/GetConnenctionToDBResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/GetConnenctionToDB", ReplyAction="http://tempuri.org/IDatabaseConn/GetConnenctionToDBResponse")]
     System.Threading.Tasks.Task<string> GetConnenctionToDBAsync();
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculator/CheckLogin", ReplyAction="http://tempuri.org/ICalculator/CheckLoginResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/CheckLogin", ReplyAction="http://tempuri.org/IDatabaseConn/CheckLoginResponse")]
     string CheckLogin(string userName, string password);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculator/CheckLogin", ReplyAction="http://tempuri.org/ICalculator/CheckLoginResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/CheckLogin", ReplyAction="http://tempuri.org/IDatabaseConn/CheckLoginResponse")]
     System.Threading.Tasks.Task<string> CheckLoginAsync(string userName, string password);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculator/AddNewUser", ReplyAction="http://tempuri.org/ICalculator/AddNewUserResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/AddNewUser", ReplyAction="http://tempuri.org/IDatabaseConn/AddNewUserResponse")]
     string AddNewUser(string userName, string password);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICalculator/AddNewUser", ReplyAction="http://tempuri.org/ICalculator/AddNewUserResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/AddNewUser", ReplyAction="http://tempuri.org/IDatabaseConn/AddNewUserResponse")]
     System.Threading.Tasks.Task<string> AddNewUserAsync(string userName, string password);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public interface ICalculatorChannel : ICalculator, System.ServiceModel.IClientChannel
+public interface IDatabaseConnChannel : IDatabaseConn, System.ServiceModel.IClientChannel
 {
 }
 
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public partial class CalculatorClient : System.ServiceModel.ClientBase<ICalculator>, ICalculator
+public partial class DatabaseConnClient : System.ServiceModel.ClientBase<IDatabaseConn>, IDatabaseConn
 {
     
-    public CalculatorClient()
+    public DatabaseConnClient()
     {
     }
     
-    public CalculatorClient(string endpointConfigurationName) : 
+    public DatabaseConnClient(string endpointConfigurationName) : 
             base(endpointConfigurationName)
     {
     }
     
-    public CalculatorClient(string endpointConfigurationName, string remoteAddress) : 
+    public DatabaseConnClient(string endpointConfigurationName, string remoteAddress) : 
             base(endpointConfigurationName, remoteAddress)
     {
     }
     
-    public CalculatorClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+    public DatabaseConnClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
             base(endpointConfigurationName, remoteAddress)
     {
     }
     
-    public CalculatorClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+    public DatabaseConnClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
             base(binding, remoteAddress)
     {
     }

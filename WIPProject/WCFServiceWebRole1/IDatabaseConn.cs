@@ -7,10 +7,10 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Data.SqlClient;
 
-namespace WCFServiceWebRole1 {
+namespace DatabaseConnectionService {
 
     [ServiceContract]
-    public interface ICalculator {
+    public interface IDatabaseConn {
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json)]
         string GetConnenctionToDB();
