@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Delegates\ComplimentDestroyHandler.cs" />
+    <Compile Include="Models\Compliment.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
       <DependentUpon>BasicDrawingControl.xaml</DependentUpon>
@@ -63,6 +65,9 @@
     </Compile>
     <Compile Include="UserControls\ColorPickerControl.xaml.cs">
       <DependentUpon>ColorPickerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ViewingWindowControl.xaml.cs">
+      <DependentUpon>ViewingWindowControl.xaml</DependentUpon>
     </Compile>
     <Page Include="DrawingPage.xaml">
       <SubType>Designer</SubType>
@@ -92,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ColorPickerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ViewingWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

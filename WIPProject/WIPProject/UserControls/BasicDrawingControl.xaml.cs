@@ -81,7 +81,7 @@ namespace WIPProject.UserControls
 
         private void cnvDrawArea_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            uscBrushSize.sldBrushSize.Value += e.Delta / 40;
+            uscBrushSize.sldBrushSize.Value += e.Delta / 120;
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)

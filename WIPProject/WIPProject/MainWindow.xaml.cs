@@ -27,10 +27,10 @@ namespace WIPProject {
             this.Hide();
 
             DrawingPage dp = new DrawingPage();
-            dp.userName = tbxUserName.Text;
+            dp.userName = $"{tbxUserName.Text}{pbxPassword.Password}";
             dp.ShowDialog();
 
-            this.Show();
+            this.Close();
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
