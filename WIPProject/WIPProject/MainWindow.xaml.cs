@@ -21,5 +21,21 @@ namespace WIPProject {
         public MainWindow() {
             InitializeComponent();
         }
+
+        private void btnSignIn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+
+            DrawingPage dp = new DrawingPage();
+            dp.userName = tbxUserName.Text;
+            dp.ShowDialog();
+
+            this.Show();
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
