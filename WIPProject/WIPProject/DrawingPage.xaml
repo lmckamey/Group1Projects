@@ -1,0 +1,54 @@
+﻿<Window x:Class="WIPProject.DrawingPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WIPProject"
+        xmlns:gc="clr-namespace:WIPProject.UserControls"
+        mc:Ignorable="d"
+        Title="DrawingPage" Height="348" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <gc:BasicDrawingControl Grid.Column="1">
+
+        </gc:BasicDrawingControl>
+        <StackPanel x:Name="stckPnlSideMenu" Margin="0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF1994A3"/>
+                    <GradientStop Color="#FF28717B" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <Label Content="Logo" Foreground="White"/>
+        </StackPanel>
+        <Grid Grid.Column="2" Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="{x:Null}">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF13363B" Offset="0"/>
+                        <GradientStop Color="#FF2C7D88" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <TextBlock Padding="5" VerticalAlignment="Bottom" LineHeight="10" x:Name="tblChatWindow" Margin="0" TextWrapping="Wrap"  Foreground="#FF6EECD2" Focusable="False" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD" TextAlignment="Left">
+                </TextBlock>
+            </Border>
+            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="White" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF13363B" Offset="1"/>
+                        <GradientStop Color="#FF205A61"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+            <Label x:Name="lblTextWatermark" Padding="3,0,0,0" IsHitTestVisible="False" IsEnabled="False" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Content="Type Something..." Margin="0" Foreground="#7FFFFFFF" FontFamily="Maiandra GD" Grid.Row="1"/>
+        </Grid>
+    </Grid>
+</Window>
