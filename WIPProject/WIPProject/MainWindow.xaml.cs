@@ -48,5 +48,10 @@ namespace WIPProject {
                 this.Show();
             }
         }
+
+        private void pbxPassword_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

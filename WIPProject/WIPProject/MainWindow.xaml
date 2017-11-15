@@ -22,7 +22,7 @@
             <Label HorizontalContentAlignment="Center" Content="Enter In Your Username:" Width="150" Margin="0" FontFamily="Maiandra GD"/>
             <TextBox x:Name="tbxUserName" Height="23" TextWrapping="Wrap" Width="150" Margin="0,5,0,0"/>
             <Label HorizontalContentAlignment="Center" Content="Enter In Your Password:" Width="150" Margin="0,15,0,0" FontFamily="Maiandra GD"/>
-            <PasswordBox x:Name="pbxPassword" Height="23" Width="150" Margin="0,5,0,0"/>
+            <PasswordBox x:Name="pbxPassword" Height="23" Width="150" Margin="0,5,0,0" PreviewKeyDown="pbxPassword_PreviewKeyDown"/>
             <Button x:Name="btnSignIn" Content="Sign In" Width="150" Margin="0,15,0,0" Click="btnSignIn_Click" Background="#FF32BAD8" FontFamily="Maiandra GD" FontSize="14"/>
         </StackPanel>
         <StackPanel VerticalAlignment="Center" Margin="0" Grid.Column="1">
