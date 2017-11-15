@@ -16,53 +16,7 @@
         <gc:BasicDrawingControl Grid.Column="1" Cursor="Cross">
 
         </gc:BasicDrawingControl>
-<<<<<<< HEAD
-        <DockPanel x:Name="stckPnlSideMenu" Margin="0">
-            <DockPanel.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF1994A3"/>
-                    <GradientStop Color="#FF28717B" Offset="1"/>
-=======
-        <!--<gc:ViewingWindowControl Grid.Column="1">
 
-        </gc:ViewingWindowControl>-->
-        <StackPanel x:Name="stckPnlSideMenu" Margin="0">
-            <StackPanel.Background>
-                <LinearGradientBrush EndPoint="1,1" MappingMode="RelativeToBoundingBox" StartPoint="0,1">
-                    <GradientStop Color="#758BCC" Offset="1.0"/>
-                    <GradientStop Color="#995ACC" Offset="1"/>
->>>>>>> 25a5920e4eb7e16c691f501b04518625e8fbf16c
-                </LinearGradientBrush>
-            </DockPanel.Background>
-            <Button x:Name="btnSettings" 
-                    Height="30" 
-                    Content="Settings"
-                    FontSize="10"
-                    FontWeight="Bold"
-                    DockPanel.Dock="Bottom"/>
-            <Button x:Name="btnAddFriend" 
-                    Height="30"
-                    Content="AddFriend"
-                    FontSize="10" 
-                    FontWeight="Bold"
-                    DockPanel.Dock="Bottom"/>
-            <Label Content="Logo" Foreground="White" DockPanel.Dock="Top"/>
-            <Button x:Name="btnViewActiveDraw"
-                    Height="30" 
-                    Content="View Active" 
-                    FontSize="10" 
-                    FontWeight="Bold" 
-                    Click="btnViewActiveDraw_Click" 
-                    DockPanel.Dock="Top" />
-            <Button x:Name="btnSwitchMode"
-                    Height="30"
-                    Content="Switch Mode"
-                    FontSize="10"
-                    FontWeight="Bold"
-                    Click="btnSwitchMode_Click"
-                    DockPanel.Dock="Top" />
-            <ListBox x:Name="btnFriends" DockPanel.Dock="Top"  Background="#000000" BorderBrush="#00000000"/>
-        </DockPanel>
         <Grid Grid.Column="2" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>
