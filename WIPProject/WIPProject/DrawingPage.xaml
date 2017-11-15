@@ -16,11 +16,22 @@
         <gc:BasicDrawingControl Grid.Column="1" Cursor="Cross">
 
         </gc:BasicDrawingControl>
+<<<<<<< HEAD
         <DockPanel x:Name="stckPnlSideMenu" Margin="0">
             <DockPanel.Background>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF1994A3"/>
                     <GradientStop Color="#FF28717B" Offset="1"/>
+=======
+        <!--<gc:ViewingWindowControl Grid.Column="1">
+
+        </gc:ViewingWindowControl>-->
+        <StackPanel x:Name="stckPnlSideMenu" Margin="0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="1,1" MappingMode="RelativeToBoundingBox" StartPoint="0,1">
+                    <GradientStop Color="#758BCC" Offset="1.0"/>
+                    <GradientStop Color="#995ACC" Offset="1"/>
+>>>>>>> 25a5920e4eb7e16c691f501b04518625e8fbf16c
                 </LinearGradientBrush>
             </DockPanel.Background>
             <Button x:Name="btnSettings" 
@@ -60,18 +71,20 @@
             <Border BorderBrush="{x:Null}">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF13363B" Offset="0"/>
-                        <GradientStop Color="#FF2C7D88" Offset="1"/>
+                        <GradientStop Color="#49577F" Offset="0"/>
+                        <GradientStop Color="#758BCC" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
-                <TextBlock Padding="5" VerticalAlignment="Bottom" LineHeight="10" x:Name="tblChatWindow" Margin="0" TextWrapping="Wrap"  Foreground="#FF6EECD2" Focusable="False" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD" TextAlignment="Left">
-                </TextBlock>
+                <ScrollViewer x:Name="scvChatScrollbar" VerticalScrollBarVisibility="Hidden">
+                    <TextBlock Padding="5" VerticalAlignment="Bottom" LineHeight="10" x:Name="tblChatWindow" Margin="0" TextWrapping="Wrap"  Foreground="#FF6EECD2" Focusable="False" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD" TextAlignment="Left">
+                    </TextBlock>
+                </ScrollViewer>
             </Border>
-            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="White" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD">
+            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="White" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD" SelectionBrush="#FF9C9C9C">
                 <TextBox.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF13363B" Offset="1"/>
-                        <GradientStop Color="#FF205A61"/>
+                        <GradientStop Color="#49577F" Offset="1"/>
+                        <GradientStop Color="#995ACC" Offset="1"/>
                     </LinearGradientBrush>
                 </TextBox.Background>
             </TextBox>

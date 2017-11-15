@@ -33,7 +33,8 @@ namespace WIPProject
                 lblTextWatermark.Visibility = Visibility.Visible;
                 SendMessage();
             }
-            else if (tbxChatBox.GetLineText(0).Length >= 0 && !e.Key.Equals(Key.Back))
+            else if (tbxChatBox.GetLineText(0).Length >= 0 && !e.Key.Equals(Key.Back) 
+                && (e.Key >= Key.A && e.Key <= Key.Z))
             {
                 lblTextWatermark.Visibility = Visibility.Hidden;
             }
@@ -49,6 +50,8 @@ namespace WIPProject
             //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
 
             tbxChatBox.Clear();
+
+            scvChatScrollbar.ScrollToBottom();
         }
 
         private void btnSwitchMode_Click(object sender, RoutedEventArgs e)
