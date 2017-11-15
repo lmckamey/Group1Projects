@@ -36,6 +36,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,8 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Delegates\ComplimentDestroyHandler.cs" />
-    <Compile Include="Models\Compliment.cs" />
+    <Compile Include="Database\DatabaseConnection.cs" />
+    <Compile Include="Database\DatabaseConnService.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
       <DependentUpon>BasicDrawingControl.xaml</DependentUpon>
@@ -65,9 +68,6 @@
     </Compile>
     <Compile Include="UserControls\ColorPickerControl.xaml.cs">
       <DependentUpon>ColorPickerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ViewingWindowControl.xaml.cs">
-      <DependentUpon>ViewingWindowControl.xaml</DependentUpon>
     </Compile>
     <Page Include="DrawingPage.xaml">
       <SubType>Designer</SubType>
@@ -100,10 +100,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\ViewingWindowControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -123,6 +119,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Database\output.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
