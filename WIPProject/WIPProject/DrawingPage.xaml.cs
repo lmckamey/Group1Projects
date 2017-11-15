@@ -50,5 +50,15 @@ namespace WIPProject
 
             tbxChatBox.Clear();
         }
+
+        private void btnSwitchMode_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnViewActiveDraw_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
