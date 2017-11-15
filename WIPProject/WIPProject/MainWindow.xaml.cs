@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WIPProject.Database;
 
 namespace WIPProject {
     /// <summary>
@@ -20,6 +21,32 @@ namespace WIPProject {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+        }
+
+        private void btnSignIn_Click(object sender, RoutedEventArgs e) {
+
+            if (DatabaseConnection.CheckUserLogin(tbxUserName.Text, tbxPassword.Text)){ 
+                this.Hide();
+
+                DrawingPage dp = new DrawingPage();
+                dp.userName = tbxUserName.Text;
+                dp.ShowDialog();
+
+                this.Show();
+            } 
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            if (DatabaseConnection.AddUserLogin(tbxCreateUsername.Text, tbxCreatePassword.Text)) {
+                this.Hide();
+
+                DrawingPage dp = new DrawingPage();
+                dp.userName = tbxCreateUsername.Text;
+                dp.ShowDialog();
+
+                this.Show();
+            }
         }
     }
 }

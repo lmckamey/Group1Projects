@@ -19,6 +19,8 @@ namespace WIPProject
     /// </summary>
     public partial class DrawingPage : Window
     {
+        public string userName;
+
         public DrawingPage()
         {
             InitializeComponent();
@@ -29,15 +31,24 @@ namespace WIPProject
             if (e.Key.Equals(Key.Return))
             {
                 lblTextWatermark.Visibility = Visibility.Visible;
+                SendMessage();
             }
-            else if (txbChatBox.GetLineText(0).Length >= 0 && !e.Key.Equals(Key.Back))
+            else if (tbxChatBox.GetLineText(0).Length >= 0 && !e.Key.Equals(Key.Back))
             {
                 lblTextWatermark.Visibility = Visibility.Hidden;
             }
-            else if (e.Key.Equals(Key.Back) && txbChatBox.GetLineText(0).Length <= 1)
+            else if (e.Key.Equals(Key.Back) && tbxChatBox.GetLineText(0).Length <= 1)
             {
                 lblTextWatermark.Visibility = Visibility.Visible;
             }
+        }
+
+        private void SendMessage()
+        {
+            tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
+            //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
+
+            tbxChatBox.Clear();
         }
     }
 }

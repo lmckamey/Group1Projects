@@ -23,21 +23,24 @@
                     <GradientStop Color="#FF28717B" Offset="1"/>
                 </LinearGradientBrush>
             </StackPanel.Background>
+            <Label Content="Logo" Foreground="White"/>
         </StackPanel>
         <Grid Grid.Column="2" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="tbxChatWindow" IsReadOnly="True" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" Margin="0" TextWrapping="Wrap" BorderBrush="#FF494949" Foreground="#FF6EECD2" Focusable="False" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD">
-                <TextBox.Background>
+            <Border BorderBrush="{x:Null}">
+                <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF13363B" Offset="0"/>
                         <GradientStop Color="#FF2C7D88" Offset="1"/>
                     </LinearGradientBrush>
-                </TextBox.Background>
-            </TextBox>
-            <TextBox  x:Name="txbChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="White" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD">
+                </Border.Background>
+                <TextBlock Padding="5" VerticalAlignment="Bottom" LineHeight="10" x:Name="tblChatWindow" Margin="0" TextWrapping="Wrap"  Foreground="#FF6EECD2" Focusable="False" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD" TextAlignment="Left">
+                </TextBlock>
+            </Border>
+            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="White" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD">
                 <TextBox.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF13363B" Offset="1"/>
