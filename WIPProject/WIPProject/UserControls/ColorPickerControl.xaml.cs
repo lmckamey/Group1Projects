@@ -21,9 +21,19 @@ namespace WIPProject.UserControls
     /// </summary>
     public partial class ColorPickerControl : UserControl
     {
+        public QuickColorAccessControl qcac;
+        public Grid grid;
+        public Grid drawControls;
+        public BasicDrawingControl bdc;
         public ColorPickerControl()
         {
             InitializeComponent();
+
+            qcac = new QuickColorAccessControl(this);
+
+            qcac.wrpQuickColors.Visibility = Visibility.Hidden;
+            qcac.HorizontalAlignment = HorizontalAlignment.Left;
+            qcac.VerticalAlignment = VerticalAlignment.Top;
 
             SliderColor sc = new SliderColor();
             UpdateEllipse();
@@ -77,5 +87,33 @@ namespace WIPProject.UserControls
             if (elpCurrentColor != null)
                 elpCurrentColor.Fill = new SolidColorBrush(color);
         }
+
+        private void elpCurrentColor_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (qcac.wrpQuickColors.Visibility == Visibility.Hidden)
+            {
+                qcac.wrpQuickColors.Visibility = Visibility.Visible;
+                bdc.mouseOldPosition = bdc.mouseCurrentPosition;
+            }
+            else
+            {
+                qcac.wrpQuickColors.Visibility = Visibility.Hidden;
+                bdc.mouseOldPosition = bdc.mouseCurrentPosition;
+            }
+
+            Panel.SetZIndex(qcac, 1);
+            
+            double height = qcac.wrpQuickColors.ActualHeight;
+            double heightC = grid.ActualHeight;
+            double heightG = drawControls.ActualHeight;
+            qcac.Margin = new Thickness(0, heightC - height - heightG, 0, 0);
+        }
+
+        //private void QuickColorSelectionPress(object sender, MouseButtonEventArgs e)
+        //{
+        //    qcac.wrpQuickColors.Visibility = Visibility.Hidden;
+
+        //    elpCurrentColor.Fill = ((Border)sender).Background;
+        //}
     }
 }
