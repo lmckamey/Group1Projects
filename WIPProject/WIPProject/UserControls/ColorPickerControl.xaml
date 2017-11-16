@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WIPProject.UserControls"
-             mc:Ignorable="d" Height="45" Width="164.25">
+             mc:Ignorable="d" Height="47.75" Width="164.25">
     <Grid Grid.ColumnSpan="2" Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="0" Grid.Column="1">
+        <Grid Margin="0" Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -51,6 +51,7 @@
             <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBlue}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="2" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
             <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldAlpha}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
         </Grid>
-        <Ellipse x:Name="elpCurrentColor" Fill="{Binding Path=ColorBrush}" Stroke="White" Margin="0"/>
+        <Ellipse x:Name="elpCurrentColor" Fill="{Binding Path=ColorBrush}" Stroke="White" Margin="0" MouseDown="elpCurrentColor_MouseDown" Grid.Row="1"/>
+        
     </Grid>
 </UserControl>
