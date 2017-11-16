@@ -5,7 +5,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
-namespace WCFServiceWebRole {
+namespace WCFServiceWebRole1 {
     public class WebRole : RoleEntryPoint {
         public override bool OnStart() {
             // For information on handling configuration changes

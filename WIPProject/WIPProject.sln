@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WIPProject", "WIPProject\WIPProject.csproj", "{4B8F4E6A-AA2C-4E51-A1F3-68CCA95F9552}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestSetupProjects", "TestSetupProjects\TestSetupProjects.vdproj", "{DDA5C288-C59F-4BFE-9311-CCF17C5DAD6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnectionService", "WCFServiceWebRole1\DatabaseConnectionService.csproj", "{7CABFD52-C198-4D23-8A04-6987BA21B4F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnectionService", "WCFServiceWebRole\DatabaseConnectionService.csproj", "{7CABFD52-C198-4D23-8A04-6987BA21B4F6}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestSetupProjects", "TestSetupProjects\TestSetupProjects.vdproj", "{21F6E9FB-9832-439A-89BD-19EFB60FE480}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureCloudService", "AzureCloudService\AzureCloudService.ccproj", "{F539846B-C7D9-40E6-B644-E42AD2C679A4}"
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureCloudService", "AzureCloudService1\AzureCloudService.ccproj", "{F539846B-C7D9-40E6-B644-E42AD2C679A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +21,14 @@ Global
 		{4B8F4E6A-AA2C-4E51-A1F3-68CCA95F9552}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B8F4E6A-AA2C-4E51-A1F3-68CCA95F9552}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B8F4E6A-AA2C-4E51-A1F3-68CCA95F9552}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DDA5C288-C59F-4BFE-9311-CCF17C5DAD6F}.Debug|Any CPU.ActiveCfg = Debug
-		{DDA5C288-C59F-4BFE-9311-CCF17C5DAD6F}.Release|Any CPU.ActiveCfg = Release
 		{7CABFD52-C198-4D23-8A04-6987BA21B4F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CABFD52-C198-4D23-8A04-6987BA21B4F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CABFD52-C198-4D23-8A04-6987BA21B4F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CABFD52-C198-4D23-8A04-6987BA21B4F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21F6E9FB-9832-439A-89BD-19EFB60FE480}.Debug|Any CPU.ActiveCfg = Debug
+		{21F6E9FB-9832-439A-89BD-19EFB60FE480}.Debug|Any CPU.Build.0 = Debug
+		{21F6E9FB-9832-439A-89BD-19EFB60FE480}.Release|Any CPU.ActiveCfg = Release
+		{21F6E9FB-9832-439A-89BD-19EFB60FE480}.Release|Any CPU.Build.0 = Release
 		{F539846B-C7D9-40E6-B644-E42AD2C679A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F539846B-C7D9-40E6-B644-E42AD2C679A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F539846B-C7D9-40E6-B644-E42AD2C679A4}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -45,13 +45,16 @@ namespace WIPProject {
                 dp.userName = tbxCreateUsername.Text;
                 dp.ShowDialog();
 
-                this.Show();
+                this.Close();
             }
         }
 
         private void pbxPassword_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key.Equals(Key.Return))
+            {
+                btnSignIn_Click(sender, null);
+            }
         }
     }
 }

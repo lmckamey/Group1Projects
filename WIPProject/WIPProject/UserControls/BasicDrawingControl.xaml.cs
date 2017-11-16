@@ -23,8 +23,8 @@ namespace WIPProject.UserControls
     /// </summary>
     public partial class BasicDrawingControl : UserControl
     {
-        Point mouseOldPosition;
-        Point mouseCurrentPosition;
+        public Point mouseOldPosition;
+        public Point mouseCurrentPosition;
 
         private Line[] prevLines = new Line[100];
         private int numOfLines = 0;
@@ -32,6 +32,13 @@ namespace WIPProject.UserControls
         public BasicDrawingControl()
         {
             InitializeComponent();
+
+            uscColorPicker.bdc = this;
+            uscColorPicker.drawControls = grdDrawControls;
+            uscColorPicker.grid = baseGrid;
+            baseGrid.Children.Add(uscColorPicker.qcac);
+            double height = uscColorPicker.qcac.ActualHeight;
+            uscColorPicker.qcac.Margin = new Thickness(0, 257 - height - 23, 0, 0);
 
             cnvDrawArea.Focus();
             //AddHandler(Keyboard.KeyDownEvent, (KeyEventHandler)cnvDrawArea_KeyDown);
@@ -87,6 +94,19 @@ namespace WIPProject.UserControls
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             cnvDrawArea.Children.Clear();
+
+            //var children = cnvDrawArea.Children;
+            //int num = children.Count;
+            //for (int i = 1; i < num; ++i)
+            //{
+            //    if (true)
+            //    {
+            //        var child = children[i];
+            //        cnvDrawArea.Children.Remove(child);
+            //        --i;
+            //        --num;
+            //    }
+            //}
         }
 
         private void UndoLastLine()
