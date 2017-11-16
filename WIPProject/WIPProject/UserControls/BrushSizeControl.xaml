@@ -7,12 +7,12 @@
              mc:Ignorable="d" d:DesignWidth="300" Height="40">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.75*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1.25*"/>
+            <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
         <Slider Minimum="1" Maximum="80" SmallChange="1" LargeChange="2" IsSnapToTickEnabled="True" x:Name="sldBrushSize" Grid.Column="1" Margin="5,0" VerticalAlignment="Center"/>
-        <Label HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Brush Size" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" Padding="0,0,5,0"/>
+        <Label HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Size" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" Padding="0,0,5,0"/>
         <TextBox HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBrushSize}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
 
     </Grid>

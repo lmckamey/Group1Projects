@@ -23,6 +23,8 @@ namespace WIPProject.UserControls
     /// </summary>
     public partial class BasicDrawingControl : UserControl
     {
+        public bool ignoreNextLines = false;
+
         public Point mouseOldPosition;
         public Point mouseCurrentPosition;
 
@@ -60,7 +62,7 @@ namespace WIPProject.UserControls
 
         private void DrawLine(MouseEventArgs e)
         {
-            if (e.LeftButton.Equals(MouseButtonState.Pressed))
+            if (e.LeftButton.Equals(MouseButtonState.Pressed) && !ignoreNextLines)
             {
                 Line l = new Line();
 
@@ -145,6 +147,16 @@ namespace WIPProject.UserControls
                 UndoLastLine();
                 cnvDrawArea.Background = new SolidColorBrush(Colors.Black);
             }
+        }
+
+        private void cnvDrawArea_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ignoreNextLines = false;
+        }
+
+        private void cnvDrawArea_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DrawLine(e);
         }
     }
 
