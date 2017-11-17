@@ -28,8 +28,10 @@ namespace WIPProject.UserControls
         public Point mouseOldPosition;
         public Point mouseCurrentPosition;
 
-        private Line[] prevLines = new Line[100];
+        private Line[] prevLines = new Line[1000];
         private int numOfLines = 0;
+
+        private int removedLinesPerUndo = 10;
 
         public BasicDrawingControl()
         {
@@ -115,12 +117,19 @@ namespace WIPProject.UserControls
         {
             if (numOfLines > 0)
             {
-                Line lastLine = prevLines[numOfLines - 1];
+                for (int i = 0; i < removedLinesPerUndo; ++i)
+                {
+                    if (numOfLines > 0)
+                    {
+                        Line lastLine = prevLines[numOfLines - 1];
 
-                cnvDrawArea.Children.Remove(lastLine);
-                prevLines[numOfLines - 1] = null;
+                        //int index = prevLines.Length - numOfLines;
+                        cnvDrawArea.Children.RemoveAt(cnvDrawArea.Children.Count - 1);
+                        prevLines[numOfLines - 1] = null;
 
-                --numOfLines;
+                        --numOfLines;
+                    }
+                }
             }
         }
 
@@ -135,8 +144,9 @@ namespace WIPProject.UserControls
 
                 bottom = top;
             }
+            prevLines[prevLines.Length - 1] = null;
 
-            --numOfLines;
+            numOfLines = prevLines.Length - 1;
         }
 
         private void cnvDrawArea_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -156,7 +166,14 @@ namespace WIPProject.UserControls
 
         private void cnvDrawArea_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DrawLine(e);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DrawLine(e);
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                UndoLastLine();
+            }
         }
     }
 
