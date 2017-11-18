@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WIPProject.Models;
 using WIPProject.UserControls;
 
 namespace WIPProject.UserControls
@@ -28,14 +29,25 @@ namespace WIPProject.UserControls
         public Point mouseOldPosition;
         public Point mouseCurrentPosition;
 
-        private Line[] prevLines = new Line[1000];
-        private int numOfLines = 0;
+        //private Line[] prevLines = new Line[1000];
+        private const int maxNumOfStrokes = 1000;
+        //private LineStroke[] lineStrokes;
+        private List<LineStroke> lineStrokes;
+        //private int currentStroke;
+        //private int numOfStrokes = 0;
 
         private int removedLinesPerUndo = 10;
 
         public BasicDrawingControl()
         {
             InitializeComponent();
+
+            //lineStrokes = new LineStroke[maxNumOfStrokes];
+            lineStrokes = new List<LineStroke>();
+            InitializeStrokes();
+            //currentStroke = lineStrokes[0];
+            lineStrokes.Add(new LineStroke());
+            //currentStroke = 0;
 
             uscColorPicker.bdc = this;
             uscColorPicker.drawControls = grdDrawControls;
@@ -51,6 +63,14 @@ namespace WIPProject.UserControls
             mouseCurrentPosition = new Point();
 
             //EntryClass.Start();
+        }
+
+        private void InitializeStrokes()
+        {
+            //for (int i = 0; i < lineStrokes.Count; ++i)
+            //{
+            //    lineStrokes[i] = new LineStroke();
+            //}
         }
 
         private void cnvDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -83,10 +103,7 @@ namespace WIPProject.UserControls
 
                 cnvDrawArea.Children.Add(l);
 
-                if (numOfLines >= prevLines.Length)
-                    RemoveFirstLine();
-
-                prevLines[numOfLines++] = l;
+                lineStrokes.ElementAt(lineStrokes.Count - 1).AddLine(l);
             }
         }
 
@@ -115,43 +132,66 @@ namespace WIPProject.UserControls
 
         private void UndoLastLine()
         {
-            if (numOfLines > 0)
+            if (lineStrokes.Count > 0)
             {
-                for (int i = 0; i < removedLinesPerUndo; ++i)
+                List<Line> lines = lineStrokes[lineStrokes.Count - 2].lines;
+                for (int i = 0; i < lines.Count; ++i)
                 {
-                    if (numOfLines > 0)
-                    {
-                        Line lastLine = prevLines[numOfLines - 1];
-
-                        //int index = prevLines.Length - numOfLines;
-                        cnvDrawArea.Children.RemoveAt(cnvDrawArea.Children.Count - 1);
-                        prevLines[numOfLines - 1] = null;
-
-                        --numOfLines;
-                    }
+                    cnvDrawArea.Children.Remove(lines[i]);
                 }
+                lineStrokes.RemoveAt(lineStrokes.Count - 1);
+                //currentStroke = lineStrokes[numOfStrokes];
+                //currentStroke.Reset();
             }
         }
 
-        private void RemoveFirstLine()
+        //private void RemoveFirstLine()
+        //{
+        //    prevLines[0] = null;
+
+        //    for (int i = 0; i < prevLines.Length - 1; ++i)
+        //    {
+        //        Line top = prevLines[i + 1];
+        //        Line bottom = prevLines[i];
+
+        //        bottom = top;
+        //    }
+        //    prevLines[prevLines.Length - 1] = null;
+
+        //    numOfLines = prevLines.Length - 1;
+        //}
+
+        private void IncrementCurrentStroke()
         {
-            prevLines[0] = null;
-
-            for (int i = 0; i < prevLines.Length - 1; ++i)
+            if (lineStrokes.Count >= maxNumOfStrokes)
             {
-                Line top = prevLines[i + 1];
-                Line bottom = prevLines[i];
-
-                bottom = top;
+                RemoveFirstStroke();
             }
-            prevLines[prevLines.Length - 1] = null;
 
-            numOfLines = prevLines.Length - 1;
+            //currentStroke = lineStrokes[++numOfStrokes];
+            lineStrokes.Add(new LineStroke());
+            //++currentStroke;
+        }
+
+        private void RemoveFirstStroke()
+        {
+            //lineStrokes[0] = null;
+
+            //for (int i = 0; i < lineStrokes.Length - 1; ++i)
+            //{
+            //    LineStroke top = lineStrokes[i + 1];
+            //    LineStroke bottom = lineStrokes[i];
+
+            //    bottom = top;
+            //}
+            //lineStrokes[lineStrokes.Length - 1] = new LineStroke();
+
+            lineStrokes.RemoveAt(0);
+            //--currentStroke;
         }
 
         private void cnvDrawArea_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
             if (true)
             {
                 UndoLastLine();
@@ -162,6 +202,11 @@ namespace WIPProject.UserControls
         private void cnvDrawArea_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ignoreNextLines = false;
+
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                IncrementCurrentStroke();
+            }
         }
 
         private void cnvDrawArea_MouseDown(object sender, MouseButtonEventArgs e)

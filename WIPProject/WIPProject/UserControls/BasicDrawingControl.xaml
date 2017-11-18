@@ -12,7 +12,7 @@
                 <RowDefinition Height="6*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid x:Name="grdDrawControls" Margin="0" Grid.Row="1" Panel.ZIndex="1" Background="#FF545454">
+            <Grid x:Name="grdDrawControls" Margin="0" Grid.Row="1" Panel.ZIndex="1" Background="#FF7C7C7C">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="1.5*"/>
@@ -26,12 +26,12 @@
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF404040" Offset="0"/>
-                            <GradientStop Color="#FF2C2C2C" Offset="1"/>
+                            <GradientStop Color="#FF5D5D5D" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
                 </Button>
             </Grid>
-            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown" MouseUp="cnvDrawArea_MouseUp" MouseDown="cnvDrawArea_MouseDown"/>
+            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown" PreviewMouseUp="cnvDrawArea_MouseUp" MouseDown="cnvDrawArea_MouseDown"/>
         </Grid>
 
     </Grid>
