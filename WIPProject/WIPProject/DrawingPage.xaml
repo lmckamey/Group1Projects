@@ -13,14 +13,15 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1">
+        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible">
 
         </gc:BasicDrawingControl>
-        <!--<gc:ViewingWindowControl Grid.Column="1">
+        <gc:BasicViewingControl x:Name="uscViewer" Grid.Column="1" Visibility="Hidden">
 
-        </gc:ViewingWindowControl>-->
+        </gc:BasicViewingControl>
         <StackPanel x:Name="stckPnlSideMenu" Margin="0" Background="#688BB8">
             <Label Content="Logo" Foreground="White"/>
+            <Button x:Name="btnModeChange" Content="Mode" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click"/>
         </StackPanel>
         <Grid Grid.Column="2" Margin="0">
             <Grid.RowDefinitions>

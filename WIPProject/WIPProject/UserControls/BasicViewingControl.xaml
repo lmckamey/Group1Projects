@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="WIPProject.UserControls.BasicViewingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WIPProject.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="baseGrid">
+        <Grid x:Name="grdDrawWindow">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="grdDrawControls" Margin="0" Grid.Row="1" Panel.ZIndex="1" Background="#FF7C7C7C">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblWow" Content="WOW!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Cursor="Hand" >
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FF9AB10A" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <Label x:Name="lblCool" Content="Cool!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Grid.Column="1" Cursor="Hand" >
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FF0AA2B1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <Label x:Name="lblNice" Content="Nice Job!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Grid.Column="2" Cursor="Hand" >
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FF0AB138" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+                <Label x:Name="lblThanks" Content="Thanks!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Grid.Column="3" Cursor="Hand" >
+                    <Label.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FFDD75E8" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Label.Foreground>
+                </Label>
+
+            </Grid>
+            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White"/>
+        </Grid>
+    </Grid>
+</UserControl>

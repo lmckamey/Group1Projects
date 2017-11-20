@@ -36,8 +36,6 @@ namespace WIPProject.UserControls
         //private int currentStroke;
         //private int numOfStrokes = 0;
 
-        private int removedLinesPerUndo = 10;
-
         public BasicDrawingControl()
         {
             InitializeComponent();
