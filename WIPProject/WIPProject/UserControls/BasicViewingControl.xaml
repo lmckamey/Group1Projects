@@ -19,7 +19,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="lblWow" Content="WOW!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Cursor="Hand" >
+                <Label x:Name="lblWow" Content="WOW!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="18" Cursor="Hand" >
                     <Label.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White" Offset="0"/>
@@ -27,7 +27,7 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
-                <Label x:Name="lblCool" Content="Cool!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Grid.Column="1" Cursor="Hand" >
+                <Label x:Name="lblCool" Content="Cool!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="18" Grid.Column="1" Cursor="Hand" >
                     <Label.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White" Offset="0"/>
@@ -35,7 +35,7 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
-                <Label x:Name="lblNice" Content="Nice Job!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Grid.Column="2" Cursor="Hand" >
+                <Label x:Name="lblNice" Content="Nice!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="18" Grid.Column="2" Cursor="Hand" >
                     <Label.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White" Offset="0"/>
@@ -43,7 +43,7 @@
                         </LinearGradientBrush>
                     </Label.Foreground>
                 </Label>
-                <Label x:Name="lblThanks" Content="Thanks!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="14" Grid.Column="3" Cursor="Hand" >
+                <Label x:Name="lblThanks" Content="Thanks!" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" FontSize="18" Grid.Column="3" Cursor="Hand" >
                     <Label.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="White" Offset="0"/>
