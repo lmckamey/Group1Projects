@@ -59,9 +59,13 @@
     </ApplicationDefinition>
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnService.cs" />
+    <Compile Include="Models\LineStroke.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
       <DependentUpon>BasicDrawingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BasicViewingControl.xaml.cs">
+      <DependentUpon>BasicViewingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\BrushSizeControl.xaml.cs">
       <DependentUpon>BrushSizeControl.xaml</DependentUpon>
@@ -92,6 +96,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UserControls\BasicDrawingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\BasicViewingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

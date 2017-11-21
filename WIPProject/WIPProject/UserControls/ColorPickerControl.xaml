@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WIPProject.UserControls"
-             mc:Ignorable="d" Height="47.75" Width="164.25">
+             mc:Ignorable="d" Height="47.75" Width="141.026">
     <Grid Grid.ColumnSpan="2" Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid Margin="0" Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -19,37 +19,37 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Slider ValueChanged="sldRed_ValueChanged" x:Name="sldRed" Minimum="0" Maximum="255" Value="0" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" VerticalAlignment="Center">
+            <Slider MouseWheel="ScrollRed" ValueChanged="sldRed_ValueChanged" x:Name="sldRed" Minimum="0" Maximum="255" Value="0" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" VerticalAlignment="Center">
                 <Slider.LayoutTransform>
                     <ScaleTransform ScaleY="0.5" CenterX="15" CenterY="15"/>
                 </Slider.LayoutTransform>
             </Slider>
-            <Slider ValueChanged="sldGreen_ValueChanged" x:Name="sldGreen" Minimum="0" Maximum="255" Value="0" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" Grid.Row="1" VerticalAlignment="Center">
+            <Slider MouseWheel="ScrollGreen" ValueChanged="sldGreen_ValueChanged" x:Name="sldGreen" Minimum="0" Maximum="255" Value="0" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" Grid.Row="1" VerticalAlignment="Center">
                 <Slider.LayoutTransform>
                     <ScaleTransform ScaleY="0.5" CenterX="15" CenterY="15"/>
                 </Slider.LayoutTransform>
             </Slider>
-            <Slider ValueChanged="sldBlue_ValueChanged" x:Name="sldBlue" Minimum="0" Maximum="255" Value="0" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" Grid.Row="2" VerticalAlignment="Center">
+            <Slider MouseWheel="ScrollBlue" ValueChanged="sldBlue_ValueChanged" x:Name="sldBlue" Minimum="0" Maximum="255" Value="0" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" Grid.Row="2" VerticalAlignment="Center">
                 <Slider.LayoutTransform>
                     <ScaleTransform ScaleY="0.5" CenterX="15" CenterY="15"/>
                 </Slider.LayoutTransform>
             </Slider>
-            <Slider ValueChanged="sldAlpha_ValueChanged" x:Name="sldAlpha" Minimum="0" Maximum="255" Value="255" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" Grid.Row="3" VerticalAlignment="Center">
+            <Slider MouseWheel="ScrollAlpha" ValueChanged="sldAlpha_ValueChanged" x:Name="sldAlpha" Minimum="0" Maximum="255" Value="255" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="15" Grid.Column="1" Margin="2,0" Grid.Row="3" VerticalAlignment="Center">
                 <Slider.LayoutTransform>
                     <ScaleTransform ScaleY="0.5" CenterX="15" CenterY="15"/>
                 </Slider.LayoutTransform>
             </Slider>
-            <Label VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="R" Margin="0" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <Label VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="G" Margin="0" Grid.Row="1" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <Label VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="B" Margin="0" Grid.Row="2" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <Label VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="A" Margin="0" Grid.Row="3" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldRed}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldGreen}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="1" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBlue}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="2" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldAlpha}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label MouseWheel="ScrollRed" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="R" Margin="0" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label MouseWheel="ScrollGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="G" Margin="0" Grid.Row="1" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="B" Margin="0" Grid.Row="2" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="A" Margin="0" Grid.Row="3" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <TextBox MouseWheel="ScrollRed" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldRed}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" />
+            <TextBox MouseWheel="ScrollGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldGreen}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="1" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <TextBox MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBlue}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="2" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <TextBox MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldAlpha}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
         </Grid>
         <Ellipse x:Name="elpCurrentColor" Fill="{Binding Path=ColorBrush}" Stroke="White" Margin="0" MouseDown="elpCurrentColor_MouseDown" Grid.Row="1"/>
         
