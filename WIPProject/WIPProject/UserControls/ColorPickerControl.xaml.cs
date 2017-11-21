@@ -21,9 +21,20 @@ namespace WIPProject.UserControls
     /// </summary>
     public partial class ColorPickerControl : UserControl
     {
+        private const int scrollMagnitude = 5;
+        public QuickColorAccessControl qcac;
+        public Grid grid;
+        public Grid drawControls;
+        public BasicDrawingControl bdc;
         public ColorPickerControl()
         {
             InitializeComponent();
+
+            qcac = new QuickColorAccessControl(this);
+
+            qcac.wrpQuickColors.Visibility = Visibility.Hidden;
+            qcac.HorizontalAlignment = HorizontalAlignment.Left;
+            qcac.VerticalAlignment = VerticalAlignment.Top;
 
             SliderColor sc = new SliderColor();
             UpdateEllipse();
@@ -77,5 +88,52 @@ namespace WIPProject.UserControls
             if (elpCurrentColor != null)
                 elpCurrentColor.Fill = new SolidColorBrush(color);
         }
+
+        private void elpCurrentColor_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (qcac.wrpQuickColors.Visibility == Visibility.Hidden)
+            {
+                qcac.wrpQuickColors.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                qcac.wrpQuickColors.Visibility = Visibility.Hidden;
+            }
+
+            Panel.SetZIndex(qcac, 1);
+            
+            double height = qcac.wrpQuickColors.ActualHeight;
+            double heightC = grid.ActualHeight;
+            double heightG = drawControls.ActualHeight;
+            qcac.Margin = new Thickness(0, heightC - height - heightG, 0, 0);
+        }
+
+        private void ScrollRed(object sender, MouseWheelEventArgs e)
+        {
+            sldRed.Value += (e.Delta / 120) * scrollMagnitude;
+        }
+
+        private void ScrollGreen(object sender, MouseWheelEventArgs e)
+        {
+            sldGreen.Value += (e.Delta / 120) *scrollMagnitude;
+        }
+
+        private void ScrollBlue(object sender, MouseWheelEventArgs e)
+        {
+            sldBlue.Value += (e.Delta / 120) * scrollMagnitude;
+        }
+
+        private void ScrollAlpha(object sender, MouseWheelEventArgs e)
+        {
+            sldAlpha.Value += (e.Delta / 120) * scrollMagnitude;
+        }
+
+
+        //private void QuickColorSelectionPress(object sender, MouseButtonEventArgs e)
+        //{
+        //    qcac.wrpQuickColors.Visibility = Visibility.Hidden;
+
+        //    elpCurrentColor.Fill = ((Border)sender).Background;
+        //}
     }
 }

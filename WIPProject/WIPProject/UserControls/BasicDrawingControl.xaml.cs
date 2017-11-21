@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WIPProject.Models;
 using WIPProject.UserControls;
 
 namespace WIPProject.UserControls
@@ -23,15 +24,35 @@ namespace WIPProject.UserControls
     /// </summary>
     public partial class BasicDrawingControl : UserControl
     {
-        Point mouseOldPosition;
-        Point mouseCurrentPosition;
+        public bool ignoreNextLines = false;
 
-        private Line[] prevLines = new Line[100];
-        private int numOfLines = 0;
+        public Point mouseOldPosition;
+        public Point mouseCurrentPosition;
+
+        //private Line[] prevLines = new Line[1000];
+        private const int maxNumOfStrokes = 1000;
+        //private LineStroke[] lineStrokes;
+        private List<LineStroke> lineStrokes;
+        //private int currentStroke;
+        //private int numOfStrokes = 0;
 
         public BasicDrawingControl()
         {
             InitializeComponent();
+
+            //lineStrokes = new LineStroke[maxNumOfStrokes];
+            lineStrokes = new List<LineStroke>();
+            InitializeStrokes();
+            //currentStroke = lineStrokes[0];
+            lineStrokes.Add(new LineStroke());
+            //currentStroke = 0;
+
+            uscColorPicker.bdc = this;
+            uscColorPicker.drawControls = grdDrawControls;
+            uscColorPicker.grid = baseGrid;
+            baseGrid.Children.Add(uscColorPicker.qcac);
+            double height = uscColorPicker.qcac.ActualHeight;
+            uscColorPicker.qcac.Margin = new Thickness(0, 257 - height - 23, 0, 0);
 
             cnvDrawArea.Focus();
             //AddHandler(Keyboard.KeyDownEvent, (KeyEventHandler)cnvDrawArea_KeyDown);
@@ -40,6 +61,14 @@ namespace WIPProject.UserControls
             mouseCurrentPosition = new Point();
 
             //EntryClass.Start();
+        }
+
+        private void InitializeStrokes()
+        {
+            //for (int i = 0; i < lineStrokes.Count; ++i)
+            //{
+            //    lineStrokes[i] = new LineStroke();
+            //}
         }
 
         private void cnvDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -53,7 +82,7 @@ namespace WIPProject.UserControls
 
         private void DrawLine(MouseEventArgs e)
         {
-            if (e.LeftButton.Equals(MouseButtonState.Pressed))
+            if (e.LeftButton.Equals(MouseButtonState.Pressed) && !ignoreNextLines)
             {
                 Line l = new Line();
 
@@ -72,10 +101,7 @@ namespace WIPProject.UserControls
 
                 cnvDrawArea.Children.Add(l);
 
-                if (numOfLines >= prevLines.Length)
-                    RemoveFirstLine();
-
-                prevLines[numOfLines++] = l;
+                lineStrokes.ElementAt(lineStrokes.Count - 1).AddLine(l);
             }
         }
 
@@ -87,43 +113,109 @@ namespace WIPProject.UserControls
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             cnvDrawArea.Children.Clear();
+
+            //var children = cnvDrawArea.Children;
+            //int num = children.Count;
+            //for (int i = 1; i < num; ++i)
+            //{
+            //    if (true)
+            //    {
+            //        var child = children[i];
+            //        cnvDrawArea.Children.Remove(child);
+            //        --i;
+            //        --num;
+            //    }
+            //}
         }
 
         private void UndoLastLine()
         {
-            if (numOfLines > 0)
+            if (lineStrokes.Count > 0)
             {
-                Line lastLine = prevLines[numOfLines - 1];
-
-                cnvDrawArea.Children.Remove(lastLine);
-                prevLines[numOfLines - 1] = null;
-
-                --numOfLines;
+                List<Line> lines = lineStrokes[lineStrokes.Count - 2].lines;
+                for (int i = 0; i < lines.Count; ++i)
+                {
+                    cnvDrawArea.Children.Remove(lines[i]);
+                }
+                lineStrokes.RemoveAt(lineStrokes.Count - 1);
+                //currentStroke = lineStrokes[numOfStrokes];
+                //currentStroke.Reset();
             }
         }
 
-        private void RemoveFirstLine()
+        //private void RemoveFirstLine()
+        //{
+        //    prevLines[0] = null;
+
+        //    for (int i = 0; i < prevLines.Length - 1; ++i)
+        //    {
+        //        Line top = prevLines[i + 1];
+        //        Line bottom = prevLines[i];
+
+        //        bottom = top;
+        //    }
+        //    prevLines[prevLines.Length - 1] = null;
+
+        //    numOfLines = prevLines.Length - 1;
+        //}
+
+        private void IncrementCurrentStroke()
         {
-            prevLines[0] = null;
-
-            for (int i = 0; i < prevLines.Length - 1; ++i)
+            if (lineStrokes.Count >= maxNumOfStrokes)
             {
-                Line top = prevLines[i + 1];
-                Line bottom = prevLines[i];
-
-                bottom = top;
+                RemoveFirstStroke();
             }
 
-            --numOfLines;
+            //currentStroke = lineStrokes[++numOfStrokes];
+            lineStrokes.Add(new LineStroke());
+            //++currentStroke;
+        }
+
+        private void RemoveFirstStroke()
+        {
+            //lineStrokes[0] = null;
+
+            //for (int i = 0; i < lineStrokes.Length - 1; ++i)
+            //{
+            //    LineStroke top = lineStrokes[i + 1];
+            //    LineStroke bottom = lineStrokes[i];
+
+            //    bottom = top;
+            //}
+            //lineStrokes[lineStrokes.Length - 1] = new LineStroke();
+
+            lineStrokes.RemoveAt(0);
+            //--currentStroke;
         }
 
         private void cnvDrawArea_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
             if (true)
             {
                 UndoLastLine();
                 cnvDrawArea.Background = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+        private void cnvDrawArea_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ignoreNextLines = false;
+
+            if (e.LeftButton == MouseButtonState.Released)
+            {
+                IncrementCurrentStroke();
+            }
+        }
+
+        private void cnvDrawArea_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DrawLine(e);
+            }
+            else if (e.RightButton == MouseButtonState.Pressed)
+            {
+                UndoLastLine();
             }
         }
     }

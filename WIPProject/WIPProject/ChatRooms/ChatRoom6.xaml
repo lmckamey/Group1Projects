@@ -13,12 +13,6 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-<<<<<<< HEAD
-        <gc:BasicDrawingControl Grid.Column="1" Cursor="Cross">
-
-        </gc:BasicDrawingControl>
-
-=======
         <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible">
 
         </gc:BasicDrawingControl>
@@ -30,7 +24,6 @@
             <Button x:Name="btnModeChange" Content="Mode" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click"/>
             <Button x:Name="btnRoomSelect" Content="Rooms" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnRoomSelect_Click"/>
         </StackPanel>
->>>>>>> 328ba4671f9192bc04a1e0022564cce1efa0ebab
         <Grid Grid.Column="2" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>

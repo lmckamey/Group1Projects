@@ -54,14 +54,6 @@ namespace WIPProject
             scvChatScrollbar.ScrollToBottom();
         }
 
-<<<<<<< HEAD
-        private void btnSwitchMode_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnViewActiveDraw_Click(object sender, RoutedEventArgs e)
-=======
         private void btnModeChange_Click(object sender, RoutedEventArgs e)
         {
             ReverseVisibility(uscBasicDrawing);
@@ -81,7 +73,6 @@ namespace WIPProject
         }
 
         private void btnRoomSelect_Click(object sender, RoutedEventArgs e)
->>>>>>> 328ba4671f9192bc04a1e0022564cce1efa0ebab
         {
 
         }
