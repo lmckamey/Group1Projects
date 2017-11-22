@@ -57,8 +57,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChatRooms\ChatRoom10 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom10 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom2 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom2 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom3 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom3 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom4 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom4 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom5 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom5 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom6 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom6 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom7 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom7 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom8 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom8 - Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatRooms\ChatRoom9 - Copy.xaml.cs">
+      <DependentUpon>ChatRoom9 - Copy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnService.cs" />
+    <Compile Include="ChatRooms\ChatRoom01.xaml.cs">
+      <DependentUpon>ChatRoom01.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\LineStroke.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
@@ -76,6 +106,46 @@
     <Compile Include="UserControls\QuickColorAccessControl.xaml.cs">
       <DependentUpon>QuickColorAccessControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="ChatRooms\ChatRoom10 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom2 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom3 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom4 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom5 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom6 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom7 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom8 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom9 - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChatRooms\ChatRoom01.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DrawingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

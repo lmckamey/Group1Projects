@@ -76,5 +76,10 @@ namespace WIPProject
         {
 
         }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
