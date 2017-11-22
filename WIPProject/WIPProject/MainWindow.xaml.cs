@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WIPProject.Database;
+using WIPProject.Models;
 
 namespace WIPProject {
     /// <summary>
@@ -28,9 +29,10 @@ namespace WIPProject {
             if (DatabaseConnection.CheckUserLogin(tbxUserName.Text, pbxPassword.Password)){ 
                 this.Hide();
 
-                DrawingPage dp = new DrawingPage();
-                dp.userName = tbxUserName.Text;
-                dp.ShowDialog();
+                //DrawingPage dp = new DrawingPage();
+                //dp.userName = tbxUserName.Text;
+                //dp.ShowDialog();
+                RoomManager.Initialize();
 
                 this.Close();
             } 
