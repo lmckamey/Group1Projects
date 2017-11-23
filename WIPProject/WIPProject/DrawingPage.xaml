@@ -6,19 +6,20 @@
         xmlns:local="clr-namespace:WIPProject"
         xmlns:gc="clr-namespace:WIPProject.UserControls"
         mc:Ignorable="d"
-        Title="DrawingPage" Height="348" Width="525">
+        Title="DrawingPage" Height="348" Width="525" Closing="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible">
+        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown">
 
         </gc:BasicDrawingControl>
         <gc:BasicViewingControl x:Name="uscViewer" Grid.Column="1" Visibility="Hidden">
 
         </gc:BasicViewingControl>
+        <gc:RoomSelectionControl x:Name="uscRoomSelector" Visibility="Hidden" Margin="0,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1"/>
         <DockPanel x:Name="stckPnlSideMenu" Margin="0" Background="#688BB8" LastChildFill="False">
             <Button DockPanel.Dock="Bottom" x:Name="btnSettings" Content="Settings" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSettings_Click"/>
             <ListBox x:Name="lbxFriendList" MinHeight="100" MaxHeight="300" DockPanel.Dock="Bottom" Margin="1.5,0" Background="Transparent" BorderBrush="#FF48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9"/>

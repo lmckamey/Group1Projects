@@ -32,6 +32,7 @@ namespace WIPProject {
                 //DrawingPage dp = new DrawingPage();
                 //dp.userName = tbxUserName.Text;
                 //dp.ShowDialog();
+                RoomManager.mainWindow = this;
                 RoomManager.Initialize();
 
                 this.Close();
@@ -43,7 +44,7 @@ namespace WIPProject {
             if (DatabaseConnection.AddUserLogin(tbxCreateUsername.Text, pbxCreatePassword.Password)) {
                 this.Hide();
 
-                DrawingPage dp = new DrawingPage();
+                DrawingPage dp = new DrawingPage(this);
                 dp.userName = tbxCreateUsername.Text;
                 dp.ShowDialog();
 
