@@ -59,7 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnService.cs" />
-    <Compile Include="Models\LineStroke.cs" />
+    <Compile Include="Enums\NextAction.cs" />
     <Compile Include="Models\RoomManager.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">

@@ -22,7 +22,23 @@
                 </Grid.ColumnDefinitions>
                 <local:ColorPickerControl x:Name="uscColorPicker" Height="Auto" Margin="5,2,0,2" Width="Auto"/>
                 <local:BrushSizeControl x:Name="uscBrushSize" Grid.Column="1" Height="Auto" VerticalAlignment="Center"/>
-                <Button x:Name="btnClear" Content="Clear" Grid.Column="2" Margin="0,10" FontFamily="Maiandra GD" FontSize="8" FontWeight="Bold" BorderBrush="Black" Foreground="White" Click="btnClear_Click">
+                <Button x:Name="btnClear" Content="Clear" Grid.Column="2" Margin="5,10" FontFamily="Maiandra GD" FontSize="8" FontWeight="Bold" BorderBrush="Black" Foreground="White" Click="btnClear_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF404040" Offset="0"/>
+                            <GradientStop Color="#FF5D5D5D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnEraser" Content="Eraser" Grid.Column="3" Foreground="White" BorderBrush="Black" HorizontalAlignment="Stretch" Margin="5,10" VerticalAlignment="Stretch" FontFamily="Maiandra GD" FontSize="8" FontWeight="Bold" Click="btnEraser_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FF404040" Offset="0"/>
+                            <GradientStop Color="#FF5D5D5D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnBucket" Content="Fill" Grid.Column="4" Foreground="White" BorderBrush="Black" HorizontalAlignment="Stretch" Margin="5,10" VerticalAlignment="Stretch" FontFamily="Maiandra GD" FontSize="8" FontWeight="Bold" Click="btnBucket_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF404040" Offset="0"/>
@@ -31,7 +47,9 @@
                     </Button.Background>
                 </Button>
             </Grid>
-            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown" PreviewMouseUp="cnvDrawArea_MouseUp" MouseDown="cnvDrawArea_MouseDown"/>
+            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown" MouseUp="cnvDrawArea_MouseUp" MouseDown="cnvDrawArea_MouseDown">
+                <!--<Label x:Name="log" Content="Label" Canvas.Left="10" Canvas.Top="10"/>-->
+            </Canvas>
         </Grid>
 
     </Grid>
