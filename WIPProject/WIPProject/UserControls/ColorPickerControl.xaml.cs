@@ -21,6 +21,7 @@ namespace WIPProject.UserControls
     /// </summary>
     public partial class ColorPickerControl : UserControl
     {
+        private const int scrollMagnitude = 5;
         public QuickColorAccessControl qcac;
         public Grid grid;
         public Grid drawControls;
@@ -93,12 +94,10 @@ namespace WIPProject.UserControls
             if (qcac.wrpQuickColors.Visibility == Visibility.Hidden)
             {
                 qcac.wrpQuickColors.Visibility = Visibility.Visible;
-                bdc.mouseOldPosition = bdc.mouseCurrentPosition;
             }
             else
             {
                 qcac.wrpQuickColors.Visibility = Visibility.Hidden;
-                bdc.mouseOldPosition = bdc.mouseCurrentPosition;
             }
 
             Panel.SetZIndex(qcac, 1);
@@ -108,6 +107,27 @@ namespace WIPProject.UserControls
             double heightG = drawControls.ActualHeight;
             qcac.Margin = new Thickness(0, heightC - height - heightG, 0, 0);
         }
+
+        private void ScrollRed(object sender, MouseWheelEventArgs e)
+        {
+            sldRed.Value += (e.Delta / 120) * scrollMagnitude;
+        }
+
+        private void ScrollGreen(object sender, MouseWheelEventArgs e)
+        {
+            sldGreen.Value += (e.Delta / 120) *scrollMagnitude;
+        }
+
+        private void ScrollBlue(object sender, MouseWheelEventArgs e)
+        {
+            sldBlue.Value += (e.Delta / 120) * scrollMagnitude;
+        }
+
+        private void ScrollAlpha(object sender, MouseWheelEventArgs e)
+        {
+            sldAlpha.Value += (e.Delta / 120) * scrollMagnitude;
+        }
+
 
         //private void QuickColorSelectionPress(object sender, MouseButtonEventArgs e)
         //{
