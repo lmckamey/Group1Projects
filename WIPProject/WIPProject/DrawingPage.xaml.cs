@@ -53,6 +53,29 @@ namespace WIPProject
 
             scvChatScrollbar.ScrollToBottom();
         }
+
+        private void btnModeChange_Click(object sender, RoutedEventArgs e)
+        {
+            ReverseVisibility(uscBasicDrawing);
+            ReverseVisibility(uscViewer);
+        }
+
+        private void ReverseVisibility(UIElement element)
+        {
+            if (element.Visibility == Visibility.Hidden)
+            {
+                element.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                element.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void btnRoomSelect_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

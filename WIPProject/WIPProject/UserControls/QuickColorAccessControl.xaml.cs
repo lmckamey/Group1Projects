@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WIPProject.Models;
 
 namespace WIPProject.UserControls
 {
@@ -31,9 +32,9 @@ namespace WIPProject.UserControls
         private void QuickColorSelectionPress(object sender, MouseButtonEventArgs e)
         {
             wrpQuickColors.Visibility = Visibility.Hidden;
-
-            cpc.elpCurrentColor.Fill = ((Border)sender).Background;
-            cpc.bdc.mouseOldPosition = cpc.bdc.mouseCurrentPosition;
+            Brush brush = ((Border)sender).Background.Clone();
+            ((SliderColor)cpc.elpCurrentColor.DataContext).ColorBrush = new SolidColorBrush(((SolidColorBrush)brush).Color);
+            cpc.bdc.ignoreNextLines = true;
 
             byte r = ((SolidColorBrush)cpc.elpCurrentColor.Fill).Color.R;
             byte g = ((SolidColorBrush)cpc.elpCurrentColor.Fill).Color.G;
