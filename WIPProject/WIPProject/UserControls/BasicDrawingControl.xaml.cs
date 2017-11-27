@@ -52,7 +52,6 @@ namespace WIPProject.UserControls
             uscColorPicker.qcac.Margin = new Thickness(0, 257 - height - 23, 0, 0);
 
             //cnvDrawArea.Focus();
-            //AddHandler(Keyboard.KeyDownEvent, (KeyEventHandler)cnvDrawArea_KeyDown);
 
             mouseOldPosition = new Point();
             mouseCurrentPosition = new Point();
@@ -60,14 +59,6 @@ namespace WIPProject.UserControls
             originalButtonColor = btnEraser.Background.Clone();
 
             //EntryClass.Start();
-        }
-
-        private void InitializeStrokes()
-        {
-            //for (int i = 0; i < lineStrokes.Count; ++i)
-            //{
-            //    lineStrokes[i] = new LineStroke();
-            //}
         }
 
         private void cnvDrawArea_MouseMove(object sender, MouseEventArgs e)
@@ -121,11 +112,15 @@ namespace WIPProject.UserControls
             {
                 if (i < cnvDrawArea.Children.Count)
                 {
-                    if (r.IntersectsWith(
-                        ((Line)cnvDrawArea.Children[i]).RenderedGeometry.Bounds))
+                    UIElement child = cnvDrawArea.Children[i];
+                    if (child.GetType().Equals(typeof(Line)))
                     {
-                        cnvDrawArea.Children.RemoveAt(i);
-                        --i;
+                        if (r.IntersectsWith(
+                            ((Line)child).RenderedGeometry.Bounds))
+                        {
+                            cnvDrawArea.Children.RemoveAt(i);
+                            --i;
+                        }
                     }
                 }
             }
@@ -273,6 +268,11 @@ namespace WIPProject.UserControls
                 nextAction = NextAction.DRAW;
                 btnEraser.Background = originalButtonColor.Clone();
             }
+        }
+
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            UndoLastLine();
         }
     }
 

@@ -6,20 +6,20 @@
              xmlns:local="clr-namespace:WIPProject.UserControls"
              mc:Ignorable="d">
     <Grid>
-        <WrapPanel x:Name="wrpQuickColors" Margin="0" Grid.ColumnSpan="2" Visibility="Visible" Background="#7F000000" Width="120">
-            <Border x:Name="brdColorBlue" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF005595" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorLightBlue" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF64B9F9" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorRed" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF950000" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorLightRed" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFF41717" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorGreen" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF00720A" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorLightGreen" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF1AC84A" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorPink" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFFD88FD" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorPurple" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF9710DC" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorBrown" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF955B00" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorYellow" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFD6D200" PreviewMouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorOrange" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFFF9C00" MouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorBlack" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="Black" MouseDown="QuickColorSelectionPress"/>
-            <Border x:Name="brdColorWhite" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="White" MouseDown="QuickColorSelectionPress"/>
+        <WrapPanel x:Name="wrpQuickColors" Margin="0" Grid.ColumnSpan="2" Visibility="Visible" Background="#7F000000" Width="120" Cursor="Hand">
+            <Border x:Name="brdColorBlue" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF005595" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorLightBlue" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF64B9F9" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorRed" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF950000" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorLightRed" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFF41717" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorGreen" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF00720A" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorLightGreen" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF1AC84A" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorPink" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFFD88FD" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorPurple" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF9710DC" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorBrown" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FF955B00" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorYellow" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFD6D200" PreviewMouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorOrange" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="#FFFF9C00" MouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorBlack" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="Black" MouseDown="QuickColorSelectionPress" Cursor="Hand"/>
+            <Border x:Name="brdColorWhite" BorderBrush="Black" BorderThickness="1"  Width="15" Height="15" Margin="1" CornerRadius="2" Padding="0" Background="White" MouseDown="QuickColorSelectionPress" Cursor="Hand"/>
         </WrapPanel>
     </Grid>
 </UserControl>

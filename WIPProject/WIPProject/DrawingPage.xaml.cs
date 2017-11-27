@@ -23,7 +23,7 @@ namespace WIPProject
         public string userName;
         public MainWindow main;
 
-        public DrawingPage(MainWindow window)
+        public DrawingPage(MainWindow window = null)
         {
             InitializeComponent();
 
@@ -101,6 +101,32 @@ namespace WIPProject
         private void uscBasicDrawing_MouseDown(object sender, MouseButtonEventArgs e)
         {
             uscRoomSelector.Visibility = Visibility.Hidden;
+        }
+
+        private void lblToggleChat_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (lblToggleChat.Content.Equals("<"))
+            {
+                HideChat();
+            }
+            else
+            {
+                ShowChat();
+            }
+
+            uscBasicDrawing.ignoreNextLines = true;
+        }
+
+        private void HideChat()
+        {
+            lblToggleChat.Content = ">";
+            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(0, GridUnitType.Star);
+        }
+
+        private void ShowChat()
+        {
+            lblToggleChat.Content = "<";
+            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
         }
     }
 }
