@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WIPProject.UserControls;
 
 namespace WIPProject
 {
@@ -20,10 +21,15 @@ namespace WIPProject
     public partial class DrawingPage : Window
     {
         public string userName;
+        public MainWindow main;
 
-        public DrawingPage()
+        public DrawingPage(MainWindow window = null)
         {
             InitializeComponent();
+
+            main = window;
+
+            uscRoomSelector.page = this;
         }
 
         private void txbChatBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -74,7 +80,53 @@ namespace WIPProject
 
         private void btnRoomSelect_Click(object sender, RoutedEventArgs e)
         {
+            ReverseVisibility(uscRoomSelector);
 
+            double x = stckPnlSideMenu.ActualWidth;
+
+            //uscRoomSelector.Margin = new Thickness(x, 50, 0, 0);
+        }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+            //main.Close();
+        }
+
+        private void uscBasicDrawing_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            uscRoomSelector.Visibility = Visibility.Hidden;
+        }
+
+        private void lblToggleChat_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (lblToggleChat.Content.Equals("<"))
+            {
+                HideChat();
+            }
+            else
+            {
+                ShowChat();
+            }
+
+            uscBasicDrawing.ignoreNextLines = true;
+        }
+
+        private void HideChat()
+        {
+            lblToggleChat.Content = ">";
+            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(0, GridUnitType.Star);
+        }
+
+        private void ShowChat()
+        {
+            lblToggleChat.Content = "<";
+            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
         }
     }
 }

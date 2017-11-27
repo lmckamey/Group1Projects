@@ -51,7 +51,7 @@
             <TextBox MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBlue}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="2" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
             <TextBox MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldAlpha}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
         </Grid>
-        <Ellipse x:Name="elpCurrentColor" Fill="{Binding Path=ColorBrush}" Stroke="White" Margin="0" MouseDown="elpCurrentColor_MouseDown" Grid.Row="1"/>
+        <Ellipse x:Name="elpCurrentColor" Cursor="Hand" Fill="{Binding Path=ColorBrush}" Stroke="White" Margin="0" MouseDown="elpCurrentColor_MouseDown" Grid.Row="1"/>
         
     </Grid>
 </UserControl>
