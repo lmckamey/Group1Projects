@@ -60,6 +60,7 @@
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnService.cs" />
     <Compile Include="Models\SliderColor.cs" />
+    <Compile Include="Networking\Client.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
       <DependentUpon>BasicDrawingControl.xaml</DependentUpon>
     </Compile>

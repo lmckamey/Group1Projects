@@ -55,3 +55,15 @@ namespace WIPProject
         }
     }
 }
+
+/*
+ * WPF con
+ * TCP
+ * UDP 
+ * SOCKET
+ *  
+ *  
+ *  
+ *  
+ *  
+ */

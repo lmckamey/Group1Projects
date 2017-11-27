@@ -12,15 +12,32 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using WIPProject.Database;
+
+using System.Net.Sockets;
+using System.IO;
 
 namespace WIPProject {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
         public MainWindow() {
             InitializeComponent();
+
+            TcpClient client = new TcpClient();
+            client.Connect("40.69.169.63", 10100);
+            var reader = new StreamReader(client.GetStream());
+
+            while (true) {
+                string message = reader.ReadLine();
+                if (message != null && message.Count() > 0) {
+                    MessageBox.Show(message);
+                    break;
+                }
+            }
         }
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e) {
@@ -58,3 +75,7 @@ namespace WIPProject {
         }
     }
 }
+
+/*TCP
+ * 10100
+ */
