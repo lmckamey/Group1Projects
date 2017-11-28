@@ -105,7 +105,7 @@ namespace WIPProject
 
         private void lblToggleChat_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (lblToggleChat.Content.Equals("<"))
+            if (lblToggleChat.Content.Equals(">"))
             {
                 HideChat();
             }
@@ -119,13 +119,13 @@ namespace WIPProject
 
         private void HideChat()
         {
-            lblToggleChat.Content = ">";
+            lblToggleChat.Content = "<";
             grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(0, GridUnitType.Star);
         }
 
         private void ShowChat()
         {
-            lblToggleChat.Content = "<";
+            lblToggleChat.Content = ">";
             grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
         }
     }

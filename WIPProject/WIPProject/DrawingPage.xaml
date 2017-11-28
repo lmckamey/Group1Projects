@@ -55,7 +55,7 @@
             </TextBox>
             <Label x:Name="lblTextWatermark" Padding="3,0,0,0" IsHitTestVisible="False" IsEnabled="False" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Content="Type Something..." Margin="0" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" Grid.Row="1"/>
         </Grid>
-        <Label x:Name="lblToggleChat" Content="&lt;" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,1,40" VerticalAlignment="Center" Padding="0" FontFamily="Showcard Gothic" FontSize="25" FontWeight="ExtraBold" Cursor="Hand" PreviewMouseDown="lblToggleChat_MouseDown" Panel.ZIndex="3" Background="#0048617F">
+        <Label x:Name="lblToggleChat" Content="&gt;" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,1,40" VerticalAlignment="Center" Padding="0" FontFamily="Showcard Gothic" FontSize="25" FontWeight="ExtraBold" Cursor="Hand" PreviewMouseDown="lblToggleChat_MouseDown" Panel.ZIndex="3" Background="#0048617F">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
                     <GradientStop Color="#90C1FF" Offset="0"/>
