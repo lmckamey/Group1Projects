@@ -13,15 +13,8 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-<<<<<<< HEAD
-        <gc:BasicDrawingControl Grid.Column="1" Cursor="Cross">
 
-        </gc:BasicDrawingControl>
-
-        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible">
-=======
         <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown">
->>>>>>> 4527f7bf2887788933ec8310dbb90ffabd38d756
 
         </gc:BasicDrawingControl>
         <gc:BasicViewingControl x:Name="uscViewer" Grid.Column="1" Visibility="Hidden">
