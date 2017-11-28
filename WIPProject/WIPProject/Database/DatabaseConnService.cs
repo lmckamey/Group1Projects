@@ -32,6 +32,12 @@ public interface IDatabaseConn
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/AddNewUser", ReplyAction="http://tempuri.org/IDatabaseConn/AddNewUserResponse")]
     System.Threading.Tasks.Task<string> AddNewUserAsync(string userName, string password);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/StartNewServer", ReplyAction="http://tempuri.org/IDatabaseConn/StartNewServerResponse")]
+    void StartNewServer(string userName, string password);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDatabaseConn/StartNewServer", ReplyAction="http://tempuri.org/IDatabaseConn/StartNewServerResponse")]
+    System.Threading.Tasks.Task StartNewServerAsync(string userName, string password);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -96,5 +102,15 @@ public partial class DatabaseConnClient : System.ServiceModel.ClientBase<IDataba
     public System.Threading.Tasks.Task<string> AddNewUserAsync(string userName, string password)
     {
         return base.Channel.AddNewUserAsync(userName, password);
+    }
+    
+    public void StartNewServer(string userName, string password)
+    {
+        base.Channel.StartNewServer(userName, password);
+    }
+    
+    public System.Threading.Tasks.Task StartNewServerAsync(string userName, string password)
+    {
+        return base.Channel.StartNewServerAsync(userName, password);
     }
 }

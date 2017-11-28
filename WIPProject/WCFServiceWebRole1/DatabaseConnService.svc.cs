@@ -8,7 +8,12 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Web;
 using System.Text;
+
 using System.Data.SqlClient;
+
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace DatabaseConnectionService {
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
@@ -40,7 +45,7 @@ namespace DatabaseConnectionService {
                         isNotFound = reader.HasRows;
 
                     }
-                    if (isNotFound) { 
+                    if (isNotFound) {
                         SqlCommand addUser = new SqlCommand("INSERT into Users (username, password) " +
                             "Values (@name, @password);");
                         addUser.Parameters.AddWithValue("@name", userName);
@@ -90,7 +95,7 @@ namespace DatabaseConnectionService {
 
                     conn.Close();
                 }
-            } catch(SqlException e) {
+            } catch (SqlException e) {
                 errorString = e.ToString();
             }
             return errorString;
@@ -118,8 +123,8 @@ namespace DatabaseConnectionService {
             } catch (SqlException e) {
 
                 return e.ToString();
-            }  
+            }
         }
-        
+
     }
 }
