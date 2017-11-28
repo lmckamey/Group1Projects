@@ -40,18 +40,20 @@
   <ItemGroup>
     <Folder Include="DatabaseConnectionServiceContent" />
     <Folder Include="NetworkConnectionRoleContent\" />
+    <Folder Include="ServerRoleContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="DatabaseConnectionServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="NetworkConnectionRoleContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="ServerRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetworkConnectionRole\NetworkConnectionRole.csproj">
-      <Name>NetworkConnectionRole</Name>
-      <Project>{12614ecf-3e6f-484e-aa19-ab3d9cc85d4f}</Project>
+    <ProjectReference Include="..\ServerRole\ServerRole.csproj">
+      <Name>ServerRole</Name>
+      <Project>{f0f4cd2f-01a6-4ac0-a232-40b6981644f6}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
-      <RoleName>NetworkConnectionRole</RoleName>
+      <RoleName>ServerRole</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
     <ProjectReference Include="..\WCFServiceWebRole1\DatabaseConnectionService.csproj">

@@ -27,18 +27,6 @@ namespace WIPProject {
 
         public MainWindow() {
             InitializeComponent();
-
-            TcpClient client = new TcpClient();
-            client.Connect("40.69.169.63", 10100);
-            var reader = new StreamReader(client.GetStream());
-
-            while (true) {
-                string message = reader.ReadLine();
-                if (message != null && message.Count() > 0) {
-                    MessageBox.Show(message);
-                    break;
-                }
-            }
         }
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e) {
@@ -50,6 +38,7 @@ namespace WIPProject {
                 //dp.userName = tbxUserName.Text;
                 //dp.ShowDialog();
                 RoomManager.mainWindow = this;
+                RoomManager.username = tbxUserName.Text;
                 RoomManager.Initialize();
 
                 this.Close();
@@ -78,7 +67,3 @@ namespace WIPProject {
         }
     }
 }
-
-/*TCP
- * 10100
- */
