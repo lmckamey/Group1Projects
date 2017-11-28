@@ -67,16 +67,27 @@ namespace WIPProject.Networking {
         }
 
         static private void ReadAsync(IAsyncResult ar) {
-            NetworkStream stream = (NetworkStream)ar.AsyncState;
-            int numberOfBytesRead = stream.EndRead(ar);
+            try {
 
-            cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-            if (!stream.DataAvailable) {
-                Parse(cmd);
-                cmd = String.Empty; // Reset command
+                NetworkStream stream = (NetworkStream)ar.AsyncState;
+
+                int numberOfBytesRead = stream.EndRead(ar);
+
+                cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
+
+                if (!stream.DataAvailable) {
+                    Parse(cmd);
+                    cmd = String.Empty; // Reset command
+                    stream.Flush();
+                }
+                if (client.Connected) {
+                    stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+                }
+            } catch (SocketException e) {
+                client.Close();
             }
-            stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+            
         }
 
         static public void WriteChatMessage(string user, string message, string color = "#FFFFFFFF") {

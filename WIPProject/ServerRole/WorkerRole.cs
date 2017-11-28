@@ -37,17 +37,25 @@ namespace ServerRole {
             }
 
             public void ReadAsync(IAsyncResult ar) {
-                NetworkStream stream = (NetworkStream)ar.AsyncState;
-                int numberOfBytesRead = stream.EndRead(ar);
+                try {
+                    NetworkStream stream = (NetworkStream)ar.AsyncState;
+                    int numberOfBytesRead = stream.EndRead(ar);
 
-                cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
+                    cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                if (!stream.DataAvailable) {
-                    server.Command(cmd, stream);
-                    cmd = String.Empty; // Reset command
-                                        //Console.WriteLine("You received the following message : " + cmd);
+                    if (!stream.DataAvailable) {
+                        server.Command(cmd, stream);
+                        cmd = String.Empty; // Reset command
+                                            //Console.WriteLine("You received the following message : " + cmd);
+                    }
+                    if (client.Connected) {
+                        stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+                    } else {
+                        server.Remove(this);
+                    }
+                } catch (SocketException e) {
+                    server.Remove(this);
                 }
-                stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
             }
 
             public NetworkStream getStream() {
@@ -85,8 +93,6 @@ namespace ServerRole {
 
                 TcpClient client = listener.EndAcceptTcpClient(ar);
                 clients.Add(new Client(client, this));
-
-                
 
                 listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
             }
@@ -176,8 +182,8 @@ namespace ServerRole {
                     if (client.getClient().Connected) {
                         WriteToClient(message, client.getStream());
                     } else {
-                        clients.Remove(client);
-                        i--;
+                        //clients.Remove(client);
+                        //i--;
                     }
                     
                 }
@@ -196,6 +202,10 @@ namespace ServerRole {
             private void WriteAsync(IAsyncResult ar) {
                 NetworkStream stream = (NetworkStream)ar.AsyncState;
                 stream.EndWrite(ar);
+            }
+
+            public void Remove(Client c) {
+                clients.Remove(c);
             }
         }
 
