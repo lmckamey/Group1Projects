@@ -13,6 +13,7 @@
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+
         <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown">
 
         </gc:BasicDrawingControl>
