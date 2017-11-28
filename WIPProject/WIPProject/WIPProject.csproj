@@ -59,7 +59,8 @@
     </ApplicationDefinition>
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnService.cs" />
-    <Compile Include="Models\LineStroke.cs" />
+    <Compile Include="Enums\NextAction.cs" />
+    <Compile Include="Models\RoomManager.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="Networking\Client.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
@@ -76,6 +77,9 @@
     </Compile>
     <Compile Include="UserControls\QuickColorAccessControl.xaml.cs">
       <DependentUpon>QuickColorAccessControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RoomSelectionControl.xaml.cs">
+      <DependentUpon>RoomSelectionControl.xaml</DependentUpon>
     </Compile>
     <Page Include="DrawingPage.xaml">
       <SubType>Designer</SubType>
@@ -116,6 +120,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\RoomSelectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -146,7 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="Resources\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using WIPProject.Database;
+using WIPProject.Models;
 
 using System.Net.Sockets;
 using System.IO;
@@ -45,9 +46,11 @@ namespace WIPProject {
             if (DatabaseConnection.CheckUserLogin(tbxUserName.Text, pbxPassword.Password)){ 
                 this.Hide();
 
-                DrawingPage dp = new DrawingPage();
-                dp.userName = tbxUserName.Text;
-                dp.ShowDialog();
+                //DrawingPage dp = new DrawingPage();
+                //dp.userName = tbxUserName.Text;
+                //dp.ShowDialog();
+                RoomManager.mainWindow = this;
+                RoomManager.Initialize();
 
                 this.Close();
             } 
@@ -58,7 +61,7 @@ namespace WIPProject {
             if (DatabaseConnection.AddUserLogin(tbxCreateUsername.Text, pbxCreatePassword.Password)) {
                 this.Hide();
 
-                DrawingPage dp = new DrawingPage();
+                DrawingPage dp = new DrawingPage(this);
                 dp.userName = tbxCreateUsername.Text;
                 dp.ShowDialog();
 
