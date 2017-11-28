@@ -25,7 +25,11 @@
             <Button DockPanel.Dock="Bottom" x:Name="btnSettings" Content="Settings" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSettings_Click"/>
             <ListBox x:Name="lbxFriendList" MinHeight="100" MaxHeight="300" DockPanel.Dock="Bottom" Margin="1.5,0" Background="Transparent" BorderBrush="#FF48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9"/>
             <Label DockPanel.Dock="Bottom" HorizontalContentAlignment="Center" Padding="3,0" Content="Friends:" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9"/>
-            <Label DockPanel.Dock="Top" Content="Logo" Foreground="White"/>
+            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" Width="35" Content="" Foreground="White">
+                <Label.Background>
+                    <ImageBrush ImageSource="Resources/Images/Logo.png"/>
+                </Label.Background>
+            </Label>
             <Button x:Name="btnModeChange" DockPanel.Dock="Top" Content="Mode" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click"/>
             <Button DockPanel.Dock="Top" x:Name="btnRoomSelect" Content="Rooms" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnRoomSelect_Click"/>
         </DockPanel>
@@ -56,7 +60,7 @@
             </TextBox>
             <Label x:Name="lblTextWatermark" Padding="3,0,0,0" IsHitTestVisible="False" IsEnabled="False" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Content="Type Something..." Margin="0" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" Grid.Row="1"/>
         </Grid>
-        <Label x:Name="lblToggleChat" Content="&lt;" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,1,40" VerticalAlignment="Center" Padding="0" FontFamily="Showcard Gothic" FontSize="25" FontWeight="ExtraBold" Cursor="Hand" PreviewMouseDown="lblToggleChat_MouseDown" Panel.ZIndex="3" Background="#0048617F">
+        <Label x:Name="lblToggleChat" Content="&gt;" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,1,40" VerticalAlignment="Center" Padding="0" FontFamily="Showcard Gothic" FontSize="25" FontWeight="ExtraBold" Cursor="Hand" PreviewMouseDown="lblToggleChat_MouseDown" Panel.ZIndex="3" Background="#0048617F">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
                     <GradientStop Color="#90C1FF" Offset="0"/>
