@@ -25,6 +25,9 @@ namespace WIPProject
         public string userName;
         public MainWindow main;
 
+        private int startingWindowWidth;
+        private int startingWindowHeight;
+
         public DrawingPage(MainWindow window = null, string name = "")
         {
             InitializeComponent();
@@ -33,6 +36,9 @@ namespace WIPProject
             userName = name;
 
             uscRoomSelector.page = this;
+
+            startingWindowWidth = (int)Width;
+            startingWindowHeight = (int)Height;
         }
 
         private void txbChatBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -149,6 +155,75 @@ namespace WIPProject
         {
             lblToggleChat.Content = ">";
             grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            float mult = GetSizeMultiplier();
+            ApplySizeChanges(mult);
+        }
+
+        public float GetSizeMultiplier()
+        {
+            float size;
+
+            float widthMult = (float)(ActualWidth / startingWindowWidth);
+            float heightMult = (float)(ActualHeight / startingWindowHeight);
+
+            size = (widthMult > heightMult) ? heightMult : widthMult;
+
+            return size;
+        }
+
+        private void ApplySizeChanges(float multiplier)
+        {
+            int modeSize = (int)(11 * multiplier);
+            int roomsSize = (int)(9 * multiplier);
+            int friendLabelSize = (int)(9 * multiplier);
+            int friendListSize = (int)(9 * multiplier);
+            int settingsSize = (int)(9 * multiplier);
+            int chatSize = (int)(12 * multiplier);
+
+            int logoWidth = (int)(35 * multiplier);
+            int logoHeight = (int)(26 * multiplier);
+
+            lblLogo.Width = logoWidth;
+            lblLogo.Height = logoHeight;
+
+            btnModeChange.FontSize = modeSize;
+            btnRoomSelect.FontSize = roomsSize;
+            lblFriends.FontSize = friendLabelSize;
+            lbxFriendList.FontSize = friendListSize;
+            btnSettings.FontSize = settingsSize;
+            lblTextWatermark.FontSize = chatSize;
+            tbxChatBox.FontSize = chatSize;
+            tblChatWindow.FontSize = chatSize;
+
+            int drawingControlSize = (int)(8 * multiplier);
+
+            uscBasicDrawing.btnBucket.FontSize = drawingControlSize;
+            uscBasicDrawing.btnClear.FontSize = drawingControlSize;
+            uscBasicDrawing.btnEraser.FontSize = drawingControlSize;
+            uscBasicDrawing.btnUndo.FontSize = drawingControlSize;
+            
+            uscBasicDrawing.uscColorPicker.lblR.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.lblG.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.lblB.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.lblA.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.tbxR.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.tbxG.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.tbxB.FontSize = drawingControlSize;
+            uscBasicDrawing.uscColorPicker.tbxA.FontSize = drawingControlSize;
+
+            uscBasicDrawing.uscBrushSize.lblSize.FontSize = drawingControlSize;
+            uscBasicDrawing.uscBrushSize.tbxSize.FontSize = drawingControlSize;
+
+            int currentColorDims = (int)(40 * multiplier);
+            uscBasicDrawing.uscColorPicker.elpCurrentColor.Width = currentColorDims;
+            uscBasicDrawing.uscColorPicker.elpCurrentColor.Height = currentColorDims;
+
+            int width = (int)(94 * multiplier);
+            uscBasicDrawing.uscColorPicker.grdSliders.Width = width;
         }
     }
 }
