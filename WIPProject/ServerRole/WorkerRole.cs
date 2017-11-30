@@ -12,7 +12,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
-
+using System.IO;
 
 namespace ServerRole {
     public class WorkerRole : RoleEntryPoint {
@@ -69,33 +69,51 @@ namespace ServerRole {
 
         class Server {
             public List<Client> clients = new List<Client>();
+            private TcpListener listener;
 
             public void Run() {
                 Console.WriteLine("Starting Server...\n");
                 
-                TcpListener listener = new TcpListener(
+                listener = new TcpListener(
                     RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["DefaultEndpoint"].IPEndpoint);
                 listener.ExclusiveAddressUse = false;
                 listener.Start();
+                ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
 
-                listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
-
-                while (true) ;
-
-                int length = clients.Count;
-                for (int i = 0; i < length; i++) {
-                    clients.ElementAt(i).getClient().Close();
+                try {
+                    while (true) {
+                        if (listener.Pending()) {
+                            TcpClient client = listener.AcceptTcpClient();
+                            clients.Add(new Client(client, this));
+                        }
+                    }
+                } catch (IOException e) {
+                    Stop();
+                } catch (SocketException e) {
+                    Stop();
+                } catch (ObjectDisposedException e) {
+                    Stop();
                 }
+                //listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
             }
 
-            public void ConnectAsync(IAsyncResult ar) {
-                TcpListener listener = (TcpListener)ar.AsyncState;
-
-                TcpClient client = listener.EndAcceptTcpClient(ar);
-                clients.Add(new Client(client, this));
-
-                listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
+            public void Stop() {
+                for(int i = clients.Count(); i > 0 ; i--) {
+                    clients.ElementAt(i).getClient().Dispose();
+                }
+                clients.Clear();
+                listener.Stop();
+                ServicePointManager.SetTcpKeepAlive(false, 30000, 30000);
             }
+
+            //public void ConnectAsync(IAsyncResult ar) {
+            //    //TcpListener listener = (TcpListener)ar.AsyncState;
+
+            //   // TcpClient client = listener.EndAcceptTcpClient(ar);
+            //    //clients.Add(new Client(client, this));
+
+            //    //listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
+            //}
 
             /// <summary>
             /// Parses a text command and performs logic according to it
@@ -217,11 +235,9 @@ namespace ServerRole {
         public override void Run() {
             Trace.TraceInformation("ServerRole is running");
 
-            Server server = new Server();
-            server.Run();
-            while (true) ;
-
-
+            while (true) {
+                server.Run();
+            }
         }
 
         public override bool OnStart() {
@@ -260,3 +276,57 @@ namespace ServerRole {
         //}
     }
 }
+/*
+ * After the client is closed, an exception may throw about reading data where the client stream is not working
+ * Can not acces disposed object - System.ObjectDisposedException
+ * 
+ * 'Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.' - IOException
+ * 
+ * 
+ * try
+        {
+            // ShutdownEvent is a ManualResetEvent signaled by
+            // Client when its time to close the socket.
+            while (!ShutdownEvent.WaitOne(0))
+            {
+                try
+                {
+                    // We could use the ReadTimeout property and let Read()
+                    // block.  However, if no data is received prior to the
+                    // timeout period expiring, an IOException occurs.
+                    // While this can be handled, it leads to problems when
+                    // debugging if we are wanting to break when exceptions
+                    // are thrown (unless we explicitly ignore IOException,
+                    // which I always forget to do).
+                    if (!_stream.DataAvailable)
+                    {
+                        // Give up the remaining time slice.
+                        Thread.Sleep(1);
+                    }
+                    else if (_stream.Read(_data, 0, _data.Length) > 0)
+                    {
+                        // Raise the DataReceived event w/ data...
+                    }
+                    else
+                    {
+                        // The connection has closed gracefully, so stop the
+                        // thread.
+                        ShutdownEvent.Set();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // Handle the exception...
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception...
+        }
+        finally
+        {
+            _stream.Close();
+        }
+ * 
+ */
