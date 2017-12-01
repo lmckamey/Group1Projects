@@ -31,7 +31,7 @@ namespace WIPProject {
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e) {
 
-            if (true /*DatabaseConnection.CheckUserLogin(tbxUserName.Text, pbxPassword.Password)*/){ 
+            if (DatabaseConnection.CheckUserLogin(tbxUserName.Text, pbxPassword.Password)){ 
                 this.Hide();
 
                 //DrawingPage dp = new DrawingPage();

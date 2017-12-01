@@ -19,8 +19,8 @@ namespace WIPProject.Models
 
         public static void Initialize(int numberOfRooms = 10)
         {
-            //Client.Add(AddMessage);
-            //Client.Initialize();
+            Client.Add(AddMessage);
+            Client.Initialize();
 
             CreateChatRooms(numberOfRooms);
 
