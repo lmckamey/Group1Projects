@@ -19,11 +19,12 @@ namespace WIPProject.Models
 
         public static void Initialize(int numberOfRooms = 10)
         {
-            Client.Add(AddMessage);
-            Client.Initialize();
+            //Client.Add(AddMessage);
+            //Client.Initialize();
 
             CreateChatRooms(numberOfRooms);
 
+            ChatRooms[currRoom].Active = true; 
             ChatRooms[currRoom].ShowDialog();
         }
 
@@ -39,7 +40,7 @@ namespace WIPProject.Models
 
             for (int i = 0; i < roomCount; ++i)
             {
-                ChatRooms[i] = new DrawingPage(mainWindow, username);
+                ChatRooms[i] = new DrawingPage(false, mainWindow, username);
             }
         }
 
