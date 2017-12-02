@@ -1,21 +1,31 @@
+using Microsoft.WindowsAzure.ServiceRuntime;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Timers;
 using System.Threading.Tasks;
 
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
-using Microsoft.WindowsAzure.ServiceRuntime;
-using Microsoft.WindowsAzure.Storage;
 
+using Microsoft.WindowsAzure.Storage;
+using System.IO;
 
 namespace ServerRole {
     public class WorkerRole : RoleEntryPoint {
+
+        private enum LogType { INFO, WARN, ERROR };
+        private sealed class Logger : EventSource {
+          
+            public void Log(LogType type, string Message) { if (IsEnabled()) WriteEvent(2, type.ToString() + ": " + Message); }
+        }
+        private static Logger Log = new Logger();
 
         class Client {
             Server server;
@@ -32,7 +42,7 @@ namespace ServerRole {
                 this.stream = client.GetStream();
 
                 cmd = String.Empty;
-
+                Trace.TraceInformation("Starting new Client");
                 stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
             }
 
@@ -44,16 +54,24 @@ namespace ServerRole {
                     cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
                     if (!stream.DataAvailable) {
-                        server.Command(cmd, stream);
+                        server.Command(cmd, this);
                         cmd = String.Empty; // Reset command
                                             //Console.WriteLine("You received the following message : " + cmd);
                     }
                     if (client.Connected) {
                         stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
                     } else {
+                        Trace.TraceInformation("Client has disconnected");
                         server.Remove(this);
                     }
                 } catch (SocketException e) {
+                    Trace.TraceInformation(e.ToString());
+                    server.Remove(this);
+                } catch(IOException e) {
+                    Trace.TraceInformation(e.ToString());
+                    server.Remove(this);
+                } catch (ObjectDisposedException e) {
+                    Trace.TraceInformation(e.ToString());
                     server.Remove(this);
                 }
             }
@@ -69,46 +87,67 @@ namespace ServerRole {
 
         class Server {
             public List<Client> clients = new List<Client>();
+            private TcpListener listener;
+            private System.Timers.Timer activeConn;
 
             public void Run() {
-                Console.WriteLine("Starting Server...\n");
+                Trace.TraceInformation("Starting Server...");
                 
-                TcpListener listener = new TcpListener(
+                listener = new TcpListener(
                     RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["DefaultEndpoint"].IPEndpoint);
                 listener.ExclusiveAddressUse = false;
                 listener.Start();
+                ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
 
-                listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
+                activeConn = new System.Timers.Timer(30000);
+                activeConn.Elapsed += DefaultConnectionMessage;
+                activeConn.AutoReset = true;
+                activeConn.Enabled = true;
 
-                while (true) ;
-
-                int length = clients.Count;
-                for (int i = 0; i < length; i++) {
-                    clients.ElementAt(i).getClient().Close();
+                try {
+                    while (true) {
+                        //if (listener.Pending()) {
+                            TcpClient client = listener.AcceptTcpClient();
+                            clients.Add(new Client(client, this));
+                        //}
+                    }
+                } catch (IOException e) {
+                    Trace.TraceInformation(e.ToString());
+                    Stop();
+                } catch (SocketException e) {
+                    Trace.TraceInformation(e.ToString());
+                    Stop();
+                } catch (ObjectDisposedException e) {
+                    Trace.TraceInformation(e.ToString());
+                    Stop();
                 }
             }
 
-            public void ConnectAsync(IAsyncResult ar) {
-                TcpListener listener = (TcpListener)ar.AsyncState;
+            public void Stop() {
+                Trace.TraceInformation("Stopping Server.");
+                for(int i = clients.Count(); i > 0 ; i--) {
+                    clients.ElementAt(i).getClient().Dispose();
+                }
+                clients.Clear();
+                listener.Stop();
+                ServicePointManager.SetTcpKeepAlive(false, 30000, 30000);
+                activeConn.Enabled = false;
+            }
 
-                TcpClient client = listener.EndAcceptTcpClient(ar);
-                clients.Add(new Client(client, this));
-
-                listener.BeginAcceptTcpClient(new AsyncCallback(ConnectAsync), listener);
+            private void DefaultConnectionMessage(object obj, ElapsedEventArgs args) {
+                Write("a");
             }
 
             /// <summary>
             /// Parses a text command and performs logic according to it
             /// </summary>
             /// <param name="cmd"></param>
-            public void Command(string cmd, NetworkStream stream) {
+            public void Command(string cmd, Client client) {
                 // Parse the message...
                 var commands = cmd.Split('\0');
                 int length = commands.Count();
                 for (int i = 0; i < length; i++) {
                     string currCmd = commands[i];
-
-                    Console.WriteLine("You received the following message : " + currCmd);
 
                     int spaceIndex = currCmd.IndexOf(' ');
                     spaceIndex = spaceIndex == -1 ? currCmd.Count() : spaceIndex;
@@ -117,15 +156,16 @@ namespace ServerRole {
                             ParseChatCmd(currCmd.Substring(spaceIndex));
                             break;
                         case "DRAW":
-                            WriteToClient("HELP -error:Draw options have not been included for the server yet.", stream);
+                            WriteToClient("HELP -error:Draw options have not been included for the server yet.", client);
                             break;
                         case "MESS":
-                            WriteToClient("HELP -error:Message options have not been included for the server yet.", stream);
+                            WriteToClient("HELP -error:Message options have not been included for the server yet.", client);
                             break;
                         case "HELP":
-                            WriteToClient("HELP -error:Help options have not been included for the server yet.", stream);
+                            WriteToClient("HELP -error:Help options have not been included for the server yet.", client);
                             break;
                         default:
+                            Trace.TraceWarning("Recieved invalid command: " + currCmd);
                             //Invalid command, do nothing
                             //WriteToClient("HELP -Error")
                             break;
@@ -176,16 +216,11 @@ namespace ServerRole {
             /// </summary>
             /// <param name="message"></param>
             private void Write(string message) {
+                Trace.TraceInformation("Wrrtiting message to Clients: " + message);
                 int length = clients.Count;
                 for (int i = 0; i < length; i++) {
                     var client = clients.ElementAt(i);
-                    if (client.getClient().Connected) {
-                        WriteToClient(message, client.getStream());
-                    } else {
-                        //clients.Remove(client);
-                        //i--;
-                    }
-                    
+                    WriteToClient(message, client);                   
                 }
             }
 
@@ -194,14 +229,28 @@ namespace ServerRole {
             /// </summary>
             /// <param name="message"></param>
             /// <param name="stream"></param>
-            private void WriteToClient(string message, NetworkStream stream) {
+            private void WriteToClient(string message, Client c) {
                 byte[] bytes = ASCIIEncoding.UTF8.GetBytes(message);
-                stream.BeginWrite(bytes, 0, bytes.Length, new AsyncCallback(WriteAsync), stream);
+                var stream = c.getStream();
+                stream.BeginWrite(bytes, 0, bytes.Length, new AsyncCallback(WriteAsync), c);
             }
 
             private void WriteAsync(IAsyncResult ar) {
-                NetworkStream stream = (NetworkStream)ar.AsyncState;
-                stream.EndWrite(ar);
+                Client c = (Client)ar.AsyncState;
+                try {
+                    
+                    var stream = c.getStream();
+                    stream.EndWrite(ar);
+                } catch(SocketException e) {
+                    Trace.TraceError(e.ToString());
+                    Remove(c);
+                } catch(IOException e) {
+                    Trace.TraceError(e.ToString());
+                    Remove(c);
+                } catch(ObjectDisposedException e) {
+                    Trace.TraceError(e.ToString());
+                    Remove(c);
+                }               
             }
 
             public void Remove(Client c) {
@@ -217,26 +266,26 @@ namespace ServerRole {
         public override void Run() {
             Trace.TraceInformation("ServerRole is running");
 
-            Server server = new Server();
-            server.Run();
-            while (true) ;
-
-
+            while (true) {
+                server.Run();
+            }
         }
 
         public override bool OnStart() {
             // Set the maximum number of concurrent connections
             ServicePointManager.DefaultConnectionLimit = 12;
+            
+            //DiagnosticMonitor.Start("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString");
 
             bool result = base.OnStart();
 
+            Log.Log(LogType.INFO, "Worker Role has Started");
             Trace.TraceInformation("ServerRole has been started");
 
             return result;
         }
 
         public override void OnStop() {
-            Trace.TraceInformation("ServerRole is stopping");
 
             this.cancellationTokenSource.Cancel();
             this.runCompleteEvent.WaitOne();
@@ -260,3 +309,57 @@ namespace ServerRole {
         //}
     }
 }
+/*
+ * After the client is closed, an exception may throw about reading data where the client stream is not working
+ * Can not acces disposed object - System.ObjectDisposedException
+ * 
+ * 'Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.' - IOException
+ * 
+ * 
+ * try
+        {
+            // ShutdownEvent is a ManualResetEvent signaled by
+            // Client when its time to close the socket.
+            while (!ShutdownEvent.WaitOne(0))
+            {
+                try
+                {
+                    // We could use the ReadTimeout property and let Read()
+                    // block.  However, if no data is received prior to the
+                    // timeout period expiring, an IOException occurs.
+                    // While this can be handled, it leads to problems when
+                    // debugging if we are wanting to break when exceptions
+                    // are thrown (unless we explicitly ignore IOException,
+                    // which I always forget to do).
+                    if (!_stream.DataAvailable)
+                    {
+                        // Give up the remaining time slice.
+                        Thread.Sleep(1);
+                    }
+                    else if (_stream.Read(_data, 0, _data.Length) > 0)
+                    {
+                        // Raise the DataReceived event w/ data...
+                    }
+                    else
+                    {
+                        // The connection has closed gracefully, so stop the
+                        // thread.
+                        ShutdownEvent.Set();
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // Handle the exception...
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception...
+        }
+        finally
+        {
+            _stream.Close();
+        }
+ * 
+ */

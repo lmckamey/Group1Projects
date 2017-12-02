@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Globalization;
 
 namespace WIPProject.Networking {
-    public class Client { 
+    public class Client {
+        static private readonly string CONN_STRING = "40.69.169.63";
         static private TcpClient client;
+        static private bool isConnected = false;
 
         static private readonly int LENGTH = 1024;
         static private byte[] readBytes = new byte[LENGTH];
@@ -45,31 +47,49 @@ namespace WIPProject.Networking {
 
         static public void Initialize() {
             client = new TcpClient();
-            client.Connect("40.69.169.63", 10100);
-            Console.WriteLine("Connected!\n");
+            client.Connect(CONN_STRING, 10100);
+            ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
+            isConnected = true;
 
             NetworkStream stream = client.GetStream();
 
             stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
-
-            //writeBytes = ASCIIEncoding.UTF8.GetBytes(Console.ReadLine());
-            //stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
         }
 
-        static public void Shutdown() {
+        static public void Shutdown(bool withRestart = false) {
             if(client != null) {
                 client.Close();
             }
 
+            ServicePointManager.SetTcpKeepAlive(false, 0, 0);
+            isConnected = false;
             readBytes = new byte[LENGTH];
             cmd = String.Empty;
             // Remove delegate connections???
+
+            if (withRestart) {
+                do {
+                    try {
+                        client = new TcpClient();
+                        client.Connect(CONN_STRING, 10100);
+                        ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
+                        isConnected = true;
+
+                        NetworkStream stream = client.GetStream();
+
+                        stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+                    } catch (IOException e) {
+                        MessageBox.Show(e.ToString());
+                    }catch (SocketException e) {
+                        MessageBox.Show(e.ToString());
+                    }
+                } while (!isConnected);
+                
+            }
         }
 
         static private void ReadAsync(IAsyncResult ar) {
             try {
-
-
                 NetworkStream stream = (NetworkStream)ar.AsyncState;
 
                 int numberOfBytesRead = stream.EndRead(ar);
@@ -83,30 +103,31 @@ namespace WIPProject.Networking {
                 }
                 if (client.Connected) {
                     stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+                } else {
+                    Shutdown();
                 }
             } catch (SocketException e) {
-                client.Close();
+                Shutdown(true); // Error inside Socket class 
+            } catch(IOException e) {
+                Shutdown(true); // Error connecting to Server, restart
+            } catch(ObjectDisposedException e) {
+                Shutdown(); // Object has been disclosed and closed. This most likely happened client side, it is fine.
             }
-            
         }
 
         static public void WriteChatMessage(string user, string message, string color = "#FFFFFFFF") {
-            string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color;
-            writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+            if (isConnected) {
+                string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color;
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
 
-            NetworkStream stream = client.GetStream();
-            stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
         }
 
         static private void WriteAsync(IAsyncResult ar) {
             NetworkStream stream = (NetworkStream)ar.AsyncState;
             stream.EndWrite(ar);
-
-            //Console.Write("What would you like to send? ");
-            //string mess = Console.ReadLine();
-            //writeBytes = ASCIIEncoding.UTF8.GetBytes(mess + '\0');
-            //stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
-            // Change to occur at specific intervals...
         }
 
         static private void Parse(string cmd) {
