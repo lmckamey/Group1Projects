@@ -10,7 +10,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Grid Margin="0" Grid.Column="1" Grid.Row="1">
+        <Grid x:Name="grdSliders" Margin="0" Grid.Column="1" Grid.Row="1" Width="94" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -42,16 +42,16 @@
                     <ScaleTransform ScaleY="0.5" CenterX="15" CenterY="15"/>
                 </Slider.LayoutTransform>
             </Slider>
-            <Label MouseWheel="ScrollRed" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="R" Margin="0" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <Label MouseWheel="ScrollGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="G" Margin="0" Grid.Row="1" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <Label MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="B" Margin="0" Grid.Row="2" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <Label MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="A" Margin="0" Grid.Row="3" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox MouseWheel="ScrollRed" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldRed}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" />
-            <TextBox MouseWheel="ScrollGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldGreen}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="1" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBlue}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="2" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
-            <TextBox MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldAlpha}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label x:Name="lblR" MouseWheel="ScrollRed" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="R" Margin="0" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label x:Name="lblG" MouseWheel="ScrollGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="G" Margin="0" Grid.Row="1" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label x:Name="lblB" MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="B" Margin="0" Grid.Row="2" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <Label x:Name="lblA" MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Content="A" Margin="0" Grid.Row="3" Padding="0,0,5,0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <TextBox x:Name="tbxR" MouseWheel="ScrollRed" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldRed}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" />
+            <TextBox x:Name="tbxG" MouseWheel="ScrollGreen" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldGreen}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="1" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <TextBox x:Name="tbxB" MouseWheel="ScrollBlue" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBlue}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="2" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+            <TextBox x:Name="tbxA" MouseWheel="ScrollAlpha" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldAlpha}" Background="Transparent" BorderBrush="#00ABADB3" Grid.Row="3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
         </Grid>
-        <Ellipse x:Name="elpCurrentColor" Cursor="Hand" Fill="{Binding Path=ColorBrush}" Stroke="White" Margin="1" MouseDown="elpCurrentColor_MouseDown" Grid.Row="1"/>
+        <Ellipse x:Name="elpCurrentColor" Cursor="Hand" Fill="{Binding Path=ColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="45" Height="45" Stroke="White" Margin="5, 1, 0, 1" MouseDown="elpCurrentColor_MouseDown" Grid.Row="1"/>
         
     </Grid>
 </UserControl>
