@@ -24,6 +24,7 @@ namespace WIPProject.Models
 
             CreateChatRooms(numberOfRooms);
 
+            ChatRooms[currRoom].Active = true; 
             ChatRooms[currRoom].ShowDialog();
         }
 
@@ -39,7 +40,7 @@ namespace WIPProject.Models
 
             for (int i = 0; i < roomCount; ++i)
             {
-                ChatRooms[i] = new DrawingPage(mainWindow, username);
+                ChatRooms[i] = new DrawingPage(false, mainWindow, username);
             }
         }
 
