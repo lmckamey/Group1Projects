@@ -169,10 +169,10 @@ namespace ServerRole {
                             //WriteToClient("HELP -error:Draw options have not been included for the server yet.", client);
                             break;
                         case "MESS":
-                            WriteToClient("HELP -error:Message options have not been included for the server yet.", client);
+                            WriteToClient("HELP -error:Message options have not been included for the server yet.\0", client);
                             break;
                         case "HELP":
-                            WriteToClient("HELP -error:Help options have not been included for the server yet.", client);
+                            WriteToClient("HELP -error:Help options have not been included for the server yet.\0", client);
                             break;
                         default:
                             Trace.TraceWarning("Recieved invalid command: " + currCmd);
@@ -213,11 +213,11 @@ namespace ServerRole {
                 } // Parsing Idea
 
                 // Theres no need to actually parse the chat command, just relay to other clients
-                WriteToAllClients("CHAT " + cmd);
+                WriteToAllClients("CHAT " + cmd + '\0');
             }
 
             public void ParseDrawCmd(string cmd, Client c) {
-                cmd = "DRAW " + cmd;
+                cmd = "DRAW " + cmd + '\0';
 
                 // Ne need to actually parse, just send data.
                 int length = clients.Count;

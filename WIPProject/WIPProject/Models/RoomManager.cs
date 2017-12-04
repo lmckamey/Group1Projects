@@ -44,7 +44,7 @@ namespace WIPProject.Models
             }
         }
 
-        private static void DrawMessage(List<Line> lines) {
+        private static void DrawMessage(string[] lines) {
             ChatRooms[currRoom].DrawMessage(lines);
         }
 
