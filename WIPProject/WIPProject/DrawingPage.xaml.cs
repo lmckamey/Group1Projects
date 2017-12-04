@@ -55,6 +55,15 @@ namespace WIPProject
         private string filePath = @"C: \Users\Colin Misbach\Desktop\serializedCanvas.txt";
         private Canvas tempCanvas = new Canvas();
 
+        private Key[] badKeys = new Key[] 
+        {
+            Key.LeftShift, Key.RightShift, Key.LeftCtrl, Key.RightCtrl, Key.LeftAlt,
+            Key.RightAlt, Key.Left, Key.Up, Key.Right, Key.Down, Key.Tab, Key.CapsLock,
+            Key.OemTilde, Key.Home, Key.End, Key.Insert, Key.F1, Key.F2, Key.F3
+            , Key.F4, Key.F5, Key.F6, Key.F7, Key.F8, Key.F9, Key.F10, Key.F11
+            , Key.F12, Key.Escape
+        };
+
         public DrawingPage(bool active, MainWindow window = null, string name = "")
         {
             InitializeComponent();
@@ -126,30 +135,30 @@ namespace WIPProject
         {
             if (e.Key.Equals(Key.Return))
             {
-                lblTextWatermark.Visibility = Visibility.Visible;
                 SendMessage();
-            }
-            else if (tbxChatBox.GetLineText(0).Length >= 0 && !e.Key.Equals(Key.Back) 
-                && (e.Key >= Key.A && e.Key <= Key.Z))
-            {
-                lblTextWatermark.Visibility = Visibility.Hidden;
-            }
-            else if (e.Key.Equals(Key.Back) && tbxChatBox.GetLineText(0).Length <= 1)
-            {
-                lblTextWatermark.Visibility = Visibility.Visible;
             }
         }
 
         public void AddMessage(string message) {
             this.Dispatcher.Invoke(() =>
             {
-                tblChatWindow.Text = $"{tblChatWindow.Text}\n{message}";
+                //tblChatWindow.Items.Add($"{tblChatWindow.Content}\n{message}");
             });
             
         }
 
         private void SendMessage()
         {
+            TextBlock tb = new TextBlock();
+            tb.Padding = new Thickness(5);
+            tb.TextAlignment = TextAlignment.Left;
+            tb.VerticalAlignment = VerticalAlignment.Bottom;
+            tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            tb.FontFamily = new FontFamily("Maiandra GD");
+            tb.Background = null;
+            //tb. = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            //tb.Text = message;
+
             //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
             Client.WriteChatMessage(userName, tbxChatBox.Text);
             //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
@@ -306,6 +315,18 @@ namespace WIPProject
 
             int width = (int)(94 * multiplier);
             uscBasicDrawing.uscColorPicker.grdSliders.Width = width;
+        }
+
+        private void tbxChatBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbxChatBox.GetLineText(0).Length > 0)
+            {
+                lblTextWatermark.Visibility = Visibility.Hidden;
+            }
+            else if (tbxChatBox.GetLineText(0).Length <= 0)
+            {
+                lblTextWatermark.Visibility = Visibility.Visible;
+            }
         }
     }
 }

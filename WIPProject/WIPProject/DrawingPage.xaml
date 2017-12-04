@@ -46,10 +46,10 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <ScrollViewer x:Name="scvChatScrollbar" VerticalScrollBarVisibility="Hidden">
-                    <TextBox Padding="5" VerticalAlignment="Bottom" x:Name="tblChatWindow" Margin="0" TextWrapping="Wrap"  Foreground="#CEFFFF" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD" TextAlignment="Left" Background="Transparent" BorderBrush="#00ABADB3" SelectionBrush="#7FFFE4A9" IsReadOnly="True"/>
+                    <ListBox Padding="5" VerticalAlignment="Bottom" x:Name="tblChatWindow" Margin="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom"  Foreground="#CEFFFF" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD"  Background="Transparent" BorderBrush="#00ABADB3"/>
                 </ScrollViewer>
             </Border>
-            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="#CEFFFF" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD" SelectionBrush="#7FFFE4A9">
+            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="#CEFFFF" PreviewKeyDown="txbChatBox_PreviewKeyDown"  TextChanged="tbxChatBox_TextChanged" FontFamily="Maiandra GD" SelectionBrush="#7FFFE4A9">
                 <TextBox.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#688BB8" Offset="1"/>
