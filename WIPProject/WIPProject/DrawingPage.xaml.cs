@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WIPProject.UserControls;
 
+using WIPProject.Networking;
+
 namespace WIPProject
 {
     /// <summary>
@@ -23,11 +25,17 @@ namespace WIPProject
         public string userName;
         public MainWindow main;
 
-        public DrawingPage(MainWindow window = null)
+        public DrawingPage(MainWindow window = null, string name = "")
         {
             InitializeComponent();
 
             main = window;
+            userName = name;
+
+            //ImageBrush image = new ImageBrush();
+            //string thingy = AppDomain.CurrentDomain.BaseDirectory + "carpet02.jpg";
+            //image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource; ;
+            //stckPnlSideMenu.Background = image;
 
             uscRoomSelector.page = this;
         }
@@ -50,9 +58,18 @@ namespace WIPProject
             }
         }
 
+        public void AddMessage(string message) {
+            this.Dispatcher.Invoke(() =>
+            {
+                tblChatWindow.Text = $"{tblChatWindow.Text}\n{message}";
+            });
+            
+        }
+
         private void SendMessage()
         {
-            tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
+            //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
+            Client.WriteChatMessage(userName, tbxChatBox.Text);
             //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
 
             tbxChatBox.Clear();
@@ -103,6 +120,7 @@ namespace WIPProject
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            Client.Shutdown();
             System.Windows.Application.Current.Shutdown();
             //main.Close();
         }
@@ -114,7 +132,7 @@ namespace WIPProject
 
         private void lblToggleChat_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (lblToggleChat.Content.Equals("<"))
+            if (lblToggleChat.Content.Equals(">"))
             {
                 HideChat();
             }
@@ -128,13 +146,13 @@ namespace WIPProject
 
         private void HideChat()
         {
-            lblToggleChat.Content = ">";
+            lblToggleChat.Content = "<";
             grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(0, GridUnitType.Star);
         }
 
         private void ShowChat()
         {
-            lblToggleChat.Content = "<";
+            lblToggleChat.Content = ">";
             grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
         }
     }

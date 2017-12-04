@@ -12,15 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using WIPProject.Database;
 using WIPProject.Models;
+
+using System.Net.Sockets;
+using System.IO;
 
 namespace WIPProject {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
         public MainWindow() {
+
+            ImageBrush image = new ImageBrush();
+            string thingy = AppDomain.CurrentDomain.BaseDirectory + "idea.jpg";
+            image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource;
+            SolidColorBrush brush = new SolidColorBrush(Colors.Black);
+            mainGrid.Background = brush;
             InitializeComponent();
         }
 
@@ -33,6 +44,7 @@ namespace WIPProject {
                 //dp.userName = tbxUserName.Text;
                 //dp.ShowDialog();
                 RoomManager.mainWindow = this;
+                RoomManager.username = tbxUserName.Text;
                 RoomManager.Initialize();
 
                 this.Close();

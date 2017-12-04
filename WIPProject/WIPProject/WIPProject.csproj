@@ -62,6 +62,7 @@
     <Compile Include="Enums\NextAction.cs" />
     <Compile Include="Models\RoomManager.cs" />
     <Compile Include="Models\SliderColor.cs" />
+    <Compile Include="Networking\Client.cs" />
     <Compile Include="UserControls\BasicDrawingControl.xaml.cs">
       <DependentUpon>BasicDrawingControl.xaml</DependentUpon>
     </Compile>
@@ -153,7 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="Resources\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
