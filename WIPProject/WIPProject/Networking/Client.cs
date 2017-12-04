@@ -31,7 +31,7 @@ namespace WIPProject.Networking {
         public delegate void MessageCommand();
         static private MessageCommand messageDelegate;
 
-        public delegate void DrawCommand(List<Line> lines);
+        public delegate void DrawCommand(string[] lines);
         static private DrawCommand drawDelegate;
         
         public enum CmdType { ERROR, REQUEST, SIGNAL};
@@ -99,7 +99,8 @@ namespace WIPProject.Networking {
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                if (!stream.DataAvailable) {
+                if (cmd.Last() != '\0') {
+                    // !stream.DataAvailable
                     Parse(cmd);
                     cmd = String.Empty; // Reset command
                     stream.Flush();
@@ -120,7 +121,7 @@ namespace WIPProject.Networking {
 
         static public void WriteChatMessage(string user, string message, string color = "#FFFFFFFF") {
             if (isConnected) {
-                string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color;
+                string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color + '\0';
                 writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
 
                 NetworkStream stream = client.GetStream();
@@ -143,39 +144,13 @@ namespace WIPProject.Networking {
                     sb.Remove(sb.Length - 1, 1);
 
 
-                    string cmd = "DRAW -data:" + sb.ToString();
+                    string cmd = "DRAW -data:" + sb.ToString() + '\0';
                     writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
 
                     NetworkStream stream = client.GetStream();
                     stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
                 }
             }
-            
-                
-                //TextWriter writer = File.CreateText(filePath);
-
-               
-
-               //XamlWriter.Save(sb.ToString(), writer);
-
-                //writer.Close();
-
-                
-
-                //FileStream fileStream = File.OpenRead(filePath);
-                //string longString = (string)XamlReader.Load(fileStream);
-                //string longString = (string)bf.Deserialize(fileStream);
-                //string[] lineStrings = sb.ToString().Split('|');
-                //foreach (string s in lineStrings) {
-                    //var line = XamlReader.Parse(s);
-                    // cnavas.children.add(line);
-                    //int i = 0;
-                //}
-                //var v = XamlReader.Load(fileStream);
-                //grid.Children.Add((v as UIElement));
-
-                //fileStream.Close();
-            
         }
 
         static private void WriteAsync(IAsyncResult ar) {
@@ -258,21 +233,24 @@ namespace WIPProject.Networking {
         }
 
         static private void ParseDrawCmd(string cmd) {
-            List<Line> lines = new List<Line>();
+            //List<Line> lines = new List<Line>();
+            string[] lines;
 
             int beginInfoInd = cmd.IndexOf('-');
             int typeInd = cmd.IndexOf(':');
-            string type = cmd.Substring(beginInfoInd, typeInd - beginInfoInd);
+            string type = cmd.Substring(beginInfoInd+1, typeInd - beginInfoInd - 1);
             if (type.Equals("data")) {
-                string allLines = cmd.Substring(typeInd);
+                string allLines = cmd.Substring(typeInd+1);
 
-                string[] individualLines = allLines.Split('|');
-                foreach (string s in individualLines) {
-                    var line = XamlReader.Parse(s);
-                    if(line is Line) {
-                        lines.Add((Line)line);
-                    }
-                }
+                lines = allLines.Split('|');
+                drawDelegate?.Invoke(lines);
+                //foreach (string s in individualLines) {
+                //    var line = XamlReader.Parse(s);
+                //    if(line is Line) {
+                //        lines.Add((Line)line);
+                //    }
+
+                //}
             }
 
             // We find the next dash (-) to get data
@@ -300,7 +278,7 @@ namespace WIPProject.Networking {
             //}
 
             // ChatCommand Deleggate function
-            drawDelegate?.Invoke(lines);
+            
         }
 
         static private void ParseHelpCmd(string cmd) {

@@ -153,11 +153,18 @@ namespace WIPProject
             
         }
 
-        public void DrawMessage(List<Line> lines) {
+        public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
-                foreach(Line l in lines) {
-                    uscBasicDrawing.cnvDrawArea.Children.Add(l);
+
+                foreach (string s in lines) {
+                    var line = XamlReader.Parse(s);
+                    if (line is Line) {
+                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);                     
+                    }
+
                 }
+                    
+
             });
         }
 
