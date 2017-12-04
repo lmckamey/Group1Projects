@@ -52,7 +52,7 @@ namespace WIPProject
         private int startingWindowWidth;
         private int startingWindowHeight;
 
-        private string filePath = @"C: \Users\Colin Misbach\Desktop\serializedCanvas.txt";
+        //private string filePath = @"C: \Users\Colin Misbach\Desktop\serializedCanvas.txt";
         private Canvas tempCanvas = new Canvas();
 
         private Key[] badKeys = new Key[] 
@@ -90,44 +90,49 @@ namespace WIPProject
             {
 
                 Line[] lines = uscBasicDrawing.dirtyLines;
+                Client.WiteDrawMessage(lines);
 
-                StringBuilder sb = new StringBuilder();
+                uscBasicDrawing.ClearDirtyLines();
+                tempCanvas.Children.Clear();
 
-                foreach (Line l in lines)
-                {
-                    if (l != null)
-                    {
-                        sb.Append(XamlWriter.Save(l));
-                        sb.Append("|");
-                    }
-                }
-                if (sb.Length > 0)
-                {
-                    TextWriter writer = File.CreateText(filePath);
+                //StringBuilder sb = new StringBuilder();
 
-                    sb.Remove(sb.Length - 1, 1);
+                //foreach (Line l in lines)
+                //{
+                //    if (l != null)
+                //    {
+                //        sb.Append(XamlWriter.Save(l));
+                //        sb.Append("|");
+                //    }
+                //}
+                //if (sb.Length > 0)
+                //{
+                //    TextWriter writer = File.CreateText(filePath);
 
-                    XamlWriter.Save(sb.ToString(), writer);
+                //    sb.Remove(sb.Length - 1, 1);
 
-                    writer.Close();
+                //    XamlWriter.Save(sb.ToString(), writer);
 
-                    uscBasicDrawing.ClearDirtyLines();
-                    tempCanvas.Children.Clear();
+                //    writer.Close();
 
-                    FileStream fileStream = File.OpenRead(filePath);
-                    string longString = (string)XamlReader.Load(fileStream);
-                    //string longString = (string)bf.Deserialize(fileStream);
-                    string[] lineStrings = longString.Split('|');
-                    foreach (string s in lineStrings)
-                    {
-                        var line = XamlReader.Parse(s);
-                        int i = 0;
-                    }
-                    //var v = XamlReader.Load(fileStream);
-                    //grid.Children.Add((v as UIElement));
+                //    uscBasicDrawing.ClearDirtyLines();
+                //    tempCanvas.Children.Clear();
 
-                    fileStream.Close();
-                }
+                //    FileStream fileStream = File.OpenRead(filePath);
+                //    string longString = (string)XamlReader.Load(fileStream);
+                //    string longString = (string)bf.Deserialize(fileStream);
+                //    string[] lineStrings = longString.Split('|');
+                //    foreach (string s in lineStrings)
+                //    {
+                //        var line = XamlReader.Parse(s);
+                //         cnavas.children.add(line);
+                //        int i = 0;
+                //    }
+                //    var v = XamlReader.Load(fileStream);
+                //    grid.Children.Add((v as UIElement));
+
+                //    fileStream.Close();
+                //}
             }
         }
 
@@ -145,6 +150,25 @@ namespace WIPProject
                 //tblChatWindow.Items.Add($"{tblChatWindow.Content}\n{message}");
             });
             
+        }
+
+        public void DrawMessage(string[] lines) {
+            this.Dispatcher.Invoke(() => {
+
+                foreach (string s in lines) {
+                    var line = XamlReader.Parse(s);
+                    if (line is Line) {
+                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);                     
+                    }
+
+                }
+                    
+
+            });
+        }
+
+        public void ToggleDrawing() {
+            Active = !Active;
         }
 
         private void SendMessage()

@@ -87,6 +87,7 @@ namespace ServerRole {
 
         class Server {
             public List<Client> clients = new List<Client>();
+            public Client drawingClient = null;
             private TcpListener listener;
             private System.Timers.Timer activeConn;
 
@@ -107,8 +108,13 @@ namespace ServerRole {
                 try {
                     while (true) {
                         //if (listener.Pending()) {
-                            TcpClient client = listener.AcceptTcpClient();
-                            clients.Add(new Client(client, this));
+                        TcpClient client = listener.AcceptTcpClient();
+                        Client c = new Client(client, this);
+                        clients.Add(c);
+                        if(drawingClient == null) {
+                            drawingClient = c;
+                            WriteToClient("HELP -signal:", drawingClient);
+                        }
                         //}
                     }
                 } catch (IOException e) {
@@ -129,13 +135,14 @@ namespace ServerRole {
                     clients.ElementAt(i).getClient().Dispose();
                 }
                 clients.Clear();
+                drawingClient = null;
                 listener.Stop();
                 ServicePointManager.SetTcpKeepAlive(false, 30000, 30000);
                 activeConn.Enabled = false;
             }
 
             private void DefaultConnectionMessage(object obj, ElapsedEventArgs args) {
-                Write("a");
+                WriteToAllClients("a");
             }
 
             /// <summary>
@@ -156,13 +163,16 @@ namespace ServerRole {
                             ParseChatCmd(currCmd.Substring(spaceIndex));
                             break;
                         case "DRAW":
-                            WriteToClient("HELP -error:Draw options have not been included for the server yet.", client);
+                            if(client == drawingClient) {
+                                ParseDrawCmd(currCmd.Substring(spaceIndex), client);
+                            }
+                            //WriteToClient("HELP -error:Draw options have not been included for the server yet.", client);
                             break;
                         case "MESS":
-                            WriteToClient("HELP -error:Message options have not been included for the server yet.", client);
+                            WriteToClient("HELP -error:Message options have not been included for the server yet.\0", client);
                             break;
                         case "HELP":
-                            WriteToClient("HELP -error:Help options have not been included for the server yet.", client);
+                            WriteToClient("HELP -error:Help options have not been included for the server yet.\0", client);
                             break;
                         default:
                             Trace.TraceWarning("Recieved invalid command: " + currCmd);
@@ -176,51 +186,61 @@ namespace ServerRole {
 
             public void ParseChatCmd(string cmd) {
                 string tempCmd = cmd;
-                // Start with:
-                // CHAT -UserName:admin-Color:#FFFFFF-Message:Hi guys you all are my best friends
-                // We parse the type
-                //  -UserName:admin-Color:#FFFFFF-Message:Hi guys you all are my best friends
+                { 
+                //// We find the first dash (-) and create a substring of the entire rest of message
+                //// UserName:admin-Color:#FFFFFF-Message:Hi guys you all are my best friends
+                //int beginInfoInd = cmd.IndexOf('-');
+                //while (beginInfoInd != -1) {
+                //    tempCmd = tempCmd.Substring(beginInfoInd + 1);
 
-                // We find the second dash and make a substring with that
+                //    // We find the colon and grab the type
+                //    // UserName
+                //    int typeInd = tempCmd.IndexOf(':');
+                //    string type = tempCmd.Substring(0, typeInd);
 
-                // We find the first dash (-) and create a substring of the entire rest of message
-                // UserName:admin-Color:#FFFFFF-Message:Hi guys you all are my best friends
-                int beginInfoInd = cmd.IndexOf('-');
-                while (beginInfoInd != -1) {
-                    tempCmd = tempCmd.Substring(beginInfoInd + 1);
+                //    // We find the next dash (-) to get data
+                //    int dataInd = tempCmd.IndexOf('-');
+                //    if (dataInd == -1) {
+                //        dataInd = tempCmd.Count();
+                //        beginInfoInd = -1;
+                //    } else {
+                //        beginInfoInd = dataInd;
+                //    }
+                //    dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
+                //    string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
 
-                    // We find the colon and grab the type
-                    // UserName
-                    int typeInd = tempCmd.IndexOf(':');
-                    string type = tempCmd.Substring(0, typeInd);
-
-                    // We find the next dash (-) to get data
-                    int dataInd = tempCmd.IndexOf('-');
-                    if (dataInd == -1) {
-                        dataInd = tempCmd.Count();
-                        beginInfoInd = -1;
-                    } else {
-                        beginInfoInd = dataInd;
-                    }
-                    dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
-                    string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
-
-                }
+                //}
+                } // Parsing Idea
 
                 // Theres no need to actually parse the chat command, just relay to other clients
-                Write("CHAT " + cmd);
+                WriteToAllClients("CHAT " + cmd + '\0');
+            }
+
+            public void ParseDrawCmd(string cmd, Client c) {
+                cmd = "DRAW " + cmd + '\0';
+
+                // Ne need to actually parse, just send data.
+                int length = clients.Count;
+                for (int i = 0; i < length; i++) {
+                    var client = clients.ElementAt(i);
+                    if(client == c) { continue; }
+                    WriteToClient(cmd, client);
+
+                }
             }
 
             /// <summary>
             /// Writes a message to all clients
             /// </summary>
             /// <param name="message"></param>
-            private void Write(string message) {
-                Trace.TraceInformation("Wrrtiting message to Clients: " + message);
+            private void WriteToAllClients(string message) {
+                Trace.TraceInformation("Wrtiting message to Clients: " + message);
+
                 int length = clients.Count;
                 for (int i = 0; i < length; i++) {
                     var client = clients.ElementAt(i);
-                    WriteToClient(message, client);                   
+                    WriteToClient(message, client);
+                            
                 }
             }
 
@@ -255,6 +275,13 @@ namespace ServerRole {
 
             public void Remove(Client c) {
                 clients.Remove(c);
+                if(c == drawingClient) {
+                    drawingClient = null;
+                    if(clients.Count > 0) {
+                        drawingClient = clients.ElementAt(0);
+                        WriteToClient("HELP -signal:", drawingClient);
+                    }
+                }
             }
         }
 

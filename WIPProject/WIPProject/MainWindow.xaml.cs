@@ -50,9 +50,9 @@ namespace WIPProject {
             if (DatabaseConnection.AddUserLogin(tbxCreateUsername.Text, pbxCreatePassword.Password)) {
                 this.Hide();
 
-                DrawingPage dp = new DrawingPage(true, this);
-                dp.userName = tbxCreateUsername.Text;
-                dp.ShowDialog();
+                RoomManager.mainWindow = this;
+                RoomManager.username = tbxUserName.Text;
+                RoomManager.Initialize();
 
                 this.Close();
             }
