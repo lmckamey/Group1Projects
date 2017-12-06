@@ -83,7 +83,7 @@ namespace WIPProject.UserControls
                 //cnvDrawArea.MouseMove += cnvDrawArea_MouseMove;
                 //cnvDrawArea.IsEnabled = false;
                 Line[] lines = dirtyLines;
-                Client.WiteDrawMessage(lines);
+                //Client.WiteDrawMessage(lines);
 
                 //if (uscBasicDrawing.numOfDirtyLines > 0)
                 //{
@@ -226,18 +226,10 @@ namespace WIPProject.UserControls
 
                 //dirtyLines.Add(l);
                 AddDirtyLine(l);
+                Client.WiteDrawMessage(l);
 
                 ++currentLineCount;
-
-                //cnvDrawArea.MouseMove -= cnvDrawArea_MouseMove;
-                //cnvDrawArea.MouseMove += CnvDrawArea_MouseMove;
-                //cnvDrawArea.Focusable = false;
             }
-        }
-
-        private void CnvDrawArea_MouseMove(object sender, MouseEventArgs e)
-        {
-            //throw new NotImplementedException();
         }
 
         private void AddDirtyLine(Line l)

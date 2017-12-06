@@ -60,6 +60,7 @@
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseConnService.cs" />
     <Compile Include="Enums\NextAction.cs" />
+    <Compile Include="Models\ImageManager.cs" />
     <Compile Include="Models\RoomManager.cs" />
     <Compile Include="Models\SliderColor.cs" />
     <Compile Include="Networking\Client.cs" />

@@ -61,6 +61,8 @@ namespace WIPProject
             Colors.ForestGreen, Colors.DodgerBlue};
         int userColor;
 
+        TextBlock selectedMessage = null;
+
         public DrawingPage(bool active, MainWindow window = null, string name = "")
         {
             InitializeComponent();
@@ -182,6 +184,8 @@ namespace WIPProject
             text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
             tb.Inlines.Add(user);
             tb.Inlines.Add(text);
+            
+            tb.MouseDown += Tb_MouseDown;
 
             tblChatWindow.Children.Add(tb);
 
@@ -196,6 +200,12 @@ namespace WIPProject
             scvChatScrollbar.ScrollToBottom();
         }
 
+        private void Tb_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            selectedMessage = tb;
+        }
+
         private void User_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.RightButton == MouseButtonState.Pressed)
@@ -204,8 +214,8 @@ namespace WIPProject
                 Grid.SetColumn(mnuChatOptions, 2);
                 Panel.SetZIndex(mnuChatOptions, 5);
                 Point mouse = e.GetPosition(scvChatScrollbar);
-                mouse.X -= 10;
-                mouse.Y -= 20;
+                mouse.X -= 5;
+                mouse.Y -= 5;
                 mnuChatOptions.Margin = new Thickness(mouse.X, mouse.Y, 0, 0);
             }
         }
@@ -263,9 +273,12 @@ namespace WIPProject
         {
             ReverseVisibility(uscRoomSelector);
 
-            double x = stckPnlSideMenu.ActualWidth;
+            Point p = Mouse.GetPosition(stckPnlSideMenu);
 
-            //uscRoomSelector.Margin = new Thickness(x, 50, 0, 0);
+            double y = p.Y;
+            y -= btnRoomSelect.ActualHeight;
+
+            uscRoomSelector.Margin = new Thickness(uscRoomSelector.Margin.Left, y, 0, 0);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
@@ -400,6 +413,36 @@ namespace WIPProject
             {
                 lblTextWatermark.Visibility = Visibility.Visible;
             }
+        }
+
+        private void miCopyMessage_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedMessage != null)
+            {
+                string message = ((Run)selectedMessage.Inlines.ElementAt(1)).Text;
+                message = message.Substring(1, message.Length - 1);
+                Clipboard.SetText(message);
+                mnuChatOptions.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void uscRoomSelector_MouseLeave(object sender, MouseEventArgs e)
+        {
+            uscRoomSelector.Visibility = Visibility.Hidden;
+        }
+
+        private void uscBasicDrawing_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (uscRoomSelector.Visibility == Visibility.Visible)
+            {
+                uscRoomSelector.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            ImageManager.SaveImageToDesktop(userName, 
+                uscBasicDrawing.cnvDrawArea, this);
         }
     }
 }

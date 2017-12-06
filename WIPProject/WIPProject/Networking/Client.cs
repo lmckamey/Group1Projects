@@ -129,19 +129,21 @@ namespace WIPProject.Networking {
             }
         }
 
-        static public void WiteDrawMessage(Line[] lines) {
+        static public void WiteDrawMessage(Line line) {
             if (isConnected) {
                 StringBuilder sb = new StringBuilder();
 
-                foreach (Line l in lines) {
-                    if (l != null) {
-                        sb.Append(XamlWriter.Save(l));
-                        sb.Append("|");
-                    }
-                }
+                sb.Append(XamlWriter.Save(line));
+
+                //foreach (Line l in lines) {
+                //    if (l != null) {
+                //        sb.Append(XamlWriter.Save(l));
+                //        sb.Append("|");
+                //    }
+                //}
 
                 if (sb.Length > 0) {
-                    sb.Remove(sb.Length - 1, 1);
+                    //sb.Remove(sb.Length - 1, 1);
 
 
                     string cmd = "DRAW -data:" + sb.ToString() + '\0';
