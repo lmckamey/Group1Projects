@@ -46,7 +46,7 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <ScrollViewer x:Name="scvChatScrollbar" VerticalScrollBarVisibility="Hidden">
-                    <ListBox Padding="5" VerticalAlignment="Bottom" x:Name="tblChatWindow" Margin="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom"  Foreground="#CEFFFF" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD"  Background="Transparent" BorderBrush="#00ABADB3"/>
+                    <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="tblChatWindow" Margin="0" TextOptions.TextFormattingMode="Display"  Background="Transparent"/>
                 </ScrollViewer>
             </Border>
             <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="#CEFFFF" PreviewKeyDown="txbChatBox_PreviewKeyDown"  TextChanged="tbxChatBox_TextChanged" FontFamily="Maiandra GD" SelectionBrush="#7FFFE4A9">
@@ -67,5 +67,11 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
+        <Menu x:Name="mnuChatOptions" Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="64" Margin="211,125,0,0" VerticalAlignment="Top" Width="76" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="10" Background="#CC000000" Visibility="Hidden">
+            <MenuItem Header="Whisper" Click="HideChatOptions"></MenuItem>
+            <MenuItem Header="Add Friend" Margin="0, 1" Click="HideChatOptions"></MenuItem>
+            <MenuItem Header="Copy Message" Margin="0, 1" Click="HideChatOptions"></MenuItem>
+            <MenuItem Header="Report" Margin="0, 1" Click="HideChatOptions"></MenuItem>
+        </Menu>
     </Grid>
 </Window>

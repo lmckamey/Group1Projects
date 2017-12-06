@@ -99,7 +99,7 @@ namespace WIPProject.Networking {
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                if (cmd.Last() != '\0') {
+                if (!stream.DataAvailable) {
                     // !stream.DataAvailable
                     Parse(cmd);
                     cmd = String.Empty; // Reset command

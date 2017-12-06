@@ -21,18 +21,18 @@ namespace WIPProject.Models
         {
             CreateChatRooms(numberOfRooms);
 
-            ChatRooms[currRoom].Active = false;
+            ChatRooms[currRoom].Active = true;
 
-            Client.Add(ChatMessage);
-            Client.Add(HelpMessage);
-            Client.Add(DrawMessage);
-            Client.Initialize();
+            //Client.Add(ChatMessage);
+            //Client.Add(HelpMessage);
+            //Client.Add(DrawMessage);
+            //Client.Initialize();
 
             ChatRooms[currRoom].ShowDialog();
         }
 
         private static void ChatMessage(string username, string message, int color) {
-            ChatRooms[currRoom].AddMessage($"{username}: {message}");
+            ChatRooms[currRoom].AddMessage(username, message, color);
         }
 
         private static void HelpMessage(Client.CmdType type, string msg) {

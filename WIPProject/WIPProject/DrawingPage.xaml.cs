@@ -20,6 +20,9 @@ using System.Windows.Markup;
 using System.Xml;
 using WIPProject.Models;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Media.Animation;
+using static System.Net.Mime.MediaTypeNames;
+using System.Globalization;
 
 namespace WIPProject
 {
@@ -35,19 +38,17 @@ namespace WIPProject
             set
             {
                 isActive = value;
-                if (updateTimer != null)
-                {
-                    if (isActive)
-                        updateTimer.Start();
-                    else
-                        updateTimer.Stop();
-                }
+                //if (updateTimer != null)
+                //{
+                //    if (isActive)
+                //        updateTimer.Start();
+                //    else
+                //        updateTimer.Stop();
+                //}
             }
         }
         public string userName;
         public MainWindow main;
-
-        private DispatcherTimer updateTimer;
 
         private int startingWindowWidth;
         private int startingWindowHeight;
@@ -55,14 +56,10 @@ namespace WIPProject
         //private string filePath = @"C: \Users\Colin Misbach\Desktop\serializedCanvas.txt";
         private Canvas tempCanvas = new Canvas();
 
-        private Key[] badKeys = new Key[] 
-        {
-            Key.LeftShift, Key.RightShift, Key.LeftCtrl, Key.RightCtrl, Key.LeftAlt,
-            Key.RightAlt, Key.Left, Key.Up, Key.Right, Key.Down, Key.Tab, Key.CapsLock,
-            Key.OemTilde, Key.Home, Key.End, Key.Insert, Key.F1, Key.F2, Key.F3
-            , Key.F4, Key.F5, Key.F6, Key.F7, Key.F8, Key.F9, Key.F10, Key.F11
-            , Key.F12, Key.Escape
-        };
+        Color[] userColors = new Color[]
+        { Colors.DarkRed, Colors.Goldenrod, Colors.HotPink, Colors.BlueViolet,
+            Colors.ForestGreen, Colors.DodgerBlue};
+        int userColor;
 
         public DrawingPage(bool active, MainWindow window = null, string name = "")
         {
@@ -74,66 +71,26 @@ namespace WIPProject
 
             uscRoomSelector.page = this;
 
+            uscBasicDrawing.drawingPage = this;
+
+            mnuChatOptions.MouseLeave += MnuChatOptions_MouseLeave;
+
+            Random r = new Random();
+            int x = r.Next(0, userColors.Length - 1);
+            userColor = x;
+
             startingWindowWidth = (int)Width;
             startingWindowHeight = (int)Height;
-
-            updateTimer = new DispatcherTimer();
-            updateTimer.Interval = new TimeSpan(0,0,0,0,1000);
-            updateTimer.Tick += UpdateTimer_Tick;
-            
-            updateTimer.Start();
         }
 
-        private void UpdateTimer_Tick(object sender, EventArgs e)
+        private void MnuChatOptions_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (Active)
-            {
+            mnuChatOptions.Visibility = Visibility.Hidden;
+        }
 
-                Line[] lines = uscBasicDrawing.dirtyLines;
-                Client.WiteDrawMessage(lines);
-
-                uscBasicDrawing.ClearDirtyLines();
-                tempCanvas.Children.Clear();
-
-                //StringBuilder sb = new StringBuilder();
-
-                //foreach (Line l in lines)
-                //{
-                //    if (l != null)
-                //    {
-                //        sb.Append(XamlWriter.Save(l));
-                //        sb.Append("|");
-                //    }
-                //}
-                //if (sb.Length > 0)
-                //{
-                //    TextWriter writer = File.CreateText(filePath);
-
-                //    sb.Remove(sb.Length - 1, 1);
-
-                //    XamlWriter.Save(sb.ToString(), writer);
-
-                //    writer.Close();
-
-                //    uscBasicDrawing.ClearDirtyLines();
-                //    tempCanvas.Children.Clear();
-
-                //    FileStream fileStream = File.OpenRead(filePath);
-                //    string longString = (string)XamlReader.Load(fileStream);
-                //    string longString = (string)bf.Deserialize(fileStream);
-                //    string[] lineStrings = longString.Split('|');
-                //    foreach (string s in lineStrings)
-                //    {
-                //        var line = XamlReader.Parse(s);
-                //         cnavas.children.add(line);
-                //        int i = 0;
-                //    }
-                //    var v = XamlReader.Load(fileStream);
-                //    grid.Children.Add((v as UIElement));
-
-                //    fileStream.Close();
-                //}
-            }
+        public void HideChatOptions(object sender, RoutedEventArgs e)
+        {
+            mnuChatOptions.Visibility = Visibility.Hidden;
         }
 
         private void txbChatBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -144,10 +101,36 @@ namespace WIPProject
             }
         }
 
-        public void AddMessage(string message) {
+        public void AddMessage(string userName, string message, int color) {
             this.Dispatcher.Invoke(() =>
             {
-                //tblChatWindow.Items.Add($"{tblChatWindow.Content}\n{message}");
+                TextBlock tb = new TextBlock();
+                tb.Padding = new Thickness(0, 0, 5, 0);
+                tb.TextAlignment = TextAlignment.Left;
+                tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+                tb.VerticalAlignment = VerticalAlignment.Top;
+                tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+                tb.FontFamily = new FontFamily("Maiandra GD");
+                tb.Background = null;
+                tb.TextWrapping = TextWrapping.Wrap;
+                tb.Margin = new Thickness(5, 0, 0, 5);
+
+                Run user = new Run($"{userName}:");
+                byte r = (byte)(color >> 8);
+                byte g = (byte)((color >> 4) - (r << 4));
+                byte b = (byte)((color) - (r << 8) - (g << 4));
+                user.Foreground = new SolidColorBrush(Color.FromRgb(r, g, b));
+                user.MouseEnter += User_MouseEnter;
+                user.MouseLeave += User_MouseLeave;
+                user.MouseDown += User_MouseDown;
+                Run text = new Run($" {message}");
+                text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+                tb.Inlines.Add(user);
+                tb.Inlines.Add(text);
+
+                tblChatWindow.Children.Add(tb);
+
+                ChangeFontSizes();
             });
             
         }
@@ -174,14 +157,35 @@ namespace WIPProject
         private void SendMessage()
         {
             TextBlock tb = new TextBlock();
-            tb.Padding = new Thickness(5);
+            tb.Padding = new Thickness(0, 0, 5, 0);
             tb.TextAlignment = TextAlignment.Left;
-            tb.VerticalAlignment = VerticalAlignment.Bottom;
+            tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+            tb.VerticalAlignment = VerticalAlignment.Top;
             tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
             tb.FontFamily = new FontFamily("Maiandra GD");
             tb.Background = null;
-            //tb. = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            //tb.Text = message;
+            tb.TextWrapping = TextWrapping.Wrap;
+            tb.Margin = new Thickness(5, 0, 0, 5);
+
+            Run user = new Run($"{userName}:");
+            //int color = 0;
+            //int.TryParse("0xFFFFFF", NumberStyles.HexNumber, CultureInfo.CurrentCulture, out color);
+            //byte r = (byte)(color >> 8);
+            //byte g = (byte)((color >> 4) - (r << 4));
+            //byte b = (byte)((color) - (r << 8) - (g << 4));
+            user.Foreground = new SolidColorBrush(userColors[userColor]);
+            //user.Foreground = new SolidColorBrush(userColors[userColor]);
+            user.MouseEnter += User_MouseEnter;
+            user.MouseLeave += User_MouseLeave;
+            user.MouseDown += User_MouseDown;
+            Run text = new Run($" {tbxChatBox.Text}");
+            text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            tb.Inlines.Add(user);
+            tb.Inlines.Add(text);
+
+            tblChatWindow.Children.Add(tb);
+
+            ChangeFontSizes();
 
             //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
             Client.WriteChatMessage(userName, tbxChatBox.Text);
@@ -190,6 +194,42 @@ namespace WIPProject
             tbxChatBox.Clear();
 
             scvChatScrollbar.ScrollToBottom();
+        }
+
+        private void User_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                mnuChatOptions.Visibility = Visibility.Visible;
+                Grid.SetColumn(mnuChatOptions, 2);
+                Panel.SetZIndex(mnuChatOptions, 5);
+                Point mouse = e.GetPosition(scvChatScrollbar);
+                mouse.X -= 10;
+                mouse.Y -= 20;
+                mnuChatOptions.Margin = new Thickness(mouse.X, mouse.Y, 0, 0);
+            }
+        }
+
+        private void User_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Run r = sender as Run;
+            Color c = ((SolidColorBrush)r.Foreground).Color;
+
+            ((Run)sender).Foreground = new SolidColorBrush(
+                new Color() { R = c.R, G = c.G, B = c.B, A = 255 });
+
+            r.Cursor = Cursors.Arrow;
+        }
+
+        private void User_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Run r = sender as Run;
+            Color c = ((SolidColorBrush)r.Foreground).Color;
+
+            ((Run)sender).Foreground = new SolidColorBrush(
+                new Color() {R=c.R, G=c.G, B=c.B, A=125});
+
+            r.Cursor = Cursors.Hand;
         }
 
         private void btnSwitchMode_Click(object sender, RoutedEventArgs e)
@@ -235,7 +275,7 @@ namespace WIPProject
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            updateTimer.Stop();
+            uscBasicDrawing.updateTimer.Stop();
             Client.Shutdown();
             System.Windows.Application.Current.Shutdown();
             //main.Close();
@@ -273,6 +313,11 @@ namespace WIPProject
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ChangeFontSizes();
+        }
+
+        private void ChangeFontSizes()
         {
             float mult = GetSizeMultiplier();
             ApplySizeChanges(mult);
@@ -312,7 +357,11 @@ namespace WIPProject
             btnSettings.FontSize = settingsSize;
             lblTextWatermark.FontSize = chatSize;
             tbxChatBox.FontSize = chatSize;
-            tblChatWindow.FontSize = chatSize;
+            for (int i = 0; i < tblChatWindow.Children.Count; ++i)
+            {
+                ((TextBlock)tblChatWindow.Children[i]).FontSize = chatSize;
+            }
+            //tblChatWindow.FontSize = chatSize;
 
             int drawingControlSize = (int)(8 * multiplier);
 
