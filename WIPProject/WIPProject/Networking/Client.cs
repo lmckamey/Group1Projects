@@ -98,12 +98,20 @@ namespace WIPProject.Networking {
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                if (!stream.DataAvailable) {
-                    //cmd.Last() == '\0'
-                    // !stream.DataAvailable
-                    Parse(cmd);
-                    cmd = String.Empty; // Reset command
-                    stream.Flush();
+                //if (!stream.DataAvailable) {
+                //    //cmd.Last() == '\0'
+                //    // !stream.DataAvailable
+                //    Parse(cmd);
+                //    cmd = String.Empty; // Reset command
+                //    stream.Flush();
+                //}
+                var cmdSplit = cmd.Split('\0');
+                int count = cmdSplit.Count();
+                if (count > 1) {
+                    for (int i = 0; i < count - 1; i++) {
+                        Parse(cmdSplit[i]);
+                    }
+                    cmd = cmdSplit[count - 1];
                 }
                 if (client.Connected) {
                     stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
