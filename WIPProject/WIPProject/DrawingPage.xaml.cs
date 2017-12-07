@@ -381,7 +381,6 @@ namespace WIPProject
             btnModeChange.FontSize = modeSize;
             btnRoomSelect.FontSize = roomsSize;
             lblFriends.FontSize = friendLabelSize;
-            lbxFriendList.FontSize = friendListSize;
             btnSettings.FontSize = settingsSize;
             lblTextWatermark.FontSize = chatSize;
             tbxChatBox.FontSize = chatSize;
@@ -458,6 +457,19 @@ namespace WIPProject
         {
             ImageManager.SaveImageToDesktop(userName,
                 uscBasicDrawing.cnvDrawArea, this);
+        }
+
+        private void tbxChatBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            lblTextWatermark.Content = "";
+        }
+
+        private void tbxChatBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(tbxChatBox.Text != "")
+            {
+                lblTextWatermark.Content = "Type Something...";
+            }
         }
     }
 }
