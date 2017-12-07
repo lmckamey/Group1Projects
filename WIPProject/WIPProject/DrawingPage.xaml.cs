@@ -133,6 +133,12 @@ namespace WIPProject
                 tblChatWindow.Children.Add(tb);
 
                 ChangeFontSizes();
+=======
+        public void AddMessage(string userName, string message, string color) {
+            this.Dispatcher.Invoke(() =>
+            {
+                tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
+>>>>>>> b4934fceaa539ec968b33badaf7e8df40c2dcbbb
             });
             
         }
@@ -140,8 +146,13 @@ namespace WIPProject
         public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
 
-                foreach (string s in lines) {
-                    var line = XamlReader.Parse(s);
+                for(int i = 0; i < lines.Length; i++) {
+                    Object line = null;
+                    try {
+                        line = XamlReader.Parse(lines[i]);
+                    } catch(Exception e) {
+
+                    }
                     if (line is Line) {
                         uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);                     
                     }

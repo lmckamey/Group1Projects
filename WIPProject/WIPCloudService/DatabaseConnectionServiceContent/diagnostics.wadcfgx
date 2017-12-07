@@ -2,8 +2,8 @@
 <DiagnosticsConfiguration xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
   <PublicConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
     <WadCfg>
-      <DiagnosticMonitorConfiguration overallQuotaInMB="4096">
-        <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter="Verbose" />
+      <DiagnosticMonitorConfiguration overallQuotaInMB="4096" sinks="applicationInsights.errors">
+        <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter="Error" />
         <Directories scheduledTransferPeriod="PT1M">
           <IISLogs containerName="wad-iis-logfiles" />
           <FailedRequestLogs containerName="wad-failedrequestlogs" />
@@ -22,28 +22,26 @@
           <DataSource name="Application!*[System[(Level=1 or Level=2 or Level=3)]]" />
           <DataSource name="Windows Azure!*[System[(Level=1 or Level=2 or Level=3 or Level=4)]]" />
         </WindowsEventLog>
-        <EtwProviders>
-          <EtwEventSourceProviderConfiguration provider="SampleEventSourceWriter" scheduledTransferPeriod="PT5M">
-            <Event id="1" eventDestination="WriteTable"/>
-            <DefaultEvents eventDestination="DefaultTable" />
-          </EtwEventSourceProviderConfiguration>
-        </EtwProviders>
-        <CrashDumps dumpType="Full">
-          <CrashDumpConfiguration processName="WaAppAgent.exe" />
+        <CrashDumps>
           <CrashDumpConfiguration processName="WaIISHost.exe" />
-          <CrashDumpConfiguration processName="WindowsAzureGuestAgent.exe" />
           <CrashDumpConfiguration processName="WaWorkerHost.exe" />
-          <CrashDumpConfiguration processName="DiagnosticsAgent.exe" />
           <CrashDumpConfiguration processName="w3wp.exe" />
         </CrashDumps>
-        <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Verbose" />
+        <Logs scheduledTransferPeriod="PT1M" scheduledTransferLogLevelFilter="Error" />
       </DiagnosticMonitorConfiguration>
+      <SinksConfig>
+        <Sink name="applicationInsights">
+          <ApplicationInsights />
+          <Channels>
+            <Channel logLevel="Error" name="errors" />
+          </Channels>
+        </Sink>
+      </SinksConfig>
     </WadCfg>
-    <StorageAccount>wiptesting</StorageAccount>
-    <StorageType>TableAndBlob</StorageType>
+    <StorageAccount />
   </PublicConfig>
-  <PrivateConfig xmlns="http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration">
-    <StorageAccount name="wiptesting" key="pDeRu0jF9kb5NcKLgRTD7ad9IIjj8IZuCeblVKUvw5HxWuDLdxuPcKSi+KCEdwSHz+XyHnuFgBc5v0i9ocsYLA==" endpoint="https://core.windows.net"  />
+  <PrivateConfig>
+    <StorageAccount name="" key="" endpoint="" />
   </PrivateConfig>
   <IsEnabled>true</IsEnabled>
 </DiagnosticsConfiguration>

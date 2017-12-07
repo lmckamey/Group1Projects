@@ -31,7 +31,11 @@ namespace WIPProject.Models
             ChatRooms[currRoom].ShowDialog();
         }
 
+<<<<<<< HEAD
         private static void ChatMessage(string username, string message, int color) {
+=======
+        private static void ChatMessage(string username, string message, string color) {
+>>>>>>> b4934fceaa539ec968b33badaf7e8df40c2dcbbb
             ChatRooms[currRoom].AddMessage(username, message, color);
         }
 
