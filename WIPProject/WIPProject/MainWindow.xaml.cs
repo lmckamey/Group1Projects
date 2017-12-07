@@ -29,12 +29,6 @@ namespace WIPProject {
 
             InitializeComponent();
 
-            ImageBrush image = new ImageBrush();
-            string thingy = AppDomain.CurrentDomain.BaseDirectory + "idea6.jpg";
-            image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource;
-            SolidColorBrush brush = new SolidColorBrush(Colors.Black);
-            mainGrid.Background = image;
-
         }
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e) {
