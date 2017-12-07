@@ -71,6 +71,11 @@ namespace WIPProject
             main = window;
             userName = name;
 
+            //ImageBrush image = new ImageBrush();
+            //string thingy = AppDomain.CurrentDomain.BaseDirectory + "carpet02.jpg";
+            //image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource; ;
+            //stckPnlSideMenu.Background = image;
+
             uscRoomSelector.page = this;
 
             uscBasicDrawing.drawingPage = this;

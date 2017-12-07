@@ -30,7 +30,7 @@
                     <ImageBrush ImageSource="Resources/Images/Logo.png"/>
                 </Label.Background>
             </Label>
-            <Button x:Name="btnModeChange" DockPanel.Dock="Top" Content="Mode" Background="#82AEE5" Height="25" Margin="2,10" Padding="0" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click"/>
+            <Button x:Name="btnModeChange" DockPanel.Dock="Top" Background="#00000000" Content="Mode" Height="25" Margin="2,10" Foreground="#FF9EED8A" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click" BorderBrush="{x:Null}"/>
             <Button DockPanel.Dock="Top" x:Name="btnRoomSelect" Content="Rooms" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnRoomSelect_Click"/>
             <Button DockPanel.Dock="Top" x:Name="btnSave" Content="Save" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSave_Click"/>
         </DockPanel>

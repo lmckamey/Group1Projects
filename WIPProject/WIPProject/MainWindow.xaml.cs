@@ -26,7 +26,15 @@ namespace WIPProject {
     public partial class MainWindow : Window {
 
         public MainWindow() {
+
             InitializeComponent();
+
+            ImageBrush image = new ImageBrush();
+            string thingy = AppDomain.CurrentDomain.BaseDirectory + "idea6.jpg";
+            image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource;
+            SolidColorBrush brush = new SolidColorBrush(Colors.Black);
+            mainGrid.Background = image;
+
         }
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e) {
@@ -63,6 +71,56 @@ namespace WIPProject {
             if (e.Key.Equals(Key.Return))
             {
                 btnSignIn_Click(sender, null);
+            }
+        }
+
+        private void tbxUserName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if((sender as TextBox).Text == "Username")
+            {
+                (sender as TextBox).Text = "";
+                (sender as TextBox).Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+        private void tbxUserName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if ((sender as TextBox).Text == "")
+            {
+                (sender as TextBox).Text = "Username";
+                (sender as TextBox).Foreground = new SolidColorBrush(Colors.Silver);
+            }
+        }
+
+        private void pbxCreatePassword_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if((string)lblPasstemp2.Content == "Password")
+            {
+                lblPasstemp2.Content = "";
+            }
+        }
+
+        private void pbxCreatePassword_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (pbxCreatePassword.Password == "")
+            {
+                lblPasstemp2.Content = "Password";
+            }
+        }
+
+        private void pbxPassword_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if ((string)lblPasstemp1.Content == "Password")
+            {
+                lblPasstemp1.Content = "";
+            }
+        }
+
+        private void pbxPassword_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (pbxPassword.Password == "")
+            {
+                lblPasstemp1.Content = "Password";
             }
         }
     }
