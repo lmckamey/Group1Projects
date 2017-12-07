@@ -160,36 +160,51 @@ namespace WIPProject
 
         public void ClearDrawing() {
             this.Dispatcher.Invoke(() => {
-                uscBasicDrawing.cnvDrawArea.Children.Clear();
-                //uscViewer.cnvDrawArea.Children.Clear();
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Children.Clear();
+                    uscViewer.cnvDrawArea.Children.Clear();
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }
             });
-            //throw new NotImplementedException();
         }
 
         public void FillDrawing(string color) {
             this.Dispatcher.Invoke(() => {
-                uscBasicDrawing.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
-                //uscViewer.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                    uscViewer.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }               
             });
-            //throw new NotImplementedException();
         }
 
         public void EraseDrawing(int index) {
             this.Dispatcher.Invoke(() => {
-                uscBasicDrawing.cnvDrawArea.Children.RemoveAt(index);
-                //uscViewer.cnvDrawArea.Children.RemoveAt(index);
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Children.RemoveAt(index);
+                    uscViewer.cnvDrawArea.Children.RemoveAt(index);
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }               
             });
-            ///throw new NotImplementedException();
         }
 
         public void UndoDrawing(int undoAmount) {
             this.Dispatcher.Invoke(() => {
-                int index = uscBasicDrawing.cnvDrawArea.Children.Count - undoAmount - 1;
-                uscBasicDrawing.cnvDrawArea.Children.RemoveRange(index, undoAmount);
-                //index = uscViewer.cnvDrawArea.Children.Count - undoAmount - 1;
-                //uscViewer.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                try {
+                    //int index = uscBasicDrawing.cnvDrawArea.Children.Count - undoAmount - 1;
+                    //uscBasicDrawing.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                    int index = uscViewer.cnvDrawArea.Children.Count - undoAmount;
+                    if(index < 0) {
+                        index = 0;
+                    }
+                    uscViewer.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                } catch(Exception e) {
+                    MessageBox.Show(e.ToString());
+                }              
             });
-            //throw new NotImplementedException();
         }
 
         public void ToggleDrawing() {
