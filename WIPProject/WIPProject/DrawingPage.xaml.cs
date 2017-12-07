@@ -38,11 +38,6 @@ namespace WIPProject
             set
             {
                 isActive = value;
-                //if (isActive)
-                //{
-                //    uscBasicDrawing.Visibility = Visibility.Visible;
-                //    uscViewer.Visibility = Visibility.Hidden;
-                //}
             }
         }
         public string userName;
@@ -89,8 +84,8 @@ namespace WIPProject
             startingWindowWidth = (int)Width;
             startingWindowHeight = (int)Height;
 
-            uscBasicDrawing.Visibility = Visibility.Visible;
-            uscViewer.Visibility = Visibility.Hidden;
+            uscBasicDrawing.Visibility = Visibility.Hidden;
+            uscViewer.Visibility = Visibility.Visible;
         }
 
         private void MnuChatOptions_MouseLeave(object sender, MouseEventArgs e)
@@ -179,6 +174,14 @@ namespace WIPProject
 
         public void ToggleDrawing() {
             Active = !Active;
+            if (isActive)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    uscBasicDrawing.Visibility = Visibility.Visible;
+                    uscViewer.Visibility = Visibility.Hidden;
+                });
+            }
         }
 
         private void SendMessage()
