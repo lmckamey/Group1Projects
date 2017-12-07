@@ -150,9 +150,6 @@ namespace WIPProject.UserControls
                 l.StrokeStartLineCap = PenLineCap.Round;
                 l.StrokeLineJoin = PenLineJoin.Round;
 
-                l.MouseMove += LineMove;
-                l.MouseDown += LineDown;
-
                 cnvDrawArea.Children.Add(l);
 
                 //dirtyLines.Add(l);
@@ -182,22 +179,6 @@ namespace WIPProject.UserControls
 
             if (numOfDirtyLines > 0)
                 numOfDirtyLines = 0;
-        }
-
-        private void LineMove(object sender, MouseEventArgs e)
-        {
-            if (nextAction == NextAction.ERASE && e.LeftButton == MouseButtonState.Pressed)
-            {
-                cnvDrawArea.Children.Remove((Line)sender);
-            }
-        }
-
-        private void LineDown(object sender, MouseButtonEventArgs e)
-        {
-            if (nextAction == NextAction.ERASE)
-            {
-                cnvDrawArea.Children.Remove((Line)sender);
-            }
         }
 
         private void cnvDrawArea_MouseWheel(object sender, MouseWheelEventArgs e)
