@@ -395,7 +395,6 @@ namespace WIPProject
             btnRoomSelect.FontSize = roomsSize;
             btnSave.FontSize = modeSize;
             lblFriends.FontSize = friendLabelSize;
-            lbxFriendList.FontSize = friendListSize;
             btnSettings.FontSize = settingsSize;
             lblTextWatermark.FontSize = chatSize;
             tbxChatBox.FontSize = chatSize;
@@ -492,6 +491,19 @@ namespace WIPProject
         private void ResetOpactiy()
         {
             lblAlert.Opacity = 1;
+        }
+
+        private void tbxChatBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            lblTextWatermark.Content = "";
+        }
+
+        private void tbxChatBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(tbxChatBox.Text != "")
+            {
+                lblTextWatermark.Content = "Type Something...";
+            }
         }
     }
 }
