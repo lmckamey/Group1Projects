@@ -11,10 +11,14 @@ using System.IO;
 using System.Net;
 using System.Windows.Media;
 using System.Globalization;
+using System.Windows.Shapes;
+using System.Windows.Markup;
 
 namespace WIPProject.Networking {
-    public class Client { 
+    public class Client {
+        static private readonly string CONN_STRING = "40.69.169.63";
         static private TcpClient client;
+        static private bool isConnected = false;
 
         static private readonly int LENGTH = 1024;
         static private byte[] readBytes = new byte[LENGTH];
@@ -27,10 +31,11 @@ namespace WIPProject.Networking {
         public delegate void MessageCommand();
         static private MessageCommand messageDelegate;
 
-        public delegate void DrawCommand();
+        public delegate void DrawCommand(string[] lines);
         static private DrawCommand drawDelegate;
-
-        public delegate void HelpCommand(string error);
+        
+        public enum CmdType { ERROR, REQUEST, SIGNAL};
+        public delegate void HelpCommand(CmdType type, string error);
         static private HelpCommand helpDelegate;
 
         static public void Add(ChatCommand chatFunc) { chatDelegate += chatFunc; }
@@ -45,68 +50,112 @@ namespace WIPProject.Networking {
 
         static public void Initialize() {
             client = new TcpClient();
-            client.Connect("40.69.169.63", 10100);
-            Console.WriteLine("Connected!\n");
+            client.Connect(CONN_STRING, 10100);
+            ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
+            isConnected = true;
 
             NetworkStream stream = client.GetStream();
 
             stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
-
-            //writeBytes = ASCIIEncoding.UTF8.GetBytes(Console.ReadLine());
-            //stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
         }
 
-        static public void Shutdown() {
+        static public void Shutdown(bool withRestart = false) {
             if(client != null) {
                 client.Close();
             }
 
+            ServicePointManager.SetTcpKeepAlive(false, 0, 0);
+            isConnected = false;
             readBytes = new byte[LENGTH];
             cmd = String.Empty;
             // Remove delegate connections???
+
+            if (withRestart) {
+                do {
+                    try {
+                        client = new TcpClient();
+                        client.Connect(CONN_STRING, 10100);
+                        ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
+                        isConnected = true;
+
+                        NetworkStream stream = client.GetStream();
+
+                        stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+                    } catch (IOException e) {
+                        MessageBox.Show(e.ToString());
+                    }catch (SocketException e) {
+                        MessageBox.Show(e.ToString());
+                    }
+                } while (!isConnected);
+                
+            }
         }
 
         static private void ReadAsync(IAsyncResult ar) {
             try {
-
-
                 NetworkStream stream = (NetworkStream)ar.AsyncState;
 
                 int numberOfBytesRead = stream.EndRead(ar);
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                if (!stream.DataAvailable) {
+                if (cmd.Last() == '\0') {
+                    // !stream.DataAvailable
                     Parse(cmd);
                     cmd = String.Empty; // Reset command
                     stream.Flush();
                 }
                 if (client.Connected) {
                     stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
+                } else {
+                    Shutdown();
                 }
             } catch (SocketException e) {
-                client.Close();
+                Shutdown(true); // Error inside Socket class 
+            } catch(IOException e) {
+                Shutdown(true); // Error connecting to Server, restart
+            } catch(ObjectDisposedException e) {
+                Shutdown(); // Object has been disclosed and closed. This most likely happened client side, it is fine.
             }
-            
         }
 
         static public void WriteChatMessage(string user, string message, string color = "#FFFFFFFF") {
-            string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color;
-            writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+            if (isConnected) {
+                string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color + '\0';
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
 
-            NetworkStream stream = client.GetStream();
-            stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
+        }
+
+        static public void WiteDrawMessage(Line[] lines) {
+            if (isConnected) {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (Line l in lines) {
+                    if (l != null) {
+                        sb.Append(XamlWriter.Save(l));
+                        sb.Append("|");
+                    }
+                }
+
+                if (sb.Length > 0) {
+                    sb.Remove(sb.Length - 1, 1);
+
+
+                    string cmd = "DRAW -data:" + sb.ToString() + '\0';
+                    writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+
+                    NetworkStream stream = client.GetStream();
+                    stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+                }
+            }
         }
 
         static private void WriteAsync(IAsyncResult ar) {
             NetworkStream stream = (NetworkStream)ar.AsyncState;
             stream.EndWrite(ar);
-
-            //Console.Write("What would you like to send? ");
-            //string mess = Console.ReadLine();
-            //writeBytes = ASCIIEncoding.UTF8.GetBytes(mess + '\0');
-            //stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
-            // Change to occur at specific intervals...
         }
 
         static private void Parse(string cmd) {
@@ -122,6 +171,7 @@ namespace WIPProject.Networking {
                         ParseChatCmd(currCmd.Substring(spaceIndex));
                         break;
                     case "DRAW":
+                        ParseDrawCmd(currCmd.Substring(spaceIndex));
                         break;
                     case "MESS":
                         break;
@@ -182,8 +232,58 @@ namespace WIPProject.Networking {
             chatDelegate?.Invoke(userName, message, color);
         }
 
+        static private void ParseDrawCmd(string cmd) {
+            //List<Line> lines = new List<Line>();
+            string[] lines;
+
+            int beginInfoInd = cmd.IndexOf('-');
+            int typeInd = cmd.IndexOf(':');
+            string type = cmd.Substring(beginInfoInd+1, typeInd - beginInfoInd - 1);
+            if (type.Equals("data")) {
+                string allLines = cmd.Substring(typeInd+1);
+
+                lines = allLines.Split('|');
+                drawDelegate?.Invoke(lines);
+                //foreach (string s in individualLines) {
+                //    var line = XamlReader.Parse(s);
+                //    if(line is Line) {
+                //        lines.Add((Line)line);
+                //    }
+
+                //}
+            }
+
+            // We find the next dash (-) to get data
+            //int dataInd = tempCmd.IndexOf('-');
+            //if (dataInd == -1) {
+            //    dataInd = tempCmd.Count();
+            //    beginInfoInd = -1;
+            //} else {
+            //    beginInfoInd = dataInd;
+            //}
+            //dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
+            //string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
+            //while (beginInfoInd != -1) {
+   
+
+            //    // Get data related to specific values
+            //    switch (type) {
+            //        case "data":
+            //            userName = data;
+            //            break;
+ 
+            //        default:
+            //            break;
+            //    }
+            //}
+
+            // ChatCommand Deleggate function
+            
+        }
+
         static private void ParseHelpCmd(string cmd) {
             string error = "";
+            CmdType cmdType = CmdType.ERROR;
 
             string tempCmd = cmd;
 
@@ -211,6 +311,10 @@ namespace WIPProject.Networking {
                 switch (type) {
                     case "error":
                         error = data;
+                        cmdType = CmdType.ERROR;
+                        break;
+                    case "signal":
+                        cmdType = CmdType.SIGNAL;
                         break;
                     default:
                         break;
@@ -218,7 +322,7 @@ namespace WIPProject.Networking {
             }
 
             // Chat Command Error Delegate
-            helpDelegate?.Invoke(error);
+            helpDelegate?.Invoke(cmdType, error);
         }
     }
 }

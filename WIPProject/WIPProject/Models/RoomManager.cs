@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Shapes;
 using WIPProject.Networking;
 
 namespace WIPProject.Models
@@ -19,16 +19,33 @@ namespace WIPProject.Models
 
         public static void Initialize(int numberOfRooms = 10)
         {
-            Client.Add(AddMessage);
-            Client.Initialize();
-
             CreateChatRooms(numberOfRooms);
+
+            ChatRooms[currRoom].Active = false;
+
+            Client.Add(ChatMessage);
+            Client.Add(HelpMessage);
+            Client.Add(DrawMessage);
+            Client.Initialize();
 
             ChatRooms[currRoom].ShowDialog();
         }
 
-        private static void AddMessage(string username, string message, int color) {
+        private static void ChatMessage(string username, string message, int color) {
             ChatRooms[currRoom].AddMessage($"{username}: {message}");
+        }
+
+        private static void HelpMessage(Client.CmdType type, string msg) {
+            if(type == Client.CmdType.ERROR) {
+                MessageBox.Show(msg, "Server sent an Error");
+            }
+            if(type == Client.CmdType.SIGNAL) {
+                ChatRooms[currRoom].ToggleDrawing();
+            }
+        }
+
+        private static void DrawMessage(string[] lines) {
+            ChatRooms[currRoom].DrawMessage(lines);
         }
 
         private static void CreateChatRooms(int roomCount)
@@ -39,7 +56,7 @@ namespace WIPProject.Models
 
             for (int i = 0; i < roomCount; ++i)
             {
-                ChatRooms[i] = new DrawingPage(mainWindow, username);
+                ChatRooms[i] = new DrawingPage(false, mainWindow, username);
             }
         }
 

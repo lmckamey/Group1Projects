@@ -12,8 +12,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Slider Minimum="1" Maximum="80" SmallChange="1" LargeChange="2" IsSnapToTickEnabled="True" x:Name="sldBrushSize" Grid.Column="1" Margin="5,0" VerticalAlignment="Center"/>
-        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Size" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" Padding="0,0,5,0"/>
-        <TextBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBrushSize}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
+        <Label x:Name="lblSize" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Size" Margin="0" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8" Padding="0,0,5,0"/>
+        <TextBox x:Name="tbxSize" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding Path=Value, ElementName=sldBrushSize}" Background="Transparent" BorderBrush="#00ABADB3" FontFamily="Maiandra GD" FontWeight="Bold" Foreground="White" FontSize="8"/>
 
     </Grid>
 </UserControl>
