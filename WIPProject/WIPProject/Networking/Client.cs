@@ -98,13 +98,7 @@ namespace WIPProject.Networking {
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-<<<<<<< HEAD
-                if (!stream.DataAvailable) {
-                    // !stream.DataAvailable
-                    Parse(cmd);
-                    cmd = String.Empty; // Reset command
-                    stream.Flush();
-=======
+
                 //if (!stream.DataAvailable) {
                 //    //cmd.Last() == '\0'
                 //    // !stream.DataAvailable
@@ -119,7 +113,6 @@ namespace WIPProject.Networking {
                         Parse(cmdSplit[i]);
                     }
                     cmd = cmdSplit[count - 1];
->>>>>>> b4934fceaa539ec968b33badaf7e8df40c2dcbbb
                 }
                 if (client.Connected) {
                     stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
@@ -145,11 +138,7 @@ namespace WIPProject.Networking {
             }
         }
 
-<<<<<<< HEAD
         static public void WiteDrawMessage(Line line) {
-=======
-        static public void WriteDrawMessage(Line[] lines) {
->>>>>>> b4934fceaa539ec968b33badaf7e8df40c2dcbbb
             if (isConnected) {
                 StringBuilder sb = new StringBuilder();
 

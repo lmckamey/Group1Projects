@@ -23,19 +23,15 @@ namespace WIPProject.Models
 
             ChatRooms[currRoom].Active = true;
 
-            //Client.Add(ChatMessage);
-            //Client.Add(HelpMessage);
-            //Client.Add(DrawMessage);
-            //Client.Initialize();
+            Client.Add(ChatMessage);
+            Client.Add(HelpMessage);
+            Client.Add(DrawMessage);
+            Client.Initialize();
 
             ChatRooms[currRoom].ShowDialog();
         }
 
-<<<<<<< HEAD
-        private static void ChatMessage(string username, string message, int color) {
-=======
         private static void ChatMessage(string username, string message, string color) {
->>>>>>> b4934fceaa539ec968b33badaf7e8df40c2dcbbb
             ChatRooms[currRoom].AddMessage(username, message, color);
         }
 

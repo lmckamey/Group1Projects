@@ -103,7 +103,7 @@ namespace WIPProject
             }
         }
 
-        public void AddMessage(string userName, string message, int color) {
+        public void AddMessage(string userName, string message, string color) {
             this.Dispatcher.Invoke(() =>
             {
                 TextBlock tb = new TextBlock();
@@ -118,10 +118,7 @@ namespace WIPProject
                 tb.Margin = new Thickness(5, 0, 0, 5);
 
                 Run user = new Run($"{userName}:");
-                byte r = (byte)(color >> 8);
-                byte g = (byte)((color >> 4) - (r << 4));
-                byte b = (byte)((color) - (r << 8) - (g << 4));
-                user.Foreground = new SolidColorBrush(Color.FromRgb(r, g, b));
+                user.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
                 user.MouseEnter += User_MouseEnter;
                 user.MouseLeave += User_MouseLeave;
                 user.MouseDown += User_MouseDown;
@@ -133,32 +130,34 @@ namespace WIPProject
                 tblChatWindow.Children.Add(tb);
 
                 ChangeFontSizes();
-=======
-        public void AddMessage(string userName, string message, string color) {
-            this.Dispatcher.Invoke(() =>
-            {
-                tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
->>>>>>> b4934fceaa539ec968b33badaf7e8df40c2dcbbb
             });
-            
-        }
+            }
+
+        //public void AddMessage(string userName, string message, string color) {
+        //    this.Dispatcher.Invoke(() =>
+        //    {
+        //        tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
+
+        //    });
+
+        //}
 
         public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
 
-                for(int i = 0; i < lines.Length; i++) {
+                for (int i = 0; i < lines.Length; i++) {
                     Object line = null;
                     try {
                         line = XamlReader.Parse(lines[i]);
-                    } catch(Exception e) {
+                    } catch (Exception e) {
 
                     }
                     if (line is Line) {
-                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);                     
+                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);
                     }
 
                 }
-                    
+
 
             });
         }
@@ -169,41 +168,41 @@ namespace WIPProject
 
         private void SendMessage()
         {
-            TextBlock tb = new TextBlock();
-            tb.Padding = new Thickness(0, 0, 5, 0);
-            tb.TextAlignment = TextAlignment.Left;
-            tb.HorizontalAlignment = HorizontalAlignment.Stretch;
-            tb.VerticalAlignment = VerticalAlignment.Top;
-            tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            tb.FontFamily = new FontFamily("Maiandra GD");
-            tb.Background = null;
-            tb.TextWrapping = TextWrapping.Wrap;
-            tb.Margin = new Thickness(5, 0, 0, 5);
+            //TextBlock tb = new TextBlock();
+            //tb.Padding = new Thickness(0, 0, 5, 0);
+            //tb.TextAlignment = TextAlignment.Left;
+            //tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+            //tb.VerticalAlignment = VerticalAlignment.Top;
+            //tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            //tb.FontFamily = new FontFamily("Maiandra GD");
+            //tb.Background = null;
+            //tb.TextWrapping = TextWrapping.Wrap;
+            //tb.Margin = new Thickness(5, 0, 0, 5);
 
-            Run user = new Run($"{userName}:");
+            //Run user = new Run($"{userName}:");
             //int color = 0;
             //int.TryParse("0xFFFFFF", NumberStyles.HexNumber, CultureInfo.CurrentCulture, out color);
             //byte r = (byte)(color >> 8);
             //byte g = (byte)((color >> 4) - (r << 4));
             //byte b = (byte)((color) - (r << 8) - (g << 4));
-            user.Foreground = new SolidColorBrush(userColors[userColor]);
             //user.Foreground = new SolidColorBrush(userColors[userColor]);
-            user.MouseEnter += User_MouseEnter;
-            user.MouseLeave += User_MouseLeave;
-            user.MouseDown += User_MouseDown;
-            Run text = new Run($" {tbxChatBox.Text}");
-            text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            tb.Inlines.Add(user);
-            tb.Inlines.Add(text);
-            
-            tb.MouseDown += Tb_MouseDown;
+            ////user.Foreground = new SolidColorBrush(userColors[userColor]);
+            //user.MouseEnter += User_MouseEnter;
+            //user.MouseLeave += User_MouseLeave;
+            //user.MouseDown += User_MouseDown;
+            //Run text = new Run($" {tbxChatBox.Text}");
+            //text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            //tb.Inlines.Add(user);
+            //tb.Inlines.Add(text);
 
-            tblChatWindow.Children.Add(tb);
+            //tb.MouseDown += Tb_MouseDown;
 
-            ChangeFontSizes();
+            //tblChatWindow.Children.Add(tb);
+
+            //ChangeFontSizes();
 
             //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
-            Client.WriteChatMessage(userName, tbxChatBox.Text);
+            Client.WriteChatMessage(userName, tbxChatBox.Text, userColors[userColor].ToString());
             //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
 
             tbxChatBox.Clear();
@@ -248,7 +247,7 @@ namespace WIPProject
             Color c = ((SolidColorBrush)r.Foreground).Color;
 
             ((Run)sender).Foreground = new SolidColorBrush(
-                new Color() {R=c.R, G=c.G, B=c.B, A=125});
+                new Color() { R = c.R, G = c.G, B = c.B, A = 125 });
 
             r.Cursor = Cursors.Hand;
         }
@@ -393,7 +392,7 @@ namespace WIPProject
             uscBasicDrawing.btnClear.FontSize = drawingControlSize;
             uscBasicDrawing.btnEraser.FontSize = drawingControlSize;
             uscBasicDrawing.btnUndo.FontSize = drawingControlSize;
-            
+
             uscBasicDrawing.uscColorPicker.lblR.FontSize = drawingControlSize;
             uscBasicDrawing.uscColorPicker.lblG.FontSize = drawingControlSize;
             uscBasicDrawing.uscColorPicker.lblB.FontSize = drawingControlSize;
@@ -452,8 +451,9 @@ namespace WIPProject
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            ImageManager.SaveImageToDesktop(userName, 
+            ImageManager.SaveImageToDesktop(userName,
                 uscBasicDrawing.cnvDrawArea, this);
         }
     }
 }
+
