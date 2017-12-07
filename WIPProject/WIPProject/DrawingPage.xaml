@@ -14,13 +14,13 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown">
+        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Grid.Column="1" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown" MouseEnter="uscBasicDrawing_MouseEnter">
 
         </gc:BasicDrawingControl>
         <gc:BasicViewingControl x:Name="uscViewer" Grid.Column="1" Visibility="Hidden">
 
         </gc:BasicViewingControl>
-        <gc:RoomSelectionControl x:Name="uscRoomSelector" Visibility="Hidden" Margin="0,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1"/>
+        <gc:RoomSelectionControl x:Name="uscRoomSelector" Visibility="Hidden" Margin="0,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" MouseLeave="uscRoomSelector_MouseLeave"/>
         <DockPanel x:Name="stckPnlSideMenu" Margin="0" LastChildFill="False" Background="#FF688BB8">
             <Button DockPanel.Dock="Bottom" x:Name="btnSettings" Content="Settings" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSettings_Click"/>
             <ListBox x:Name="lbxFriendList" MinHeight="100" MaxHeight="300" DockPanel.Dock="Bottom" Margin="1.5,0" Background="Transparent" BorderBrush="#FF48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9"/>
@@ -32,6 +32,7 @@
             </Label>
             <Button x:Name="btnModeChange" DockPanel.Dock="Top" Background="#00000000" Content="Mode" Height="25" Margin="2,10" Foreground="#FF9EED8A" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click" BorderBrush="{x:Null}"/>
             <Button DockPanel.Dock="Top" x:Name="btnRoomSelect" Content="Rooms" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnRoomSelect_Click"/>
+            <Button DockPanel.Dock="Top" x:Name="btnSave" Content="Save" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSave_Click"/>
         </DockPanel>
         <Grid Grid.Column="2" Margin="0">
             <Grid.RowDefinitions>
@@ -46,10 +47,10 @@
                     </LinearGradientBrush>
                 </Border.Background>
                 <ScrollViewer x:Name="scvChatScrollbar" VerticalScrollBarVisibility="Hidden">
-                    <TextBox Padding="5" VerticalAlignment="Bottom" x:Name="tblChatWindow" Margin="0" TextWrapping="Wrap"  Foreground="#CEFFFF" TextOptions.TextFormattingMode="Display" FontFamily="Maiandra GD" TextAlignment="Left" Background="Transparent" BorderBrush="#00ABADB3" SelectionBrush="#7FFFE4A9" IsReadOnly="True"/>
+                    <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="tblChatWindow" Margin="0" TextOptions.TextFormattingMode="Display"  Background="Transparent"/>
                 </ScrollViewer>
             </Border>
-            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="#CEFFFF" PreviewKeyDown="txbChatBox_PreviewKeyDown" FontFamily="Maiandra GD" SelectionBrush="#7FFFE4A9">
+            <TextBox  x:Name="tbxChatBox" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Margin="0" Grid.Row="1" TextWrapping="Wrap" BorderBrush="#FF272727" BorderThickness="1,0,0.5,0.5" Foreground="#CEFFFF" PreviewKeyDown="txbChatBox_PreviewKeyDown"  TextChanged="tbxChatBox_TextChanged" FontFamily="Maiandra GD" SelectionBrush="#7FFFE4A9">
                 <TextBox.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#688BB8" Offset="1"/>
@@ -67,5 +68,11 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
+        <Menu x:Name="mnuChatOptions" Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="64" Margin="211,125,0,0" VerticalAlignment="Top" Width="76" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="10" Background="#CC000000" Visibility="Hidden">
+            <MenuItem Header="Whisper" Click="HideChatOptions"></MenuItem>
+            <MenuItem Header="Add Friend" Margin="0, 1" Click="HideChatOptions"></MenuItem>
+            <MenuItem x:Name="miCopyMessage" Header="Copy Message" Margin="0, 1" Click="miCopyMessage_Click"></MenuItem>
+            <MenuItem Header="Report" Margin="0, 1" Click="HideChatOptions"></MenuItem>
+        </Menu>
     </Grid>
 </Window>
