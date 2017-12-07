@@ -100,6 +100,9 @@ namespace WIPProject.UserControls
             cnvDrawArea.Background = uscColorPicker.elpCurrentColor.Fill.Clone();
             nextAction = NextAction.DRAW;
             btnBucket.Background = originalButtonColor.Clone();
+
+            var color = ((Color)uscColorPicker.elpCurrentColor.Fill.GetValue(SolidColorBrush.ColorProperty));
+            Client.WriteFillMessage(color.ToString());
         }
 
         private void EraseLine()
@@ -124,6 +127,7 @@ namespace WIPProject.UserControls
                             ((Line)child).RenderedGeometry.Bounds))
                         {
                             cnvDrawArea.Children.RemoveAt(i);
+                            Client.WriteEraseMessage(i);
                             --i;
                         }
                     }
@@ -154,7 +158,7 @@ namespace WIPProject.UserControls
 
                 //dirtyLines.Add(l);
                 AddDirtyLine(l);
-                Client.WiteDrawMessage(l);
+                Client.WriteDrawMessage(l);
 
                 ++currentLineCount;
             }
@@ -191,6 +195,7 @@ namespace WIPProject.UserControls
             cnvDrawArea.Children.Clear();
 
             currentLineCount = 0;
+            Client.WriteClearMessage();
         }
 
         private void UndoLastLine()
@@ -208,6 +213,7 @@ namespace WIPProject.UserControls
                     }
                     cnvDrawArea.Children.RemoveAt(cnvDrawArea.Children.Count - 1);
                 }
+                Client.WriteUndoMessage(numberOfUndos);
             }
         }
 

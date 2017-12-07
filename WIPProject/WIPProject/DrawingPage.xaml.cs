@@ -66,11 +66,6 @@ namespace WIPProject
             main = window;
             userName = name;
 
-            //ImageBrush image = new ImageBrush();
-            //string thingy = AppDomain.CurrentDomain.BaseDirectory + "carpet02.jpg";
-            //image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource; ;
-            //stckPnlSideMenu.Background = image;
-
             uscRoomSelector.page = this;
 
             uscBasicDrawing.drawingPage = this;
@@ -134,16 +129,7 @@ namespace WIPProject
 
                 ChangeFontSizes();
             });
-            }
-
-        //public void AddMessage(string userName, string message, string color) {
-        //    this.Dispatcher.Invoke(() =>
-        //    {
-        //        tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
-
-        //    });
-
-        //}
+        }
 
         public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
@@ -172,6 +158,55 @@ namespace WIPProject
             });
         }
 
+        public void ClearDrawing() {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Children.Clear();
+                    uscViewer.cnvDrawArea.Children.Clear();
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }
+            });
+        }
+
+        public void FillDrawing(string color) {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                    uscViewer.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }               
+            });
+        }
+
+        public void EraseDrawing(int index) {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Children.RemoveAt(index);
+                    uscViewer.cnvDrawArea.Children.RemoveAt(index);
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }               
+            });
+        }
+
+        public void UndoDrawing(int undoAmount) {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //int index = uscBasicDrawing.cnvDrawArea.Children.Count - undoAmount - 1;
+                    //uscBasicDrawing.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                    int index = uscViewer.cnvDrawArea.Children.Count - undoAmount;
+                    if(index < 0) {
+                        index = 0;
+                    }
+                    uscViewer.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                } catch(Exception e) {
+                    MessageBox.Show(e.ToString());
+                }              
+            });
+        }
+
         public void ToggleDrawing() {
             Active = !Active;
             if (isActive)
@@ -186,42 +221,7 @@ namespace WIPProject
 
         private void SendMessage()
         {
-            //TextBlock tb = new TextBlock();
-            //tb.Padding = new Thickness(0, 0, 5, 0);
-            //tb.TextAlignment = TextAlignment.Left;
-            //tb.HorizontalAlignment = HorizontalAlignment.Stretch;
-            //tb.VerticalAlignment = VerticalAlignment.Top;
-            //tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            //tb.FontFamily = new FontFamily("Maiandra GD");
-            //tb.Background = null;
-            //tb.TextWrapping = TextWrapping.Wrap;
-            //tb.Margin = new Thickness(5, 0, 0, 5);
-
-            //Run user = new Run($"{userName}:");
-            //int color = 0;
-            //int.TryParse("0xFFFFFF", NumberStyles.HexNumber, CultureInfo.CurrentCulture, out color);
-            //byte r = (byte)(color >> 8);
-            //byte g = (byte)((color >> 4) - (r << 4));
-            //byte b = (byte)((color) - (r << 8) - (g << 4));
-            //user.Foreground = new SolidColorBrush(userColors[userColor]);
-            ////user.Foreground = new SolidColorBrush(userColors[userColor]);
-            //user.MouseEnter += User_MouseEnter;
-            //user.MouseLeave += User_MouseLeave;
-            //user.MouseDown += User_MouseDown;
-            //Run text = new Run($" {tbxChatBox.Text}");
-            //text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            //tb.Inlines.Add(user);
-            //tb.Inlines.Add(text);
-
-            //tb.MouseDown += Tb_MouseDown;
-
-            //tblChatWindow.Children.Add(tb);
-
-            //ChangeFontSizes();
-
-            //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
             Client.WriteChatMessage(userName, tbxChatBox.Text, userColors[userColor].ToString());
-            //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
 
             tbxChatBox.Clear();
 

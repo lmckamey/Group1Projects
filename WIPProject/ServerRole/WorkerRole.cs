@@ -21,12 +21,11 @@ using Microsoft.WindowsAzure.Diagnostics.Management;
 
 namespace ServerRole {
 
-    //sealed class SampleEventSourceWriter : EventSource {
-    //    public static SampleEventSourceWriter Log = new SampleEventSourceWriter();
-    //    public void MessageMethod(string Message) { if (IsEnabled()) WriteEvent(2, Message); }
-    //}
-
     public class WorkerRole : RoleEntryPoint {
+
+        public enum CmdType { ERROR, REQUEST, SIGNAL, CLEAR, FILL, UNDO, ERASE };
+
+
         class Client {
             public readonly Guid id = Guid.NewGuid();
             Server server;
@@ -54,11 +53,6 @@ namespace ServerRole {
 
                     cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                    //if (!stream.DataAvailable) {
-                    //    server.Command(cmd, this);
-                    //    cmd = String.Empty; // Reset command
-                    //    //stream.Flush();
-                    //}
                     var cmdSplit = cmd.Split('\0');
                     int count = cmdSplit.Count();
                     if (count > 1) {
@@ -147,13 +141,6 @@ namespace ServerRole {
             }
 
             public void Command(string cmd, Client client) {
-                // Parse the message...
-                //var commands = cmd.Split('\0');
-                //int length = commands.Count();
-                //for (int i = 0; i < length; i++) {
-
-                //}
-
                 string currCmd = cmd;
 
                 int spaceIndex = currCmd.IndexOf(' ');
@@ -171,7 +158,7 @@ namespace ServerRole {
                         WriteToClient("HELP -error:Message options have not been included for the server yet.\0", client);
                         break;
                     case "HELP":
-                        WriteToClient("HELP -error:Help options have not been included for the server yet.\0", client);
+                        ParseHelpCmd(currCmd.Substring(spaceIndex), client);    
                         break;
                     default:
                         if (currCmd != String.Empty) {
@@ -205,6 +192,85 @@ namespace ServerRole {
                     WriteToClient(cmd, client);
 
                 }
+            }
+
+            public void ParseHelpCmd(string cmd, Client c) {
+                CmdType cmdType = CmdType.ERROR;
+                string message = "";
+
+                //int beginInfoInd = cmd.IndexOf('-');
+                //while (beginInfoInd != -1) {
+                //    tempCmd = tempCmd.Substring(beginInfoInd + 1);
+
+                //    // We find the colon and grab the type
+                //    // UserName
+                //    int typeInd = tempCmd.IndexOf(':');
+                //    string type = tempCmd.Substring(0, typeInd);
+
+                //    // We find the next dash (-) to get data
+                //    int dataInd = tempCmd.IndexOf('-');
+                //    if (dataInd == -1) {
+                //        dataInd = tempCmd.Count();
+                //        beginInfoInd = -1;
+                //    } else {
+                //        beginInfoInd = dataInd;
+                //    }
+                //    dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
+                //    string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
+                int beginInfoInd = cmd.IndexOf('-');
+                int typeInd = cmd.IndexOf(':');
+                string type = cmd.Substring(beginInfoInd + 1, typeInd - beginInfoInd - 1);
+                //if (type.Equals("data")) {
+                //    string allLines = cmd.Substring(typeInd + 1);
+
+                //    lines = allLines.Split('|');
+                //    drawDelegate?.Invoke(lines);
+                //}
+
+                // Get data related to specific values
+                message = cmd.Substring(typeInd + 1);
+                switch (type) {
+                    case "error":
+                        SampleEventSourceWriter.Log.MessageMethod("ERROR: " + message);
+                        break;
+                    case "erase":
+                        cmdType = CmdType.ERASE;
+                        goto case "undo";
+                    case "clear":
+                        cmdType = CmdType.CLEAR;
+                        goto case "undo";
+                    case "fill":
+                        cmdType = CmdType.FILL;
+                        goto case "undo";
+                    case "undo":
+                        cmdType = CmdType.UNDO;
+                        if (c == drawingClient) {
+                            cmd = "HELP " + cmd + '\0';
+                            int length = clients.Count;
+                            for (int i = 0; i < length; i++) {
+                                var client = clients.ElementAt(i);
+                                if (client == c) { continue; }
+                                WriteToClient(cmd, client);
+
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                //int length2 = clients.Count;
+                //for (int i = 0; i < length2; i++) {
+                //    var client = clients.ElementAt(i);
+                //    if (client == c) { continue; }
+                //    WriteToClient(cmd, client);
+
+                //}
+                //}
+
+                //if ((cmdType == CmdType.UNDO || cmdType == CmdType.FILL || cmdType == CmdType.CLEAR || cmdType == CmdType.ERASE) && c == drawingClient ) {
+
+
+                //}
             }
 
             private void WriteToAllClients(string message) {
@@ -300,6 +366,10 @@ namespace ServerRole {
     }
 }
 /*
+ * PS C:\Users\Flameo326> Set-AzureServiceDiagnosticsExtension -ServiceName $service_name -StorageAccountName $storage_name
+ -StorageAccountKey $key -DiagnosticsConfigurationPath $config_path -Slot Production -Role ServerRole
+ * 
+ * 
  * 
  *System.IO.IOException: Unable to read data from the transport connection: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
    at System.Net.Sockets.Socket.EndReceive(IAsyncResult asyncResult)
