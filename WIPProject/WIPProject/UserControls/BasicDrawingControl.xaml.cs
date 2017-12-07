@@ -30,8 +30,6 @@ namespace WIPProject.UserControls
         public Line[] dirtyLines = new Line[5000];
         public int numOfDirtyLines = 0;
 
-        public DispatcherTimer updateTimer;
-
         public bool ignoreNextLines = false;
 
         public Point mouseOldPosition;
@@ -65,74 +63,7 @@ namespace WIPProject.UserControls
 
             originalButtonColor = btnEraser.Background.Clone();
 
-            this.Dispatcher.Thread.Priority = System.Threading.ThreadPriority.Highest;
-
             //EntryClass.Start();
-            updateTimer = new DispatcherTimer();
-            updateTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            updateTimer.Tick += UpdateTimer_Tick;
-
-            //updateTimer.Start();
-        }
-
-        private void UpdateTimer_Tick(object sender, EventArgs e)
-        {
-            if (drawingPage.Active)
-            {
-                //cnvDrawArea.MouseMove -= CnvDrawArea_MouseMove;
-                //cnvDrawArea.MouseMove += cnvDrawArea_MouseMove;
-                //cnvDrawArea.IsEnabled = false;
-                Line[] lines = dirtyLines;
-                //Client.WiteDrawMessage(lines);
-
-                //if (uscBasicDrawing.numOfDirtyLines > 0)
-                //{
-                //    int i = uscBasicDrawing.numOfDirtyLines;
-                //}
-
-                ClearDirtyLines();
-                //tempCanvas.Children.Clear();
-
-                //StringBuilder sb = new StringBuilder();
-
-                //foreach (Line l in lines)
-                //{
-                //    if (l != null)
-                //    {
-                //        sb.Append(XamlWriter.Save(l));
-                //        sb.Append("|");
-                //    }
-                //}
-                //if (sb.Length > 0)
-                //{
-                //    TextWriter writer = File.CreateText(filePath);
-
-                //    sb.Remove(sb.Length - 1, 1);
-
-                //    XamlWriter.Save(sb.ToString(), writer);
-
-                //    writer.Close();
-
-                //    uscBasicDrawing.ClearDirtyLines();
-                //    tempCanvas.Children.Clear();
-
-                //    FileStream fileStream = File.OpenRead(filePath);
-                //    string longString = (string)XamlReader.Load(fileStream);
-                //    string longString = (string)bf.Deserialize(fileStream);
-                //    string[] lineStrings = longString.Split('|');
-                //    foreach (string s in lineStrings)
-                //    {
-                //        var line = XamlReader.Parse(s);
-                //         cnavas.children.add(line);
-                //        int i = 0;
-                //    }
-                //    var v = XamlReader.Load(fileStream);
-                //    grid.Children.Add((v as UIElement));
-
-                //    fileStream.Close();
-                //}
-
-            }
         }
 
         private void cnvDrawArea_MouseMove(object sender, MouseEventArgs e)

@@ -38,13 +38,6 @@ namespace WIPProject
             set
             {
                 isActive = value;
-                //if (updateTimer != null)
-                //{
-                //    if (isActive)
-                //        updateTimer.Start();
-                //    else
-                //        updateTimer.Stop();
-                //}
             }
         }
         public string userName;
@@ -52,13 +45,15 @@ namespace WIPProject
 
         private int startingWindowWidth;
         private int startingWindowHeight;
-
-        //private string filePath = @"C: \Users\Colin Misbach\Desktop\serializedCanvas.txt";
+        
         private Canvas tempCanvas = new Canvas();
 
         Color[] userColors = new Color[]
-        { Colors.DarkRed, Colors.Goldenrod, Colors.HotPink, Colors.BlueViolet,
-            Colors.ForestGreen, Colors.DodgerBlue};
+        { Color.FromRgb(255, 156, 0), Color.FromRgb(253, 176, 253),
+        Color.FromRgb(0, 0, 0), Color.FromRgb(26, 220, 74),
+        Color.FromRgb(210, 0, 0), Color.FromRgb(140, 215, 249),
+        Color.FromRgb(255, 255, 255),
+        };
         int userColor;
 
         TextBlock selectedMessage = null;
@@ -88,6 +83,9 @@ namespace WIPProject
 
             startingWindowWidth = (int)Width;
             startingWindowHeight = (int)Height;
+
+            uscBasicDrawing.Visibility = Visibility.Hidden;
+            uscViewer.Visibility = Visibility.Visible;
         }
 
         private void MnuChatOptions_MouseLeave(object sender, MouseEventArgs e)
@@ -158,7 +156,14 @@ namespace WIPProject
 
                     }
                     if (line is Line) {
-                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);
+                        if (uscViewer.Visibility == Visibility.Hidden)
+                        {
+                            uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);
+                        }
+                        else if (uscBasicDrawing.Visibility == Visibility.Hidden)
+                        {
+                            uscViewer.cnvDrawArea.Children.Add((Line)line);
+                        }
                     }
 
                 }
@@ -169,6 +174,14 @@ namespace WIPProject
 
         public void ToggleDrawing() {
             Active = !Active;
+            if (isActive)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    uscBasicDrawing.Visibility = Visibility.Visible;
+                    uscViewer.Visibility = Visibility.Hidden;
+                });
+            }
         }
 
         private void SendMessage()
@@ -303,7 +316,6 @@ namespace WIPProject
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            uscBasicDrawing.updateTimer.Stop();
             Client.Shutdown();
             System.Windows.Application.Current.Shutdown();
             //main.Close();
@@ -365,6 +377,7 @@ namespace WIPProject
 
         private void ApplySizeChanges(float multiplier)
         {
+            int alertSize = (int)(12 * multiplier);
             int modeSize = (int)(11 * multiplier);
             int roomsSize = (int)(9 * multiplier);
             int friendLabelSize = (int)(9 * multiplier);
@@ -380,11 +393,12 @@ namespace WIPProject
 
             btnModeChange.FontSize = modeSize;
             btnRoomSelect.FontSize = roomsSize;
+            btnSave.FontSize = modeSize;
             lblFriends.FontSize = friendLabelSize;
-            lbxFriendList.FontSize = friendListSize;
             btnSettings.FontSize = settingsSize;
             lblTextWatermark.FontSize = chatSize;
             tbxChatBox.FontSize = chatSize;
+            lblAlert.FontSize = alertSize;
             for (int i = 0; i < tblChatWindow.Children.Count; ++i)
             {
                 ((TextBlock)tblChatWindow.Children[i]).FontSize = chatSize;
@@ -458,6 +472,38 @@ namespace WIPProject
         {
             ImageManager.SaveImageToDesktop(userName,
                 uscBasicDrawing.cnvDrawArea, this);
+
+            ResetOpactiy();
+
+            var animation = new DoubleAnimation
+            {
+                To = 0,
+                BeginTime = TimeSpan.FromSeconds(2),
+                Duration = TimeSpan.FromSeconds(2),
+                FillBehavior = FillBehavior.Stop
+            };
+
+            animation.Completed += (s, a) => lblAlert.Opacity = 0;
+
+            lblAlert.BeginAnimation(UIElement.OpacityProperty, animation);
+        }
+
+        private void ResetOpactiy()
+        {
+            lblAlert.Opacity = 1;
+        }
+
+        private void tbxChatBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            lblTextWatermark.Content = "";
+        }
+
+        private void tbxChatBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(tbxChatBox.Text != "")
+            {
+                lblTextWatermark.Content = "Type Something...";
+            }
         }
     }
 }
