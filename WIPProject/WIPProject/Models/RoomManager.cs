@@ -36,11 +36,34 @@ namespace WIPProject.Models
         }
 
         private static void HelpMessage(Client.CmdType type, string msg) {
-            if(type == Client.CmdType.ERROR) {
-                MessageBox.Show(msg, "Server sent an Error");
-            }
-            if(type == Client.CmdType.SIGNAL) {
-                ChatRooms[currRoom].ToggleDrawing();
+            switch (type) {
+                case Client.CmdType.CLEAR:
+                    ChatRooms[currRoom].ClearDrawing();
+                    break;
+                case Client.CmdType.ERASE:
+                    int index;
+                    int.TryParse(msg, out index);
+                    ChatRooms[currRoom].EraseDrawing(index);
+                    break;
+                case Client.CmdType.ERROR:
+                    MessageBox.Show(msg, "Server sent an Error");
+                    break;
+                case Client.CmdType.FILL:
+                    ChatRooms[currRoom].FillDrawing(msg);
+                    break;
+                case Client.CmdType.REQUEST:
+                    // ?????
+                    break;
+                case Client.CmdType.SIGNAL:
+                    ChatRooms[currRoom].ToggleDrawing();
+                    break;
+                case Client.CmdType.UNDO:
+                    int amo;
+                    int.TryParse(msg, out amo);
+                    ChatRooms[currRoom].UndoDrawing(amo);
+                    break;
+                default:
+                    break;
             }
         }
 

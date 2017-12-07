@@ -34,7 +34,7 @@ namespace WIPProject.Networking {
         public delegate void DrawCommand(string[] lines);
         static private DrawCommand drawDelegate;
         
-        public enum CmdType { ERROR, REQUEST, SIGNAL};
+        public enum CmdType { ERROR, REQUEST, SIGNAL, CLEAR, FILL, UNDO, ERASE};
         public delegate void HelpCommand(CmdType type, string error);
         static private HelpCommand helpDelegate;
 
@@ -98,14 +98,6 @@ namespace WIPProject.Networking {
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-
-                //if (!stream.DataAvailable) {
-                //    //cmd.Last() == '\0'
-                //    // !stream.DataAvailable
-                //    Parse(cmd);
-                //    cmd = String.Empty; // Reset command
-                //    stream.Flush();
-                //}
                 var cmdSplit = cmd.Split('\0');
                 int count = cmdSplit.Count();
                 if (count > 1) {
@@ -138,18 +130,11 @@ namespace WIPProject.Networking {
             }
         }
 
-        static public void WiteDrawMessage(Line line) {
+        static public void WriteDrawMessage(Line line) {
             if (isConnected) {
                 StringBuilder sb = new StringBuilder();
 
                 sb.Append(XamlWriter.Save(line));
-
-                //foreach (Line l in lines) {
-                //    if (l != null) {
-                //        sb.Append(XamlWriter.Save(l));
-                //        sb.Append("|");
-                //    }
-                //}
 
                 if (sb.Length > 0) {
                     //sb.Remove(sb.Length - 1, 1);
@@ -163,6 +148,42 @@ namespace WIPProject.Networking {
                 }
             }
         }
+        static public void WriteFillMessage(string color) {
+            if (isConnected) {
+                string cmd = "HELP -fill:" + color + '\0';
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
+        }
+        static public void WriteClearMessage() {
+            if (isConnected) {
+                string cmd = "HELP -clear:\0";
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
+        }
+        static public void WriteEraseMessage(int index) {
+            if (isConnected) {
+                string cmd = "HELP -erase:" + index + '\0';
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
+        }
+        static public void WriteUndoMessage(int amo) {
+            if (isConnected) {
+                string cmd = "HELP -undo:" + amo + '\0';
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
+        }
 
         static private void WriteAsync(IAsyncResult ar) {
             NetworkStream stream = (NetworkStream)ar.AsyncState;
@@ -170,12 +191,12 @@ namespace WIPProject.Networking {
         }
 
         static private void Parse(string cmd) {
-            var commands = cmd.Split('\0');
-            int length = commands.Count();
-            for (int i = 0; i < length; i++) {
-                string currCmd = commands[i];
+            //var commands = cmd.Split('\0');
+            //int length = commands.Count();
+            //for (int i = 0; i < length; i++) {
+            string currCmd = cmd;
 
-                int spaceIndex = currCmd.IndexOf(' ');
+            int spaceIndex = currCmd.IndexOf(' ');
                 spaceIndex = spaceIndex == -1 ? currCmd.Count() : spaceIndex;
                 switch (currCmd.Substring(0, spaceIndex)) {
                     case "CHAT":
@@ -193,7 +214,7 @@ namespace WIPProject.Networking {
                         Console.WriteLine("Invalid message recieved: " + currCmd);
                         break;
                 }
-            }
+            //}
         }
 
         static private void ParseChatCmd(string cmd) {
@@ -282,16 +303,27 @@ namespace WIPProject.Networking {
                     beginInfoInd = dataInd;
                 }
                 dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
-                string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
+                error = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
 
                 // Get data related to specific values
                 switch (type) {
                     case "error":
-                        error = data;
                         cmdType = CmdType.ERROR;
                         break;
                     case "signal":
                         cmdType = CmdType.SIGNAL;
+                        break;
+                    case "erase":
+                        cmdType = CmdType.ERASE;
+                        break;
+                    case "clear":
+                        cmdType = CmdType.CLEAR;
+                        break;
+                    case "fill":
+                        cmdType = CmdType.FILL;
+                        break;
+                    case "undo":
+                        cmdType = CmdType.UNDO;
                         break;
                     default:
                         break;
