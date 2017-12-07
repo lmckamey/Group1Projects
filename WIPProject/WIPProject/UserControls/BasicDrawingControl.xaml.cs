@@ -295,5 +295,10 @@ namespace WIPProject.UserControls
         {
             UndoLastLine();
         }
+
+        private void cnvDrawArea_MouseLeave(object sender, MouseEventArgs e)
+        {
+            IncrementCurrentStroke();
+        }
     }
 }
