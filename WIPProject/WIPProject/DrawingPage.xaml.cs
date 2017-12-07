@@ -20,6 +20,9 @@ using System.Windows.Markup;
 using System.Xml;
 using WIPProject.Models;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Media.Animation;
+using static System.Net.Mime.MediaTypeNames;
+using System.Globalization;
 
 namespace WIPProject
 {
@@ -35,25 +38,30 @@ namespace WIPProject
             set
             {
                 isActive = value;
-                if (updateTimer != null)
-                {
-                    if (isActive)
-                        updateTimer.Start();
-                    else
-                        updateTimer.Stop();
-                }
+                //if (updateTimer != null)
+                //{
+                //    if (isActive)
+                //        updateTimer.Start();
+                //    else
+                //        updateTimer.Stop();
+                //}
             }
         }
         public string userName;
         public MainWindow main;
-
-        private DispatcherTimer updateTimer;
 
         private int startingWindowWidth;
         private int startingWindowHeight;
 
         //private string filePath = @"C: \Users\Colin Misbach\Desktop\serializedCanvas.txt";
         private Canvas tempCanvas = new Canvas();
+
+        Color[] userColors = new Color[]
+        { Colors.DarkRed, Colors.Goldenrod, Colors.HotPink, Colors.BlueViolet,
+            Colors.ForestGreen, Colors.DodgerBlue};
+        int userColor;
+
+        TextBlock selectedMessage = null;
 
         public DrawingPage(bool active, MainWindow window = null, string name = "")
         {
@@ -70,71 +78,91 @@ namespace WIPProject
 
             uscRoomSelector.page = this;
 
+            uscBasicDrawing.drawingPage = this;
+
+            mnuChatOptions.MouseLeave += MnuChatOptions_MouseLeave;
+
+            Random r = new Random();
+            int x = r.Next(0, userColors.Length - 1);
+            userColor = x;
+
             startingWindowWidth = (int)Width;
             startingWindowHeight = (int)Height;
-
-            updateTimer = new DispatcherTimer();
-            updateTimer.Interval = new TimeSpan(0,0,0,0,1000);
-            updateTimer.Tick += UpdateTimer_Tick;
-            
-            updateTimer.Start();
         }
 
-        private void UpdateTimer_Tick(object sender, EventArgs e)
+        private void MnuChatOptions_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (Active)
-            {
+            mnuChatOptions.Visibility = Visibility.Hidden;
+        }
 
-                Line[] lines = uscBasicDrawing.dirtyLines;
-                Client.WriteDrawMessage(lines);
-
-                uscBasicDrawing.ClearDirtyLines();
-                tempCanvas.Children.Clear();
-            }
+        public void HideChatOptions(object sender, RoutedEventArgs e)
+        {
+            mnuChatOptions.Visibility = Visibility.Hidden;
         }
 
         private void txbChatBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key.Equals(Key.Return))
             {
-                lblTextWatermark.Visibility = Visibility.Visible;
                 SendMessage();
-            }
-            else if (tbxChatBox.GetLineText(0).Length >= 0 && !e.Key.Equals(Key.Back) 
-                && (e.Key >= Key.A && e.Key <= Key.Z))
-            {
-                lblTextWatermark.Visibility = Visibility.Hidden;
-            }
-            else if (e.Key.Equals(Key.Back) && tbxChatBox.GetLineText(0).Length <= 1)
-            {
-                lblTextWatermark.Visibility = Visibility.Visible;
             }
         }
 
         public void AddMessage(string userName, string message, string color) {
             this.Dispatcher.Invoke(() =>
             {
-                tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
+                TextBlock tb = new TextBlock();
+                tb.Padding = new Thickness(0, 0, 5, 0);
+                tb.TextAlignment = TextAlignment.Left;
+                tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+                tb.VerticalAlignment = VerticalAlignment.Top;
+                tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+                tb.FontFamily = new FontFamily("Maiandra GD");
+                tb.Background = null;
+                tb.TextWrapping = TextWrapping.Wrap;
+                tb.Margin = new Thickness(5, 0, 0, 5);
+
+                Run user = new Run($"{userName}:");
+                user.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                user.MouseEnter += User_MouseEnter;
+                user.MouseLeave += User_MouseLeave;
+                user.MouseDown += User_MouseDown;
+                Run text = new Run($" {message}");
+                text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+                tb.Inlines.Add(user);
+                tb.Inlines.Add(text);
+
+                tblChatWindow.Children.Add(tb);
+
+                ChangeFontSizes();
             });
-            
-        }
+            }
+
+        //public void AddMessage(string userName, string message, string color) {
+        //    this.Dispatcher.Invoke(() =>
+        //    {
+        //        tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
+
+        //    });
+
+        //}
 
         public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
 
-                for(int i = 0; i < lines.Length; i++) {
+                for (int i = 0; i < lines.Length; i++) {
                     Object line = null;
                     try {
                         line = XamlReader.Parse(lines[i]);
-                    } catch(Exception e) {
+                    } catch (Exception e) {
 
                     }
                     if (line is Line) {
-                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);                     
+                        uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);
                     }
 
                 }
-                    
+
 
             });
         }
@@ -145,13 +173,88 @@ namespace WIPProject
 
         private void SendMessage()
         {
+            //TextBlock tb = new TextBlock();
+            //tb.Padding = new Thickness(0, 0, 5, 0);
+            //tb.TextAlignment = TextAlignment.Left;
+            //tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+            //tb.VerticalAlignment = VerticalAlignment.Top;
+            //tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            //tb.FontFamily = new FontFamily("Maiandra GD");
+            //tb.Background = null;
+            //tb.TextWrapping = TextWrapping.Wrap;
+            //tb.Margin = new Thickness(5, 0, 0, 5);
+
+            //Run user = new Run($"{userName}:");
+            //int color = 0;
+            //int.TryParse("0xFFFFFF", NumberStyles.HexNumber, CultureInfo.CurrentCulture, out color);
+            //byte r = (byte)(color >> 8);
+            //byte g = (byte)((color >> 4) - (r << 4));
+            //byte b = (byte)((color) - (r << 8) - (g << 4));
+            //user.Foreground = new SolidColorBrush(userColors[userColor]);
+            ////user.Foreground = new SolidColorBrush(userColors[userColor]);
+            //user.MouseEnter += User_MouseEnter;
+            //user.MouseLeave += User_MouseLeave;
+            //user.MouseDown += User_MouseDown;
+            //Run text = new Run($" {tbxChatBox.Text}");
+            //text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
+            //tb.Inlines.Add(user);
+            //tb.Inlines.Add(text);
+
+            //tb.MouseDown += Tb_MouseDown;
+
+            //tblChatWindow.Children.Add(tb);
+
+            //ChangeFontSizes();
+
             //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
-            Client.WriteChatMessage(userName, tbxChatBox.Text);
+            Client.WriteChatMessage(userName, tbxChatBox.Text, userColors[userColor].ToString());
             //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
 
             tbxChatBox.Clear();
 
             scvChatScrollbar.ScrollToBottom();
+        }
+
+        private void Tb_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            selectedMessage = tb;
+        }
+
+        private void User_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                mnuChatOptions.Visibility = Visibility.Visible;
+                Grid.SetColumn(mnuChatOptions, 2);
+                Panel.SetZIndex(mnuChatOptions, 5);
+                Point mouse = e.GetPosition(scvChatScrollbar);
+                mouse.X -= 5;
+                mouse.Y -= 5;
+                mnuChatOptions.Margin = new Thickness(mouse.X, mouse.Y, 0, 0);
+            }
+        }
+
+        private void User_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Run r = sender as Run;
+            Color c = ((SolidColorBrush)r.Foreground).Color;
+
+            ((Run)sender).Foreground = new SolidColorBrush(
+                new Color() { R = c.R, G = c.G, B = c.B, A = 255 });
+
+            r.Cursor = Cursors.Arrow;
+        }
+
+        private void User_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Run r = sender as Run;
+            Color c = ((SolidColorBrush)r.Foreground).Color;
+
+            ((Run)sender).Foreground = new SolidColorBrush(
+                new Color() { R = c.R, G = c.G, B = c.B, A = 125 });
+
+            r.Cursor = Cursors.Hand;
         }
 
         private void btnSwitchMode_Click(object sender, RoutedEventArgs e)
@@ -185,9 +288,12 @@ namespace WIPProject
         {
             ReverseVisibility(uscRoomSelector);
 
-            double x = stckPnlSideMenu.ActualWidth;
+            Point p = Mouse.GetPosition(stckPnlSideMenu);
 
-            //uscRoomSelector.Margin = new Thickness(x, 50, 0, 0);
+            double y = p.Y;
+            y -= btnRoomSelect.ActualHeight;
+
+            uscRoomSelector.Margin = new Thickness(uscRoomSelector.Margin.Left, y, 0, 0);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
@@ -197,7 +303,7 @@ namespace WIPProject
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            updateTimer.Stop();
+            uscBasicDrawing.updateTimer.Stop();
             Client.Shutdown();
             System.Windows.Application.Current.Shutdown();
             //main.Close();
@@ -235,6 +341,11 @@ namespace WIPProject
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ChangeFontSizes();
+        }
+
+        private void ChangeFontSizes()
         {
             float mult = GetSizeMultiplier();
             ApplySizeChanges(mult);
@@ -274,7 +385,11 @@ namespace WIPProject
             btnSettings.FontSize = settingsSize;
             lblTextWatermark.FontSize = chatSize;
             tbxChatBox.FontSize = chatSize;
-            tblChatWindow.FontSize = chatSize;
+            for (int i = 0; i < tblChatWindow.Children.Count; ++i)
+            {
+                ((TextBlock)tblChatWindow.Children[i]).FontSize = chatSize;
+            }
+            //tblChatWindow.FontSize = chatSize;
 
             int drawingControlSize = (int)(8 * multiplier);
 
@@ -282,7 +397,7 @@ namespace WIPProject
             uscBasicDrawing.btnClear.FontSize = drawingControlSize;
             uscBasicDrawing.btnEraser.FontSize = drawingControlSize;
             uscBasicDrawing.btnUndo.FontSize = drawingControlSize;
-            
+
             uscBasicDrawing.uscColorPicker.lblR.FontSize = drawingControlSize;
             uscBasicDrawing.uscColorPicker.lblG.FontSize = drawingControlSize;
             uscBasicDrawing.uscColorPicker.lblB.FontSize = drawingControlSize;
@@ -302,5 +417,48 @@ namespace WIPProject
             int width = (int)(94 * multiplier);
             uscBasicDrawing.uscColorPicker.grdSliders.Width = width;
         }
+
+        private void tbxChatBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (tbxChatBox.GetLineText(0).Length > 0)
+            {
+                lblTextWatermark.Visibility = Visibility.Hidden;
+            }
+            else if (tbxChatBox.GetLineText(0).Length <= 0)
+            {
+                lblTextWatermark.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void miCopyMessage_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedMessage != null)
+            {
+                string message = ((Run)selectedMessage.Inlines.ElementAt(1)).Text;
+                message = message.Substring(1, message.Length - 1);
+                Clipboard.SetText(message);
+                mnuChatOptions.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void uscRoomSelector_MouseLeave(object sender, MouseEventArgs e)
+        {
+            uscRoomSelector.Visibility = Visibility.Hidden;
+        }
+
+        private void uscBasicDrawing_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (uscRoomSelector.Visibility == Visibility.Visible)
+            {
+                uscRoomSelector.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            ImageManager.SaveImageToDesktop(userName,
+                uscBasicDrawing.cnvDrawArea, this);
+        }
     }
 }
+

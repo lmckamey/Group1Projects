@@ -21,7 +21,7 @@ namespace WIPProject.Models
         {
             CreateChatRooms(numberOfRooms);
 
-            ChatRooms[currRoom].Active = false;
+            ChatRooms[currRoom].Active = true;
 
             Client.Add(ChatMessage);
             Client.Add(HelpMessage);
