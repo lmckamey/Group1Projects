@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WIPProject"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="MainWindow" Height="350" Width="525" MinWidth="400" MinHeight="300">
     <Grid x:Name="mainGrid">
+        <Grid.Background>
+            <ImageBrush ImageSource="Resources/Images/idea6.jpg"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
