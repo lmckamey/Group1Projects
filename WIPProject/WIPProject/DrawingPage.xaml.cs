@@ -86,49 +86,10 @@ namespace WIPProject
             {
 
                 Line[] lines = uscBasicDrawing.dirtyLines;
-                Client.WiteDrawMessage(lines);
+                Client.WriteDrawMessage(lines);
 
                 uscBasicDrawing.ClearDirtyLines();
                 tempCanvas.Children.Clear();
-
-                //StringBuilder sb = new StringBuilder();
-
-                //foreach (Line l in lines)
-                //{
-                //    if (l != null)
-                //    {
-                //        sb.Append(XamlWriter.Save(l));
-                //        sb.Append("|");
-                //    }
-                //}
-                //if (sb.Length > 0)
-                //{
-                //    TextWriter writer = File.CreateText(filePath);
-
-                //    sb.Remove(sb.Length - 1, 1);
-
-                //    XamlWriter.Save(sb.ToString(), writer);
-
-                //    writer.Close();
-
-                //    uscBasicDrawing.ClearDirtyLines();
-                //    tempCanvas.Children.Clear();
-
-                //    FileStream fileStream = File.OpenRead(filePath);
-                //    string longString = (string)XamlReader.Load(fileStream);
-                //    string longString = (string)bf.Deserialize(fileStream);
-                //    string[] lineStrings = longString.Split('|');
-                //    foreach (string s in lineStrings)
-                //    {
-                //        var line = XamlReader.Parse(s);
-                //         cnavas.children.add(line);
-                //        int i = 0;
-                //    }
-                //    var v = XamlReader.Load(fileStream);
-                //    grid.Children.Add((v as UIElement));
-
-                //    fileStream.Close();
-                //}
             }
         }
 
@@ -150,10 +111,10 @@ namespace WIPProject
             }
         }
 
-        public void AddMessage(string message) {
+        public void AddMessage(string userName, string message, string color) {
             this.Dispatcher.Invoke(() =>
             {
-                tblChatWindow.Text = $"{tblChatWindow.Text}\n{message}";
+                tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
             });
             
         }
@@ -161,8 +122,13 @@ namespace WIPProject
         public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
 
-                foreach (string s in lines) {
-                    var line = XamlReader.Parse(s);
+                for(int i = 0; i < lines.Length; i++) {
+                    Object line = null;
+                    try {
+                        line = XamlReader.Parse(lines[i]);
+                    } catch(Exception e) {
+
+                    }
                     if (line is Line) {
                         uscBasicDrawing.cnvDrawArea.Children.Add((Line)line);                     
                     }

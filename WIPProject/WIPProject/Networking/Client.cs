@@ -25,7 +25,7 @@ namespace WIPProject.Networking {
         static private byte[] writeBytes;
         static private string cmd = String.Empty;
 
-        public delegate void ChatCommand(string username, string message, int color);
+        public delegate void ChatCommand(string username, string message, string color);
         static private ChatCommand chatDelegate;
 
         public delegate void MessageCommand();
@@ -49,9 +49,9 @@ namespace WIPProject.Networking {
         static public void Remove(HelpCommand helpFunc) { helpDelegate -= helpFunc; }
 
         static public void Initialize() {
+            ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
             client = new TcpClient();
             client.Connect(CONN_STRING, 10100);
-            ServicePointManager.SetTcpKeepAlive(true, 30000, 30000);
             isConnected = true;
 
             NetworkStream stream = client.GetStream();
@@ -94,16 +94,24 @@ namespace WIPProject.Networking {
         static private void ReadAsync(IAsyncResult ar) {
             try {
                 NetworkStream stream = (NetworkStream)ar.AsyncState;
-
                 int numberOfBytesRead = stream.EndRead(ar);
 
                 cmd += Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
 
-                if (cmd.Last() == '\0') {
-                    // !stream.DataAvailable
-                    Parse(cmd);
-                    cmd = String.Empty; // Reset command
-                    stream.Flush();
+                //if (!stream.DataAvailable) {
+                //    //cmd.Last() == '\0'
+                //    // !stream.DataAvailable
+                //    Parse(cmd);
+                //    cmd = String.Empty; // Reset command
+                //    stream.Flush();
+                //}
+                var cmdSplit = cmd.Split('\0');
+                int count = cmdSplit.Count();
+                if (count > 1) {
+                    for (int i = 0; i < count - 1; i++) {
+                        Parse(cmdSplit[i]);
+                    }
+                    cmd = cmdSplit[count - 1];
                 }
                 if (client.Connected) {
                     stream.BeginRead(readBytes, 0, readBytes.Length, new AsyncCallback(ReadAsync), stream);
@@ -119,7 +127,7 @@ namespace WIPProject.Networking {
             }
         }
 
-        static public void WriteChatMessage(string user, string message, string color = "#FFFFFFFF") {
+        static public void WriteChatMessage(string user, string message, string color = "#FFFFFF") {
             if (isConnected) {
                 string cmd = "CHAT -username:" + user + "-message:" + message + "-color:" + color + '\0';
                 writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
@@ -129,7 +137,7 @@ namespace WIPProject.Networking {
             }
         }
 
-        static public void WiteDrawMessage(Line[] lines) {
+        static public void WriteDrawMessage(Line[] lines) {
             if (isConnected) {
                 StringBuilder sb = new StringBuilder();
 
@@ -187,7 +195,7 @@ namespace WIPProject.Networking {
 
         static private void ParseChatCmd(string cmd) {
             string userName = "";
-            int color = 16777215; // WHITE ? OR BLACK?
+            string color = "#FFFFFF"; // WHITE ? OR BLACK?
             string message = "";
 
             string tempCmd = cmd;
@@ -218,7 +226,7 @@ namespace WIPProject.Networking {
                         userName = data;
                         break;
                     case "color":
-                        int.TryParse(data, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out color);
+                        color = data;
                         break;
                     case "message":
                         message = data;
@@ -244,41 +252,7 @@ namespace WIPProject.Networking {
 
                 lines = allLines.Split('|');
                 drawDelegate?.Invoke(lines);
-                //foreach (string s in individualLines) {
-                //    var line = XamlReader.Parse(s);
-                //    if(line is Line) {
-                //        lines.Add((Line)line);
-                //    }
-
-                //}
             }
-
-            // We find the next dash (-) to get data
-            //int dataInd = tempCmd.IndexOf('-');
-            //if (dataInd == -1) {
-            //    dataInd = tempCmd.Count();
-            //    beginInfoInd = -1;
-            //} else {
-            //    beginInfoInd = dataInd;
-            //}
-            //dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
-            //string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
-            //while (beginInfoInd != -1) {
-   
-
-            //    // Get data related to specific values
-            //    switch (type) {
-            //        case "data":
-            //            userName = data;
-            //            break;
- 
-            //        default:
-            //            break;
-            //    }
-            //}
-
-            // ChatCommand Deleggate function
-            
         }
 
         static private void ParseHelpCmd(string cmd) {
@@ -326,3 +300,6 @@ namespace WIPProject.Networking {
         }
     }
 }
+// An empty string is being sent to the server very frequently
+// The server will ocassionaly get a IOexception other client did not respond quick enough... and remove the client.
+// Something with Drawing client not correct

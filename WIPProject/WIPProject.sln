@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnectionService",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerRole", "ServerRole\ServerRole.csproj", "{F0F4CD2F-01A6-4AC0-A232-40B6981644F6}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "WIPCloudService", "WIPCloudService\WIPCloudService.ccproj", "{166483B9-E893-40A0-A4AC-52805066A876}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{F0F4CD2F-01A6-4AC0-A232-40B6981644F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0F4CD2F-01A6-4AC0-A232-40B6981644F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0F4CD2F-01A6-4AC0-A232-40B6981644F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166483B9-E893-40A0-A4AC-52805066A876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166483B9-E893-40A0-A4AC-52805066A876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166483B9-E893-40A0-A4AC-52805066A876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166483B9-E893-40A0-A4AC-52805066A876}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
