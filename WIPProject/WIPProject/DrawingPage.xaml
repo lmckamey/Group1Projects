@@ -31,8 +31,8 @@
                 </Label.Background>
             </Label>
             <Button x:Name="btnModeChange" DockPanel.Dock="Top" Background="#00000000" Content="Mode" Height="25" Margin="2,10" Foreground="#FF9EED8A" FontFamily="Maiandra GD" FontSize="11" Click="btnModeChange_Click" BorderBrush="{x:Null}"/>
-            <Button DockPanel.Dock="Top" x:Name="btnRoomSelect" Content="Rooms" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnRoomSelect_Click"/>
-            <Button DockPanel.Dock="Top" x:Name="btnSave" Content="Save" Background="#82AEE5" Height="25" Margin="2,10" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSave_Click"/>
+            <Button DockPanel.Dock="Top" x:Name="btnRoomSelect" Content="Rooms" Background="#82AEE5" Height="25" Margin="2,5" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnRoomSelect_Click"/>
+            <Button DockPanel.Dock="Top" x:Name="btnSave" Content="Save" Background="#82AEE5" Height="25" Margin="2,5" BorderBrush="#48617F" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="9" Click="btnSave_Click"/>
         </DockPanel>
         <Grid Grid.Column="2" Margin="0">
             <Grid.RowDefinitions>
@@ -43,7 +43,7 @@
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#688BB8" Offset="0"/>
-                        <GradientStop Color="#82AEE5" Offset="1"/>
+                        <GradientStop Color="#FF77A1D5" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
                 <ScrollViewer x:Name="scvChatScrollbar" VerticalScrollBarVisibility="Hidden">
@@ -74,5 +74,6 @@
             <MenuItem x:Name="miCopyMessage" Header="Copy Message" Margin="0, 1" Click="miCopyMessage_Click"></MenuItem>
             <MenuItem Header="Report" Margin="0, 1" Click="HideChatOptions"></MenuItem>
         </Menu>
+        <Label x:Name="lblAlert" IsHitTestVisible="False" Grid.Column="1"  HorizontalAlignment="Center" Content="Image Saved To Desktop"  Margin="0,10,0,0" VerticalAlignment="Top" FontFamily="Maiandra GD" FontSize="12" Foreground="#FFCEFFFF" Background="#99000000" Opacity="0"/>
     </Grid>
 </Window>
