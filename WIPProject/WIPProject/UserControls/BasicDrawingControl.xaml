@@ -55,7 +55,7 @@
                     </Button>
                 </UniformGrid>
             </Grid>
-            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown" MouseUp="cnvDrawArea_MouseUp" MouseDown="cnvDrawArea_MouseDown" Cursor="Pen">
+            <Canvas x:Name="cnvDrawArea" Margin="0" Background="White" MouseMove="cnvDrawArea_MouseMove" MouseWheel="cnvDrawArea_MouseWheel" PreviewKeyDown="cnvDrawArea_PreviewKeyDown" MouseUp="cnvDrawArea_MouseUp" MouseDown="cnvDrawArea_MouseDown" MouseLeave="cnvDrawArea_MouseLeave" Cursor="Pen">
                 <!--<Label x:Name="log" Content="Label" Canvas.Left="10" Canvas.Top="10"/>-->
             </Canvas>
         </Grid>
