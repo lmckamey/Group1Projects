@@ -279,11 +279,6 @@ namespace WIPProject
         {
 
         }
-        private void btnModeChange_Click(object sender, RoutedEventArgs e)
-        {
-            ReverseVisibility(uscBasicDrawing);
-            ReverseVisibility(uscViewer);
-        }
 
         private void ReverseVisibility(UIElement element)
         {
@@ -303,10 +298,13 @@ namespace WIPProject
 
             Point p = Mouse.GetPosition(stckPnlSideMenu);
 
-            double y = p.Y;
-            y -= btnRoomSelect.ActualHeight;
+            double x = p.X;
+            x -= uscRoomSelector.ActualWidth / 2;
 
-            uscRoomSelector.Margin = new Thickness(uscRoomSelector.Margin.Left, y, 0, 0);
+            if (x < 0)
+                x = 0;
+
+            uscRoomSelector.Margin = new Thickness(x,uscRoomSelector.Margin.Top, 0, 0);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
@@ -343,13 +341,13 @@ namespace WIPProject
         private void HideChat()
         {
             lblToggleChat.Content = "<";
-            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(0, GridUnitType.Star);
+            grdRoot.ColumnDefinitions.ElementAt(1).Width = new GridLength(0, GridUnitType.Star);
         }
 
         private void ShowChat()
         {
             lblToggleChat.Content = ">";
-            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
+            grdRoot.ColumnDefinitions.ElementAt(1).Width = new GridLength(3, GridUnitType.Star);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -379,19 +377,18 @@ namespace WIPProject
         {
             int alertSize = (int)(12 * multiplier);
             int modeSize = (int)(11 * multiplier);
-            int roomsSize = (int)(9 * multiplier);
-            int friendLabelSize = (int)(9 * multiplier);
+            int roomsSize = (int)(11 * multiplier);
+            int friendLabelSize = (int)(11 * multiplier);
             int friendListSize = (int)(9 * multiplier);
-            int settingsSize = (int)(9 * multiplier);
+            int settingsSize = (int)(11 * multiplier);
             int chatSize = (int)(12 * multiplier);
 
-            int logoWidth = (int)(35 * multiplier);
-            int logoHeight = (int)(26 * multiplier);
+            int logoWidth = (int)(30 * multiplier);
+            int logoHeight = (int)(19 * multiplier);
 
             lblLogo.Width = logoWidth;
             lblLogo.Height = logoHeight;
-
-            btnModeChange.FontSize = modeSize;
+            
             btnRoomSelect.FontSize = roomsSize;
             btnSave.FontSize = modeSize;
             lblFriends.FontSize = friendLabelSize;
@@ -468,24 +465,44 @@ namespace WIPProject
             }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void SaveCurrentCanvas()
         {
-            ImageManager.SaveImageToDesktop(userName,
-                uscBasicDrawing.cnvDrawArea, this);
+            if (Active)
+            {
+                ImageManager.SaveImageToDesktop(userName,
+                    uscBasicDrawing.cnvDrawArea, this);
+            }
+            else
+            {
+                ImageManager.SaveImageToDesktop(userName,
+                    uscViewer.cnvDrawArea, this);
+            }
 
+            DisplayAlert("Canvas Saved to Desktop");
+        }
+
+        private void DisplayAlert(string message)
+        {
             ResetOpactiy();
 
             var animation = new DoubleAnimation
             {
                 To = 0,
                 BeginTime = TimeSpan.FromSeconds(2),
-                Duration = TimeSpan.FromSeconds(2),
+                Duration = TimeSpan.FromSeconds(1),
                 FillBehavior = FillBehavior.Stop
             };
 
             animation.Completed += (s, a) => lblAlert.Opacity = 0;
 
             lblAlert.BeginAnimation(UIElement.OpacityProperty, animation);
+
+            lblAlert.Content = message;
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveCurrentCanvas();
         }
 
         private void ResetOpactiy()
@@ -495,15 +512,16 @@ namespace WIPProject
 
         private void tbxChatBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            lblTextWatermark.Content = "";
+            //lblTextWatermark.Content = "";
+            lblTextWatermark.Visibility = Visibility.Hidden;
         }
 
         private void tbxChatBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(tbxChatBox.Text != "")
-            {
-                lblTextWatermark.Content = "Type Something...";
-            }
+            //if(tbxChatBox.GetLineLength(0) > 0)
+            //{
+            //    lblTextWatermark.Content = "Type Something...";
+            //}
         }
     }
 }
