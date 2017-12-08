@@ -219,6 +219,15 @@ namespace WIPProject
             }
         }
 
+        public void ComplimentMessage(ComplimentType type) {
+            this.Dispatcher.Invoke(() =>
+            {
+                switch (type) {
+
+                }
+            });
+        }
+
         private void SendMessage()
         {
             Client.WriteChatMessage(userName, tbxChatBox.Text, userColors[userColor].ToString());
