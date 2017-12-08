@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WIPProject.Enums;
 using WIPProject.Models;
+using WIPProject.Networking;
 
 namespace WIPProject.UserControls
 {
@@ -30,21 +31,25 @@ namespace WIPProject.UserControls
         private void lblWow_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Compliment.CreateNewCompliment(ComplimentType.WOW, cnvDrawArea);
+            Client.WriteComplimentMessage(ComplimentType.WOW);
         }
 
         private void lblCool_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Compliment.CreateNewCompliment(ComplimentType.COOL, cnvDrawArea);
+            Client.WriteComplimentMessage(ComplimentType.COOL);
         }
 
         private void lblNice_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Compliment.CreateNewCompliment(ComplimentType.NICE, cnvDrawArea);
+            Client.WriteComplimentMessage(ComplimentType.NICE);
         }
 
         private void lblThanks_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Compliment.CreateNewCompliment(ComplimentType.THANKS, cnvDrawArea);
+            Client.WriteComplimentMessage(ComplimentType.THANKS);
         }
     }
 }

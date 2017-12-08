@@ -23,7 +23,7 @@ namespace ServerRole {
 
     public class WorkerRole : RoleEntryPoint {
 
-        public enum CmdType { ERROR, REQUEST, SIGNAL, CLEAR, FILL, UNDO, ERASE };
+        public enum CmdType { ERROR, REQUEST, SIGNAL, CLEAR, FILL, UNDO, ERASE, COMPLIMENT };
 
 
         class Client {
@@ -244,6 +244,7 @@ namespace ServerRole {
                         goto case "undo";
                     case "undo":
                         cmdType = CmdType.UNDO;
+                        // ERROR CMD will Change to UNOD
                         if (c == drawingClient) {
                             cmd = "HELP " + cmd + '\0';
                             int length = clients.Count;
@@ -255,22 +256,19 @@ namespace ServerRole {
                             }
                         }
                         break;
+                    case "compliment":
+                        cmdType = CmdType.COMPLIMENT;
+                        cmd = "HELP " + cmd + '\0';
+                        int length2 = clients.Count;
+                        for (int i = 0; i < length2; i++) {
+                            var client = clients.ElementAt(i);
+                            if (client == c) { continue; }
+                            WriteToClient(cmd, client);
+                        }
+                        break;
                     default:
                         break;
                 }
-                //int length2 = clients.Count;
-                //for (int i = 0; i < length2; i++) {
-                //    var client = clients.ElementAt(i);
-                //    if (client == c) { continue; }
-                //    WriteToClient(cmd, client);
-
-                //}
-                //}
-
-                //if ((cmdType == CmdType.UNDO || cmdType == CmdType.FILL || cmdType == CmdType.CLEAR || cmdType == CmdType.ERASE) && c == drawingClient ) {
-
-
-                //}
             }
 
             private void WriteToAllClients(string message) {

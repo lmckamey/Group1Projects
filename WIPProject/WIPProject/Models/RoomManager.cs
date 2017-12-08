@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shapes;
+using WIPProject.Enums;
 using WIPProject.Networking;
 
 namespace WIPProject.Models
@@ -61,6 +62,11 @@ namespace WIPProject.Models
                     int amo;
                     int.TryParse(msg, out amo);
                     ChatRooms[currRoom].UndoDrawing(amo);
+                    break;
+                case Client.CmdType.COMPLIMENT:
+                    ComplimentType compType;
+                    Enum.TryParse(msg, out compType);
+                    ChatRooms[currRoom].ComplimentMessage(compType);
                     break;
                 default:
                     break;
