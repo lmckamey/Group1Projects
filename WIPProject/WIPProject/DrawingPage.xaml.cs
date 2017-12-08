@@ -314,26 +314,6 @@ namespace WIPProject
             }
         }
 
-        private void btnRoomSelect_Click(object sender, RoutedEventArgs e)
-        {
-            ReverseVisibility(uscRoomSelector);
-
-            Point p = Mouse.GetPosition(stckPnlSideMenu);
-
-            double x = p.X;
-            x -= uscRoomSelector.ActualWidth / 2;
-
-            if (x < 0)
-                x = 0;
-
-            uscRoomSelector.Margin = new Thickness(x,uscRoomSelector.Margin.Top, 0, 0);
-        }
-
-        private void btnSettings_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Window_Closed(object sender, EventArgs e)
         {
             Client.Shutdown();
@@ -522,11 +502,6 @@ namespace WIPProject
             lblAlert.Content = message;
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            SaveCurrentCanvas();
-        }
-
         private void ResetOpactiy()
         {
             lblAlert.Opacity = 1;
@@ -544,6 +519,50 @@ namespace WIPProject
             //{
             //    lblTextWatermark.Content = "Type Something...";
             //}
+        }
+
+        private void btnSettings_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void btnRoomSelect_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ReverseVisibility(uscRoomSelector);
+
+            Point p = Mouse.GetPosition(stckPnlSideMenu);
+
+            double x = p.X;
+            x -= uscRoomSelector.ActualWidth / 2;
+
+            if (x < 0)
+                x = 0;
+
+            uscRoomSelector.Margin = new Thickness(x, uscRoomSelector.Margin.Top, 0, 0);
+        }
+
+        private void btnSave_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SaveCurrentCanvas();
+        }
+
+        private void HighlightGreenText(object sender, MouseEventArgs e)
+        {
+            Label l = (Label)sender;
+            Color c = ((SolidColorBrush)l.Foreground).Color;
+            c.A = 150;
+
+            ((Label)sender).Foreground = new SolidColorBrush(c);
+        }
+
+        private void RemoveHighlightGreenText(object sender, MouseEventArgs e)
+        {
+            Label l = (Label)sender;
+            Color c = ((SolidColorBrush)l.Foreground).Color;
+            c.A = 255;
+
+            ((Label)sender).Foreground = new SolidColorBrush(c);
+
         }
     }
 }
