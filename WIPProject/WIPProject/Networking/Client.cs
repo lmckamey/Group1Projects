@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Globalization;
 using System.Windows.Shapes;
 using System.Windows.Markup;
+using WIPProject.Enums;
 
 namespace WIPProject.Networking {
     public class Client {
@@ -34,7 +35,7 @@ namespace WIPProject.Networking {
         public delegate void DrawCommand(string[] lines);
         static private DrawCommand drawDelegate;
         
-        public enum CmdType { ERROR, REQUEST, SIGNAL, CLEAR, FILL, UNDO, ERASE};
+        public enum CmdType { ERROR, REQUEST, SIGNAL, CLEAR, FILL, UNDO, ERASE, COMPLIMENT};
         public delegate void HelpCommand(CmdType type, string error);
         static private HelpCommand helpDelegate;
 
@@ -84,6 +85,7 @@ namespace WIPProject.Networking {
                     } catch (IOException e) {
                         MessageBox.Show(e.ToString());
                     }catch (SocketException e) {
+
                         MessageBox.Show(e.ToString());
                     }
                 } while (!isConnected);
@@ -184,6 +186,15 @@ namespace WIPProject.Networking {
                 stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
             }
         }
+        static public void WriteComplimentMessage(ComplimentType type) {
+            if (isConnected) {
+                string cmd = "HELP -compliment:"  + type.ToString() + '\0';
+                writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
+
+                NetworkStream stream = client.GetStream();
+                stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
+            }
+        }
 
         static private void WriteAsync(IAsyncResult ar) {
             NetworkStream stream = (NetworkStream)ar.AsyncState;
@@ -191,9 +202,6 @@ namespace WIPProject.Networking {
         }
 
         static private void Parse(string cmd) {
-            //var commands = cmd.Split('\0');
-            //int length = commands.Count();
-            //for (int i = 0; i < length; i++) {
             string currCmd = cmd;
 
             int spaceIndex = currCmd.IndexOf(' ');
@@ -324,6 +332,9 @@ namespace WIPProject.Networking {
                         break;
                     case "undo":
                         cmdType = CmdType.UNDO;
+                        break;
+                    case "compliment":
+                        cmdType = CmdType.COMPLIMENT;
                         break;
                     default:
                         break;
