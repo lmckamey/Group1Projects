@@ -9,19 +9,20 @@
         Title="DrawingPage" Height="348" Width="525" Closing="Window_Closed" SizeChanged="Window_SizeChanged">
     <Grid x:Name="grdRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="242*"/>
+            <ColumnDefinition Width="157*"/>
+            <ColumnDefinition Width="120*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
 
-        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown" MouseEnter="uscBasicDrawing_MouseEnter" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2"/>
-        <gc:BasicViewingControl x:Name="uscViewer" Visibility="Hidden" Grid.ColumnSpan="1" Grid.Row="1" Grid.RowSpan="2" MouseEnter="uscBasicDrawing_MouseEnter"/>
+        <gc:BasicDrawingControl x:Name="uscBasicDrawing" Visibility="Visible" PreviewMouseDown="uscBasicDrawing_MouseDown" MouseEnter="uscBasicDrawing_MouseEnter" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0.429,0.429,0.429"/>
+        <gc:BasicViewingControl x:Name="uscViewer" Visibility="Hidden" Grid.ColumnSpan="2" Grid.Row="1" MouseEnter="uscBasicDrawing_MouseEnter" Margin="0,0.429,0.429,0.429"/>
 
-        <gc:RoomSelectionControl x:Name="uscRoomSelector" Visibility="Hidden" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" MouseLeave="uscRoomSelector_MouseLeave"/>
-        <DockPanel x:Name="stckPnlSideMenu" Margin="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" LastChildFill="False" Background="#FF688BB8"  >
+        <gc:RoomSelectionControl x:Name="uscRoomSelector" Visibility="Hidden" Margin="0,0.429,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" MouseLeave="uscRoomSelector_MouseLeave" Height="55"/>
+        <DockPanel x:Name="stckPnlSideMenu" Margin="0,0,0.429,294.429" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" LastChildFill="False" Background="#FF688BB8" Grid.RowSpan="2"  >
             <Label x:Name="lblLogo" DockPanel.Dock="Left" HorizontalAlignment="Center" Width="30" Margin="2, 1" Content="" Foreground="White">
                 <Label.Background>
                     <ImageBrush ImageSource="Resources/Images/Logo.png"/>
@@ -32,7 +33,7 @@
             <Button DockPanel.Dock="Left" x:Name="btnRoomSelect" Margin="10, 0" Content="Rooms" Background="#00000000" BorderBrush="{x:Null}" Foreground="#FF9EED8A" FontFamily="Maiandra GD" FontSize="11" Click="btnRoomSelect_Click"/>
             <Button DockPanel.Dock="left" x:Name="btnSave" Margin="10, 0" Content="Save Canvas" Background="#00000000"  BorderBrush="{x:Null}" Foreground="#FF9EED8A" FontFamily="Maiandra GD" FontSize="11" Click="btnSave_Click"/>
         </DockPanel>
-        <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Margin="0">
+        <Grid Grid.Column="1" Grid.Row="1" Margin="156.714,0.429,0.429,0.429" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>
                 <RowDefinition/>
@@ -58,7 +59,7 @@
             </TextBox>
             <Label x:Name="lblTextWatermark" Padding="3,0,0,0" IsHitTestVisible="False" IsEnabled="False" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Content="Type Something..." Margin="0" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" Grid.Row="1"/>
         </Grid>
-        <Label x:Name="lblToggleChat" Content="&gt;" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,1,0" VerticalAlignment="Center" Padding="0" FontFamily="Showcard Gothic" FontSize="25" FontWeight="ExtraBold" Cursor="Hand" PreviewMouseDown="lblToggleChat_MouseDown" Panel.ZIndex="3" Background="#0048617F">
+        <Label x:Name="lblToggleChat" Content="&gt;" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,132.429,1.429,132.429" VerticalAlignment="Center" Padding="0" FontFamily="Showcard Gothic" FontSize="25" FontWeight="ExtraBold" Cursor="Hand" PreviewMouseDown="lblToggleChat_MouseDown" Panel.ZIndex="3" Background="#0048617F">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
                     <GradientStop Color="#90C1FF" Offset="0"/>
@@ -66,12 +67,12 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Menu x:Name="mnuChatOptions" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="64" Margin="211,125,0,0" VerticalAlignment="Top" Width="76" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="10" Background="#CC000000" Visibility="Hidden">
+        <Menu x:Name="mnuChatOptions" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="64" Margin="210.571,125.429,-166.571,0" VerticalAlignment="Top" Width="76" Foreground="#7FCEFFFF" FontFamily="Maiandra GD" FontSize="10" Background="#CC000000" Visibility="Hidden">
             <MenuItem Header="Whisper" Click="HideChatOptions"></MenuItem>
             <MenuItem Header="Add Friend" Margin="0, 1" Click="HideChatOptions"></MenuItem>
             <MenuItem x:Name="miCopyMessage" Header="Copy Message" Margin="0, 1" Click="miCopyMessage_Click"></MenuItem>
             <MenuItem Header="Report" Margin="0, 1" Click="HideChatOptions"></MenuItem>
         </Menu>
-        <Label x:Name="lblAlert" IsHitTestVisible="False" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Content="Image Saved To Desktop"  Margin="0,10,0,0" VerticalAlignment="Top" FontFamily="Maiandra GD" FontSize="12" Foreground="#FFCEFFFF" Background="#99000000" Opacity="0"/>
+        <Label x:Name="lblAlert" IsHitTestVisible="False" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" Content="Image Saved To Desktop"  Margin="130,10.429,130.429,0" VerticalAlignment="Top" FontFamily="Maiandra GD" FontSize="12" Foreground="#FFCEFFFF" Background="#99000000" Opacity="0" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
