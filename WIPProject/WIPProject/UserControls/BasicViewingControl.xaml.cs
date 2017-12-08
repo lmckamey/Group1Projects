@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WIPProject.Enums;
+using WIPProject.Models;
 
 namespace WIPProject.UserControls
 {
@@ -23,6 +25,26 @@ namespace WIPProject.UserControls
         public BasicViewingControl()
         {
             InitializeComponent();
+        }
+
+        private void lblWow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Compliment.CreateNewCompliment(ComplimentType.WOW, cnvDrawArea);
+        }
+
+        private void lblCool_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Compliment.CreateNewCompliment(ComplimentType.COOL, cnvDrawArea);
+        }
+
+        private void lblNice_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Compliment.CreateNewCompliment(ComplimentType.NICE, cnvDrawArea);
+        }
+
+        private void lblThanks_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Compliment.CreateNewCompliment(ComplimentType.THANKS, cnvDrawArea);
         }
     }
 }
