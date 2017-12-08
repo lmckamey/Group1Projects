@@ -34,29 +34,22 @@ namespace DatabaseConnectionService {
 
                     conn.Open();
 
-                    SqlCommand findUser = new SqlCommand("SELECT username from Users" +
-                        "WHERE username = @name " +
-                        "AND password = @password COLLATE SQL_Latin1_General_CP1_CS_AS;", conn);
+                    SqlCommand findUser = new SqlCommand("SELECT username from Users WHERE username = @name", conn);
                     findUser.Parameters.AddWithValue("@name", userName);
-                    findUser.Parameters.AddWithValue("@password", password);
-
-                    bool isNotFound = false;
                     using (SqlDataReader reader = findUser.ExecuteReader()) {
-                        isNotFound = reader.HasRows;
-
+                        if (reader.HasRows) {
+                            errorString = "User Already Exists";
+                        } 
                     }
-                    if (isNotFound) {
-                        SqlCommand addUser = new SqlCommand("INSERT into Users (username, password) " +
-                            "Values (@name, @password);");
+                    if (errorString.Equals("")) {
+                        SqlCommand addUser = new SqlCommand("INSERT into Users (username, password) Values (@name, @password)", conn);
                         addUser.Parameters.AddWithValue("@name", userName);
                         addUser.Parameters.AddWithValue("@password", password);
-                        using (SqlDataReader reader = addUser.ExecuteReader()) {
-                            if (!reader.HasRows) {
-                                errorString = "Could not add User!";
-                            }
+                        int amo = addUser.ExecuteNonQuery();
+                        if (amo == 0) {
+                            errorString = "Could not add User!";
                         }
-                    } else {
-                        errorString = "User already exists";
+                       
                     }
 
                     conn.Close();
@@ -65,6 +58,54 @@ namespace DatabaseConnectionService {
                 errorString = e.ToString();
             }
             return errorString;
+
+
+
+            //string errorString = "";
+            //try {
+            //    using (SqlConnection conn = new SqlConnection("Server=tcp:wipserver.database.windows.net,1433;" +
+            //           "Initial Catalog=WIPUsers;" +
+            //           "Persist Security Info=False;" +
+            //           "User ID=WIPStudios;" +
+            //           "Password=741stQRHMsNn14D5;" +
+            //           "MultipleActiveResultSets=False;" +
+            //           "Encrypt=True;" +
+            //           "TrustServerCertificate=False;" +
+            //           "Connection Timeout=30;")) {
+
+            //        conn.Open();
+
+            //        SqlCommand findUser = new SqlCommand("SELECT username from Users" +
+            //            "WHERE username = @name " +
+            //            "AND password = @password COLLATE SQL_Latin1_General_CP1_CS_AS;", conn);
+            //        findUser.Parameters.AddWithValue("@name", userName);
+            //        findUser.Parameters.AddWithValue("@password", password);
+
+            //        bool isNotFound = false;
+            //        using (SqlDataReader reader = findUser.ExecuteReader()) {
+            //            isNotFound = reader.HasRows;
+
+            //        }
+            //        if (isNotFound) {
+            //            SqlCommand addUser = new SqlCommand("INSERT into Users (username, password) " +
+            //                "Values (@name, @password);");
+            //            addUser.Parameters.AddWithValue("@name", userName);
+            //            addUser.Parameters.AddWithValue("@password", password);
+            //            using (SqlDataReader reader = addUser.ExecuteReader()) {
+            //                if (!reader.HasRows) {
+            //                    errorString = "Could not add User!";
+            //                }
+            //            }
+            //        } else {
+            //            errorString = "User already exists";
+            //        }
+
+            //        conn.Close();
+            //    }
+            //} catch (SqlException e) {
+            //    errorString = e.ToString();
+            //}
+            //return errorString;
         }
 
         public string CheckLogin(string userName, string password) {
