@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Globalization;
 using System.Windows.Shapes;
 using System.Windows.Markup;
+using WIPProject.Enums;
 
 namespace WIPProject.Networking {
     public class Client {
@@ -84,6 +85,7 @@ namespace WIPProject.Networking {
                     } catch (IOException e) {
                         MessageBox.Show(e.ToString());
                     }catch (SocketException e) {
+
                         MessageBox.Show(e.ToString());
                     }
                 } while (!isConnected);
@@ -184,9 +186,9 @@ namespace WIPProject.Networking {
                 stream.BeginWrite(writeBytes, 0, writeBytes.Length, new AsyncCallback(WriteAsync), stream);
             }
         }
-        static public void WriteComplimentMessage(/*ComplimentType typ*/) {
+        static public void WriteComplimentMessage(ComplimentType type) {
             if (isConnected) {
-                string cmd = "HELP -compliment:" /* + type.toString()*/ + '\0';
+                string cmd = "HELP -compliment:"  + type.ToString() + '\0';
                 writeBytes = ASCIIEncoding.UTF8.GetBytes(cmd);
 
                 NetworkStream stream = client.GetStream();

@@ -64,9 +64,9 @@ namespace WIPProject.Models
                     ChatRooms[currRoom].UndoDrawing(amo);
                     break;
                 case Client.CmdType.COMPLIMENT:
-                    ComplimentType type;
-                    Enum.TryParse(msg, out type);
-                    ChatRooms[currRoom].ComplimentMessage(type);
+                    ComplimentType compType;
+                    Enum.TryParse(msg, out compType);
+                    ChatRooms[currRoom].ComplimentMessage(compType);
                     break;
                 default:
                     break;

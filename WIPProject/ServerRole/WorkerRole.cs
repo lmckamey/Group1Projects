@@ -259,7 +259,12 @@ namespace ServerRole {
                     case "compliment":
                         cmdType = CmdType.COMPLIMENT;
                         cmd = "HELP " + cmd + '\0';
-                        WriteToAllClients(cmd);
+                        int length2 = clients.Count;
+                        for (int i = 0; i < length2; i++) {
+                            var client = clients.ElementAt(i);
+                            if (client == c) { continue; }
+                            WriteToClient(cmd, client);
+                        }
                         break;
                     default:
                         break;

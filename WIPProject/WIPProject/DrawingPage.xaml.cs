@@ -23,6 +23,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Media.Animation;
 using static System.Net.Mime.MediaTypeNames;
 using System.Globalization;
+using WIPProject.Enums;
 
 namespace WIPProject
 {
@@ -222,8 +223,20 @@ namespace WIPProject
         public void ComplimentMessage(ComplimentType type) {
             this.Dispatcher.Invoke(() =>
             {
+                Canvas activeCanvas = uscBasicDrawing.Visibility == Visibility.Visible ? uscBasicDrawing.cnvDrawArea : uscViewer.cnvDrawArea;
                 switch (type) {
-
+                    case ComplimentType.COOL:
+                        Compliment.CreateNewCompliment(ComplimentType.COOL, activeCanvas);
+                        break;
+                    case ComplimentType.WOW:
+                        Compliment.CreateNewCompliment(ComplimentType.WOW, activeCanvas);
+                        break;
+                    case ComplimentType.THANKS:
+                        Compliment.CreateNewCompliment(ComplimentType.THANKS, activeCanvas);
+                        break;
+                    case ComplimentType.NICE:
+                        Compliment.CreateNewCompliment(ComplimentType.NICE, activeCanvas);
+                        break;
                 }
             });
         }
