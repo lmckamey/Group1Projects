@@ -100,6 +100,9 @@ namespace WIPProject.UserControls
             cnvDrawArea.Background = uscColorPicker.elpCurrentColor.Fill.Clone();
             nextAction = NextAction.DRAW;
             btnBucket.Background = originalButtonColor.Clone();
+
+            var color = ((Color)uscColorPicker.elpCurrentColor.Fill.GetValue(SolidColorBrush.ColorProperty));
+            Client.WriteFillMessage(color.ToString());
         }
 
         private void EraseLine()
@@ -124,6 +127,7 @@ namespace WIPProject.UserControls
                             ((Line)child).RenderedGeometry.Bounds))
                         {
                             cnvDrawArea.Children.RemoveAt(i);
+                            Client.WriteEraseMessage(i);
                             --i;
                         }
                     }
@@ -150,14 +154,11 @@ namespace WIPProject.UserControls
                 l.StrokeStartLineCap = PenLineCap.Round;
                 l.StrokeLineJoin = PenLineJoin.Round;
 
-                l.MouseMove += LineMove;
-                l.MouseDown += LineDown;
-
                 cnvDrawArea.Children.Add(l);
 
                 //dirtyLines.Add(l);
                 AddDirtyLine(l);
-                Client.WiteDrawMessage(l);
+                Client.WriteDrawMessage(l);
 
                 ++currentLineCount;
             }
@@ -184,22 +185,6 @@ namespace WIPProject.UserControls
                 numOfDirtyLines = 0;
         }
 
-        private void LineMove(object sender, MouseEventArgs e)
-        {
-            if (nextAction == NextAction.ERASE && e.LeftButton == MouseButtonState.Pressed)
-            {
-                cnvDrawArea.Children.Remove((Line)sender);
-            }
-        }
-
-        private void LineDown(object sender, MouseButtonEventArgs e)
-        {
-            if (nextAction == NextAction.ERASE)
-            {
-                cnvDrawArea.Children.Remove((Line)sender);
-            }
-        }
-
         private void cnvDrawArea_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             uscBrushSize.sldBrushSize.Value += e.Delta / 120;
@@ -210,6 +195,7 @@ namespace WIPProject.UserControls
             cnvDrawArea.Children.Clear();
 
             currentLineCount = 0;
+            Client.WriteClearMessage();
         }
 
         private void UndoLastLine()
@@ -227,6 +213,7 @@ namespace WIPProject.UserControls
                     }
                     cnvDrawArea.Children.RemoveAt(cnvDrawArea.Children.Count - 1);
                 }
+                Client.WriteUndoMessage(numberOfUndos);
             }
         }
 
@@ -307,6 +294,11 @@ namespace WIPProject.UserControls
         private void btnUndo_Click(object sender, RoutedEventArgs e)
         {
             UndoLastLine();
+        }
+
+        private void cnvDrawArea_MouseLeave(object sender, MouseEventArgs e)
+        {
+            IncrementCurrentStroke();
         }
     }
 }

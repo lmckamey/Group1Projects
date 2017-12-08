@@ -66,11 +66,6 @@ namespace WIPProject
             main = window;
             userName = name;
 
-            //ImageBrush image = new ImageBrush();
-            //string thingy = AppDomain.CurrentDomain.BaseDirectory + "carpet02.jpg";
-            //image.ImageSource = new ImageSourceConverter().ConvertFromString(thingy) as ImageSource; ;
-            //stckPnlSideMenu.Background = image;
-
             uscRoomSelector.page = this;
 
             uscBasicDrawing.drawingPage = this;
@@ -134,16 +129,7 @@ namespace WIPProject
 
                 ChangeFontSizes();
             });
-            }
-
-        //public void AddMessage(string userName, string message, string color) {
-        //    this.Dispatcher.Invoke(() =>
-        //    {
-        //        tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {message}";
-
-        //    });
-
-        //}
+        }
 
         public void DrawMessage(string[] lines) {
             this.Dispatcher.Invoke(() => {
@@ -172,6 +158,55 @@ namespace WIPProject
             });
         }
 
+        public void ClearDrawing() {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Children.Clear();
+                    uscViewer.cnvDrawArea.Children.Clear();
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }
+            });
+        }
+
+        public void FillDrawing(string color) {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                    uscViewer.cnvDrawArea.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }               
+            });
+        }
+
+        public void EraseDrawing(int index) {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //uscBasicDrawing.cnvDrawArea.Children.RemoveAt(index);
+                    uscViewer.cnvDrawArea.Children.RemoveAt(index);
+                } catch (Exception e) {
+                    MessageBox.Show(e.ToString());
+                }               
+            });
+        }
+
+        public void UndoDrawing(int undoAmount) {
+            this.Dispatcher.Invoke(() => {
+                try {
+                    //int index = uscBasicDrawing.cnvDrawArea.Children.Count - undoAmount - 1;
+                    //uscBasicDrawing.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                    int index = uscViewer.cnvDrawArea.Children.Count - undoAmount;
+                    if(index < 0) {
+                        index = 0;
+                    }
+                    uscViewer.cnvDrawArea.Children.RemoveRange(index, undoAmount);
+                } catch(Exception e) {
+                    MessageBox.Show(e.ToString());
+                }              
+            });
+        }
+
         public void ToggleDrawing() {
             Active = !Active;
             if (isActive)
@@ -186,42 +221,7 @@ namespace WIPProject
 
         private void SendMessage()
         {
-            //TextBlock tb = new TextBlock();
-            //tb.Padding = new Thickness(0, 0, 5, 0);
-            //tb.TextAlignment = TextAlignment.Left;
-            //tb.HorizontalAlignment = HorizontalAlignment.Stretch;
-            //tb.VerticalAlignment = VerticalAlignment.Top;
-            //tb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            //tb.FontFamily = new FontFamily("Maiandra GD");
-            //tb.Background = null;
-            //tb.TextWrapping = TextWrapping.Wrap;
-            //tb.Margin = new Thickness(5, 0, 0, 5);
-
-            //Run user = new Run($"{userName}:");
-            //int color = 0;
-            //int.TryParse("0xFFFFFF", NumberStyles.HexNumber, CultureInfo.CurrentCulture, out color);
-            //byte r = (byte)(color >> 8);
-            //byte g = (byte)((color >> 4) - (r << 4));
-            //byte b = (byte)((color) - (r << 8) - (g << 4));
-            //user.Foreground = new SolidColorBrush(userColors[userColor]);
-            ////user.Foreground = new SolidColorBrush(userColors[userColor]);
-            //user.MouseEnter += User_MouseEnter;
-            //user.MouseLeave += User_MouseLeave;
-            //user.MouseDown += User_MouseDown;
-            //Run text = new Run($" {tbxChatBox.Text}");
-            //text.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEFFFF"));
-            //tb.Inlines.Add(user);
-            //tb.Inlines.Add(text);
-
-            //tb.MouseDown += Tb_MouseDown;
-
-            //tblChatWindow.Children.Add(tb);
-
-            //ChangeFontSizes();
-
-            //tblChatWindow.Text = $"{tblChatWindow.Text}\n{userName}: {tbxChatBox.Text}";
             Client.WriteChatMessage(userName, tbxChatBox.Text, userColors[userColor].ToString());
-            //tbxChatWindow.AppendText($"\n{userName}: {tbxChatBox.Text}\n");
 
             tbxChatBox.Clear();
 
@@ -279,11 +279,6 @@ namespace WIPProject
         {
 
         }
-        private void btnModeChange_Click(object sender, RoutedEventArgs e)
-        {
-            ReverseVisibility(uscBasicDrawing);
-            ReverseVisibility(uscViewer);
-        }
 
         private void ReverseVisibility(UIElement element)
         {
@@ -303,10 +298,13 @@ namespace WIPProject
 
             Point p = Mouse.GetPosition(stckPnlSideMenu);
 
-            double y = p.Y;
-            y -= btnRoomSelect.ActualHeight;
+            double x = p.X;
+            x -= uscRoomSelector.ActualWidth / 2;
 
-            uscRoomSelector.Margin = new Thickness(uscRoomSelector.Margin.Left, y, 0, 0);
+            if (x < 0)
+                x = 0;
+
+            uscRoomSelector.Margin = new Thickness(x,uscRoomSelector.Margin.Top, 0, 0);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
@@ -343,13 +341,13 @@ namespace WIPProject
         private void HideChat()
         {
             lblToggleChat.Content = "<";
-            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(0, GridUnitType.Star);
+            grdRoot.ColumnDefinitions.ElementAt(1).Width = new GridLength(0, GridUnitType.Star);
         }
 
         private void ShowChat()
         {
             lblToggleChat.Content = ">";
-            grdRoot.ColumnDefinitions.ElementAt(2).Width = new GridLength(3, GridUnitType.Star);
+            grdRoot.ColumnDefinitions.ElementAt(1).Width = new GridLength(3, GridUnitType.Star);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -379,19 +377,18 @@ namespace WIPProject
         {
             int alertSize = (int)(12 * multiplier);
             int modeSize = (int)(11 * multiplier);
-            int roomsSize = (int)(9 * multiplier);
-            int friendLabelSize = (int)(9 * multiplier);
+            int roomsSize = (int)(11 * multiplier);
+            int friendLabelSize = (int)(11 * multiplier);
             int friendListSize = (int)(9 * multiplier);
-            int settingsSize = (int)(9 * multiplier);
+            int settingsSize = (int)(11 * multiplier);
             int chatSize = (int)(12 * multiplier);
 
-            int logoWidth = (int)(35 * multiplier);
-            int logoHeight = (int)(26 * multiplier);
+            int logoWidth = (int)(30 * multiplier);
+            int logoHeight = (int)(19 * multiplier);
 
             lblLogo.Width = logoWidth;
             lblLogo.Height = logoHeight;
-
-            btnModeChange.FontSize = modeSize;
+            
             btnRoomSelect.FontSize = roomsSize;
             btnSave.FontSize = modeSize;
             lblFriends.FontSize = friendLabelSize;
@@ -468,24 +465,44 @@ namespace WIPProject
             }
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void SaveCurrentCanvas()
         {
-            ImageManager.SaveImageToDesktop(userName,
-                uscBasicDrawing.cnvDrawArea, this);
+            if (Active)
+            {
+                ImageManager.SaveImageToDesktop(userName,
+                    uscBasicDrawing.cnvDrawArea, this);
+            }
+            else
+            {
+                ImageManager.SaveImageToDesktop(userName,
+                    uscViewer.cnvDrawArea, this);
+            }
 
+            DisplayAlert("Canvas Saved to Desktop");
+        }
+
+        private void DisplayAlert(string message)
+        {
             ResetOpactiy();
 
             var animation = new DoubleAnimation
             {
                 To = 0,
                 BeginTime = TimeSpan.FromSeconds(2),
-                Duration = TimeSpan.FromSeconds(2),
+                Duration = TimeSpan.FromSeconds(1),
                 FillBehavior = FillBehavior.Stop
             };
 
             animation.Completed += (s, a) => lblAlert.Opacity = 0;
 
             lblAlert.BeginAnimation(UIElement.OpacityProperty, animation);
+
+            lblAlert.Content = message;
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveCurrentCanvas();
         }
 
         private void ResetOpactiy()
@@ -495,15 +512,16 @@ namespace WIPProject
 
         private void tbxChatBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            lblTextWatermark.Content = "";
+            //lblTextWatermark.Content = "";
+            lblTextWatermark.Visibility = Visibility.Hidden;
         }
 
         private void tbxChatBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(tbxChatBox.Text != "")
-            {
-                lblTextWatermark.Content = "Type Something...";
-            }
+            //if(tbxChatBox.GetLineLength(0) > 0)
+            //{
+            //    lblTextWatermark.Content = "Type Something...";
+            //}
         }
     }
 }
