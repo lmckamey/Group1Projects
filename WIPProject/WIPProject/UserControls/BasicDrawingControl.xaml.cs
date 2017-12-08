@@ -211,7 +211,14 @@ namespace WIPProject.UserControls
                     {
                         dirtyLines[--numOfDirtyLines] = null;
                     }
-                    cnvDrawArea.Children.RemoveAt(cnvDrawArea.Children.Count - 1);
+                    if (cnvDrawArea.Children.Count > 0)
+                    {
+                        cnvDrawArea.Children.RemoveAt(cnvDrawArea.Children.Count - 1);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 Client.WriteUndoMessage(numberOfUndos);
             }
