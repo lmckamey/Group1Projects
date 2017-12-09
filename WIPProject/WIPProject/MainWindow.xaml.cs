@@ -51,7 +51,7 @@ namespace WIPProject {
                 this.Hide();
 
                 RoomManager.mainWindow = this;
-                RoomManager.username = tbxUserName.Text;
+                RoomManager.username = tbxCreateUsername.Text;
                 RoomManager.Initialize();
 
                 this.Close();
