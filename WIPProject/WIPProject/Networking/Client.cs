@@ -250,7 +250,12 @@ namespace WIPProject.Networking {
                     beginInfoInd = dataInd;
                 }
                 dataInd = dataInd == -1 ? tempCmd.Count() : dataInd;
-                string data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
+                string data = "";
+                try {
+                    data = tempCmd.Substring(typeInd + 1, dataInd - typeInd - 1);
+                } catch(ArgumentOutOfRangeException e) {
+                    MessageBox.Show(e.ToString());
+                }
 
                 // Get data related to specific values
                 switch (type) {
